@@ -1,9 +1,15 @@
 import random
 from collections import defaultdict
-from typing import List, Tuple, Set, Dict
+from typing import List, Tuple, Set, Dict, Optional
 
 from .types import State, Operation, Command
 from .model import LockerModel
+from .metrics import (
+    VALID_STATE_TRANSITIONS,
+    VALID_TRANSITION_PAIRS,
+    Transition,
+    TransitionPair,
+)
 
 ALL_OPERATIONS = [
     Operation.RESERVE,
@@ -15,6 +21,7 @@ ALL_OPERATIONS = [
     Operation.ENABLE,
     Operation.INVALID_ACCESS,
 ]
+
 
 def _build_command(
     op: Operation,
@@ -78,13 +85,12 @@ class RandomWalkGenerator:
         self.max_length = max(1, max_length)
 
     def generate(self, count: int) -> List[List[Command]]:
-        """Generate `count` independent test sequences of length up to `max_length`."""
+        """Generate `count` independent test sequences with a consistent length budget."""
         rng = random.Random(self.seed)
         sequences: List[List[Command]] = []
 
         for seq_idx in range(count):
-            # Select random sequence length between 1 and max_length
-            seq_len = rng.randint(1, self.max_length)
+            seq_len = self.max_length
             sim_model = LockerModel()
             seq: List[Command] = []
 
@@ -116,6 +122,7 @@ class CoverageGuidedGenerator:
         self.max_length = max(1, max_length)
 
     def generate(self, count: int) -> List[List[Command]]:
+        """Generate `count` independent test sequences prioritizing less-covered states and transitions."""
         rng = random.Random(self.seed)
         sequences: List[List[Command]] = []
 
@@ -125,7 +132,7 @@ class CoverageGuidedGenerator:
         state_frequencies[State.AVAILABLE] += 1
 
         for seq_idx in range(count):
-            seq_len = rng.randint(max(1, self.max_length // 2), self.max_length)
+            seq_len = self.max_length
             sim_model = LockerModel()
             seq: List[Command] = []
 
@@ -136,7 +143,7 @@ class CoverageGuidedGenerator:
                 candidates = []
                 for op in ALL_OPERATIONS:
                     for valid_attempt in (True, False):
-                        # Dry run on a copy of the model to predict outcome
+                        # Dry run on a clone of the model to evaluate outcome
                         dry_model = LockerModel()
                         dry_model.state = sim_model.state
                         dry_model.customer_id = sim_model.customer_id
@@ -150,8 +157,7 @@ class CoverageGuidedGenerator:
                         key = (current_state, op, res.accepted)
 
                         # Score: lower frequency = higher priority.
-                        # Heavy bonus for completely unvisited transitions (freq == 0)
-                        # and transitions leading to less-visited states.
+                        # Heuristic: heavily prioritize unexercised transitions and least-visited target states
                         trans_count = transition_frequencies[key]
                         state_count = state_frequencies[next_state]
                         score = trans_count * 10 + state_count
@@ -178,86 +184,93 @@ class CoverageGuidedGenerator:
 class TransitionPairGenerator:
     """Strategy C: Transition-Pair Generator.
 
-    Targets pairs of consecutive transitions (t1, t2).
-    A transition pair consists of an incoming transition into an intermediate state s_mid,
-    followed by an outgoing transition from s_mid.
-    The generator maintains a global set of covered transition pairs and actively
-    navigates the state machine to trigger uncovered pairs within each sequence.
+    Targets valid, connected consecutive transition pairs:
+        (t1, t2) where t1.target_state == t2.source_state
+    as defined by the state machine (all 13 valid transition pairs).
+
+    The generator tracks globally covered transition pairs and actively steers
+    sequences to complete uncovered pairs, chaining transitions while also
+    testing negative edge cases.
     """
 
     def __init__(self, seed: int = 42, max_length: int = 20):
         self.seed = seed
         self.max_length = max(1, max_length)
 
-    def _get_target_pairs(self) -> Set[Tuple[Operation, Operation]]:
-        """Define target consecutive operation pairs relevant to the locker lifecycle."""
-        # Operational sequences of interest:
-        # e.g., (RESERVE, DEPOSIT), (RESERVE, CANCEL), (RESERVE, EXPIRE), (DEPOSIT, RETRIEVE),
-        # (DISABLE, ENABLE), (RESERVE, INVALID_ACCESS), (DEPOSIT, INVALID_ACCESS),
-        # (RESERVE, RESERVE), (RETRIEVE, RETRIEVE), (ENABLE, DISABLE), etc.
-        pairs = set()
-        for op1 in ALL_OPERATIONS:
-            for op2 in ALL_OPERATIONS:
-                pairs.add((op1, op2))
-        return pairs
-
     def generate(self, count: int) -> List[List[Command]]:
+        """Generate `count` independent test sequences targeting state-machine transition pairs."""
         rng = random.Random(self.seed)
         sequences: List[List[Command]] = []
 
-        # Track global pair coverage: (op1, op2)
-        covered_pairs: Set[Tuple[Operation, Operation]] = set()
-        all_possible_pairs = list(self._get_target_pairs())
-        rng.shuffle(all_possible_pairs)
+        # Global set of covered connected transition pairs
+        covered_pairs: Set[TransitionPair] = set()
+
+        # Pre-index valid outgoing transitions by source state
+        transitions_from: Dict[State, List[Transition]] = defaultdict(list)
+        for t in VALID_STATE_TRANSITIONS:
+            transitions_from[t[0]].append(t)
 
         for seq_idx in range(count):
-            seq_len = rng.randint(max(1, self.max_length // 2), self.max_length)
+            seq_len = self.max_length
             sim_model = LockerModel()
             seq: List[Command] = []
-            prev_op: Operation | None = None
+            prev_trans: Optional[Transition] = None
 
             for _ in range(seq_len):
                 current_state = sim_model.state
+                available_outgoing = transitions_from.get(current_state, [])
 
-                # Find candidate operations that form an uncovered pair with prev_op
-                candidates = []
-                for op in ALL_OPERATIONS:
-                    for valid_attempt in (True, False):
-                        dry_model = LockerModel()
-                        dry_model.state = sim_model.state
-                        dry_model.customer_id = sim_model.customer_id
-                        dry_model.reservation_code = sim_model.reservation_code
-                        dry_model.retrieval_code = sim_model.retrieval_code
+                # Evaluate outgoing transitions that can form an uncovered pair with prev_trans
+                candidate_actions = []
 
-                        cust_id = f"C{(seq_idx % 4) + 1}"
-                        cmd = _build_command(op, dry_model, valid_attempt, rng, customer_id=cust_id)
-                        res = dry_model.step(cmd)
+                if available_outgoing:
+                    for t in available_outgoing:
+                        op = t[1]
+                        pair = (prev_trans, t) if prev_trans is not None and prev_trans[2] == t[0] else None
+                        is_new_pair = pair is not None and pair in VALID_TRANSITION_PAIRS and pair not in covered_pairs
 
-                        pair = (prev_op, op) if prev_op is not None else None
-                        is_new_pair = pair is not None and pair not in covered_pairs
-
-                        # Priority:
-                        # 1. New uncovered pair with prev_op
-                        # 2. Valid transition that moves state forward towards unexplored pairs
-                        # 3. Novel operations
-                        score = 0
+                        # Score for choosing this transition:
+                        # - Big bonus if it directly completes an uncovered transition pair
+                        # - Bonus if the target state has outgoing transitions with uncovered pairs
+                        priority = 0
                         if is_new_pair:
-                            score -= 100
-                        if res.accepted:
-                            score -= 10
+                            priority += 1000
 
-                        candidates.append((score, cmd, op))
+                        # Look ahead: how many uncovered pairs can be formed from target state t[2]?
+                        future_uncovered = sum(
+                            1 for next_t in transitions_from.get(t[2], [])
+                            if (t, next_t) in VALID_TRANSITION_PAIRS and (t, next_t) not in covered_pairs
+                        )
+                        priority += future_uncovered * 100
 
-                rng.shuffle(candidates)
-                candidates.sort(key=lambda c: c[0])
+                        candidate_actions.append((priority, op, True, t))
 
-                chosen_score, chosen_cmd, chosen_op = candidates[0]
-                sim_model.step(chosen_cmd)
-                seq.append(chosen_cmd)
+                # Also consider invalid operations occasionally (20% chance) to fuzz guards
+                # while preserving transition-pair focus
+                if not candidate_actions or rng.random() < 0.20:
+                    invalid_op = rng.choice(ALL_OPERATIONS)
+                    candidate_actions.append((-50, invalid_op, False, None))
 
-                if prev_op is not None:
-                    covered_pairs.add((prev_op, chosen_op))
-                prev_op = chosen_op
+                # Shuffle to randomize ties, then sort by highest priority
+                rng.shuffle(candidate_actions)
+                candidate_actions.sort(key=lambda a: a[0], reverse=True)
+
+                chosen_priority, chosen_op, valid_attempt, next_trans = candidate_actions[0]
+                cust_id = f"C{(seq_idx % 4) + 1}"
+                cmd = _build_command(chosen_op, sim_model, valid_attempt, rng, customer_id=cust_id)
+                res = sim_model.step(cmd)
+
+                if res.accepted and next_trans is not None:
+                    curr_trans = (current_state, chosen_op, sim_model.state)
+                    if prev_trans is not None and prev_trans[2] == curr_trans[0]:
+                        pair = (prev_trans, curr_trans)
+                        if pair in VALID_TRANSITION_PAIRS:
+                            covered_pairs.add(pair)
+                    prev_trans = curr_trans
+                else:
+                    prev_trans = None
+
+                seq.append(cmd)
 
             sequences.append(seq)
 

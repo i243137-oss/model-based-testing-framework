@@ -46,6 +46,7 @@ class SequenceRunner:
     1. Operational Result comparison (accepted flag and message).
     2. Complete observable Snapshot comparison (state and credentials).
     3. Structural domain invariant checks after each step.
+    4. Non-mutation checks on all rejected operations.
     """
 
     def __init__(
@@ -101,12 +102,13 @@ class SequenceRunner:
             diverged = False
             invariant_err: Optional[str] = None
 
-            # 1. Result verification
+            # 1. Operational Result verification
             if exp_res.accepted != act_res.accepted or exp_res.message != act_res.message:
                 diverged = True
                 failure_details = (
                     f"Result divergence at step {idx} ({cmd.operation}): "
-                    f"expected {exp_res}, got {act_res}"
+                    f"expected Result(accepted={exp_res.accepted}, message='{exp_res.message}'), "
+                    f"got Result(accepted={act_res.accepted}, message='{act_res.message}')"
                 )
 
             # 2. Complete Snapshot verification
@@ -122,7 +124,7 @@ class SequenceRunner:
                     f"expected {model_after}, got {sut_after}"
                 )
 
-            # 3. State Invariant verification
+            # 3. Domain Invariant verification
             else:
                 inv_ok, inv_msg = LockerModel.verify_invariants(sut_after)
                 if not inv_ok:
@@ -131,7 +133,7 @@ class SequenceRunner:
                     failure_details = f"Invariant violation at step {idx} ({cmd.operation}): {inv_msg}"
 
                 # Non-mutation invariant: rejected operations must not mutate state or credentials
-                if not act_res.accepted:
+                elif not act_res.accepted:
                     if (
                         sut_after.state != sut_before.state
                         or sut_after.customer_id != sut_before.customer_id
@@ -141,6 +143,17 @@ class SequenceRunner:
                         diverged = True
                         invariant_err = "Rejected operation mutated SUT state or credentials"
                         failure_details = f"Non-mutation invariant violation at step {idx}: rejected operation changed state"
+
+                # Post-operation cleanup invariant: RETRIEVE, CANCEL, EXPIRE when accepted must clear credentials
+                elif act_res.accepted and cmd.operation in (Operation.RETRIEVE, Operation.CANCEL, Operation.EXPIRE):
+                    if (
+                        sut_after.customer_id is not None
+                        or sut_after.reservation_code is not None
+                        or sut_after.retrieval_code is not None
+                    ):
+                        diverged = True
+                        invariant_err = f"Successful {cmd.operation} failed to clear customer/credentials"
+                        failure_details = f"Cleanup invariant violation at step {idx}: credentials retained after {cmd.operation}"
 
             step_records.append(
                 StepRecord(
@@ -159,7 +172,7 @@ class SequenceRunner:
             if diverged and passed:
                 passed = False
                 failure_step = idx
-                # We stop the sequence on first divergence to identify the precise defect
+                # Stop on first divergence to pinpoint exact defect
                 break
 
         elapsed = time.perf_counter() - start_time

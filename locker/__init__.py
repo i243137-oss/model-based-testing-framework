@@ -12,6 +12,10 @@ from .metrics import (
     mutation_summary,
     CoverageReport,
     MutationSummary,
+    VALID_STATE_TRANSITIONS,
+    VALID_TRANSITION_PAIRS,
+    is_valid_transition,
+    is_valid_transition_pair,
 )
 from .mutants import ALL_MUTANTS, MUTANT_DESCRIPTIONS
 
@@ -32,6 +36,10 @@ __all__ = [
     "mutation_summary",
     "CoverageReport",
     "MutationSummary",
+    "VALID_STATE_TRANSITIONS",
+    "VALID_TRANSITION_PAIRS",
+    "is_valid_transition",
+    "is_valid_transition_pair",
     "ALL_MUTANTS",
     "MUTANT_DESCRIPTIONS",
 ]

@@ -1,11 +1,11 @@
 Mutant Name,Defect Description,RandomWalk,CoverageGuided,TransitionPair
-Mutant1_ReserveOccupied,Allows reserving compartment when it is already OCCUPIED.,100%,100%,100%
+Mutant1_ReserveOccupied,Allows reserving compartment when it is already OCCUPIED.,100%,100%,0%
 Mutant2_AcceptWrongReservationCode,Accepts incorrect reservation code during parcel deposit.,100%,100%,0%
 Mutant3_RetrieveWithoutAuth,Allows parcel retrieval without valid authentication PIN.,100%,100%,0%
 Mutant4_DoubleRetrieve,"Fails to clear compartment upon retrieval, allowing duplicate retrieval.",100%,100%,100%
 Mutant5_ExpireWhenNotExpired,Prematurely expires reservation when explicit expired flag is False.,100%,100%,0%
 Mutant6_CancelRetainsCredentials,Fails to clear customer and reservation credentials on cancel.,100%,100%,100%
-Mutant7_MaintenanceWhenReserved,Allows placing compartment into maintenance while reserved.,100%,100%,100%
-Mutant8_EnableWhenNotMaintenance,Allows enabling locker when it is not in maintenance.,100%,100%,100%
-Mutant9_DepositDuringMaintenance,Allows deposit into a compartment under maintenance.,100%,100%,80%
+Mutant7_MaintenanceWhenReserved,Allows placing compartment into maintenance while reserved.,100%,100%,0%
+Mutant8_EnableWhenNotMaintenance,Allows enabling locker when it is not in maintenance.,100%,100%,0%
+Mutant9_DepositDuringMaintenance,Allows deposit into a compartment under maintenance.,100%,100%,0%
 Mutant10_MutateOnInvalidDeposit,Mutates retrieval credential on rejected deposit attempt.,100%,100%,0%

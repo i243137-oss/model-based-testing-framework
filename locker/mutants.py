@@ -1,4 +1,4 @@
-from typing import Dict, Type, Any, List
+from typing import Dict, Type, Any
 from .types import State, Operation, Command, Result, Snapshot
 from .sut import ParcelLocker
 
@@ -6,13 +6,15 @@ from .sut import ParcelLocker
 class Mutant1_ReserveOccupied(ParcelLocker):
     """Mutant 1: Allows reservation when the locker is already OCCUPIED.
 
-    Defect: Missing check ensuring the locker is AVAILABLE before reserving.
+    Defect: Fails to reject reservation when the compartment contains a deposited parcel.
+    Isolated fault: Specifically permits RESERVE when in OCCUPIED state;
+    reservations in MAINTENANCE remain properly rejected.
     """
     def execute(self, command: Command) -> Result:
         if command.operation == Operation.RESERVE:
-            if self.state == State.MAINTENANCE:
+            # Bug: permits RESERVE in OCCUPIED state as well as AVAILABLE
+            if self.state not in (State.AVAILABLE, State.OCCUPIED):
                 return Result(False, "locker_not_available")
-            # Bug: Does not check if state is OCCUPIED or RESERVED
             self.state = State.RESERVED
             self.customer_id = command.customer_id
             self.reservation_code = f"R-{command.customer_id}"
@@ -23,7 +25,7 @@ class Mutant1_ReserveOccupied(ParcelLocker):
 class Mutant2_AcceptWrongReservationCode(ParcelLocker):
     """Mutant 2: Accepts any reservation code during DEPOSIT.
 
-    Defect: Omits code validation against the stored reservation code.
+    Defect: Omits code validation against the stored reservation code during parcel deposit.
     """
     def execute(self, command: Command) -> Result:
         if command.operation == Operation.DEPOSIT:
@@ -37,7 +39,7 @@ class Mutant2_AcceptWrongReservationCode(ParcelLocker):
 
 
 class Mutant3_RetrieveWithoutAuth(ParcelLocker):
-    """Mutant 3: Allows retrieval without verifying the retrieval authentication code.
+    """Mutant 3: Allows retrieval without verifying the retrieval authentication PIN.
 
     Defect: Bypasses authentication check for parcel pickup.
     """
@@ -52,9 +54,9 @@ class Mutant3_RetrieveWithoutAuth(ParcelLocker):
 
 
 class Mutant4_DoubleRetrieve(ParcelLocker):
-    """Mutant 4: Fails to clear locker upon retrieval, allowing double pickup.
+    """Mutant 4: Fails to clear locker upon retrieval, allowing duplicate retrieval.
 
-    Defect: State remains OCCUPIED after successful RETRIEVE.
+    Defect: State remains OCCUPIED after successful RETRIEVE instead of transitioning to AVAILABLE.
     """
     def execute(self, command: Command) -> Result:
         if command.operation == Operation.RETRIEVE:
@@ -100,13 +102,14 @@ class Mutant6_CancelRetainsCredentials(ParcelLocker):
 class Mutant7_MaintenanceWhenReserved(ParcelLocker):
     """Mutant 7: Allows placing the locker into MAINTENANCE while RESERVED.
 
-    Defect: Missing precondition check preventing maintenance when an active reservation exists.
+    Defect: Inadequately guards DISABLE, permitting maintenance when an active reservation exists.
+    Isolated fault: Specifically permits DISABLE in RESERVED; DISABLE in OCCUPIED remains rejected.
     """
     def execute(self, command: Command) -> Result:
         if command.operation == Operation.DISABLE:
-            if self.state == State.OCCUPIED:
+            # Bug: Allows DISABLE when state is RESERVED (in addition to AVAILABLE)
+            if self.state not in (State.AVAILABLE, State.RESERVED):
                 return Result(False, "cannot_disable")
-            # Bug: Allows DISABLE when state is RESERVED
             self.state = State.MAINTENANCE
             return Result(True, "disabled")
         return super().execute(command)
@@ -115,7 +118,7 @@ class Mutant7_MaintenanceWhenReserved(ParcelLocker):
 class Mutant8_EnableWhenNotMaintenance(ParcelLocker):
     """Mutant 8: Allows ENABLE operation when locker is not in MAINTENANCE.
 
-    Defect: Incorrectly allows returning to AVAILABLE from any state.
+    Defect: Omits the precondition check requiring the locker to be in MAINTENANCE before enabling.
     """
     def execute(self, command: Command) -> Result:
         if command.operation == Operation.ENABLE:
@@ -134,6 +137,8 @@ class Mutant9_DepositDuringMaintenance(ParcelLocker):
         if command.operation == Operation.DEPOSIT:
             if self.state not in (State.RESERVED, State.MAINTENANCE):
                 return Result(False, "not_reserved")
+            if self.state == State.RESERVED and command.code != self.reservation_code:
+                return Result(False, "invalid_reservation_code")
             # Bug: Allows deposit while in MAINTENANCE
             self.state = State.OCCUPIED
             self.retrieval_code = f"P-{self.customer_id}"

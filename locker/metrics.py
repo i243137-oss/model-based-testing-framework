@@ -11,14 +11,18 @@ ALL_STATES: Set[State] = {
     State.MAINTENANCE,
 }
 
-# 7 defined primary valid state-transition paths
-VALID_STATE_TRANSITIONS: Set[Tuple[State, Operation, State]] = {
+# Type aliases for clarity
+Transition = Tuple[State, Operation, State]
+TransitionPair = Tuple[Transition, Transition]
+
+# 7 defined primary valid state-transition paths in the Smart Parcel Locker
+VALID_STATE_TRANSITIONS: Set[Transition] = {
     (State.AVAILABLE, Operation.RESERVE, State.RESERVED),
+    (State.AVAILABLE, Operation.DISABLE, State.MAINTENANCE),
     (State.RESERVED, Operation.DEPOSIT, State.OCCUPIED),
-    (State.OCCUPIED, Operation.RETRIEVE, State.AVAILABLE),
     (State.RESERVED, Operation.CANCEL, State.AVAILABLE),
     (State.RESERVED, Operation.EXPIRE, State.AVAILABLE),
-    (State.AVAILABLE, Operation.DISABLE, State.MAINTENANCE),
+    (State.OCCUPIED, Operation.RETRIEVE, State.AVAILABLE),
     (State.MAINTENANCE, Operation.ENABLE, State.AVAILABLE),
 }
 
@@ -26,6 +30,35 @@ VALID_STATE_TRANSITIONS: Set[Tuple[State, Operation, State]] = {
 ALL_STATE_OPERATIONS: Set[Tuple[State, Operation]] = {
     (s, op) for s in ALL_STATES for op in Operation
 }
+
+
+def get_all_valid_transition_pairs() -> Set[TransitionPair]:
+    """Derive all valid, connected consecutive transition pairs (t1, t2)
+
+    where t1.target_state == t2.source_state according to the state machine.
+    """
+    pairs: Set[TransitionPair] = set()
+    for t1 in VALID_STATE_TRANSITIONS:
+        for t2 in VALID_STATE_TRANSITIONS:
+            if t1[2] == t2[0]:  # first_transition.target_state == second_transition.source_state
+                pairs.add((t1, t2))
+    return pairs
+
+
+# Pre-derived set of all valid connected transition pairs
+VALID_TRANSITION_PAIRS: Set[TransitionPair] = get_all_valid_transition_pairs()
+
+
+def is_valid_transition(transition: Any) -> bool:
+    """Check whether a transition is one of the valid state transitions."""
+    return transition in VALID_STATE_TRANSITIONS
+
+
+def is_valid_transition_pair(t1: Any, t2: Any) -> bool:
+    """Check whether (t1, t2) is a valid, connected transition pair in the state machine."""
+    if not (is_valid_transition(t1) and is_valid_transition(t2)):
+        return False
+    return t1[2] == t2[0]
 
 
 @dataclass
@@ -36,7 +69,7 @@ class CoverageReport:
     state_coverage_pct: float
 
     # Primary valid transition coverage
-    covered_valid_transitions: Set[Tuple[State, Operation, State]]
+    covered_valid_transitions: Set[Transition]
     total_valid_transitions: int
     valid_transition_coverage_pct: float
 
@@ -45,8 +78,8 @@ class CoverageReport:
     total_state_operations: int
     state_operation_coverage_pct: float
 
-    # Transition-pair coverage (consecutive operation pairs executed)
-    covered_transition_pairs: Set[Tuple[Operation, Operation]]
+    # Transition-pair coverage (connected consecutive valid transitions: t1.target == t2.source)
+    covered_transition_pairs: Set[TransitionPair]
     total_transition_pairs: int
     transition_pair_coverage_pct: float
 
@@ -68,22 +101,28 @@ class CoverageReport:
 
 
 def calculate_coverage(executed_traces: List[List[Tuple[State, Command, bool, State]]]) -> CoverageReport:
-    """Calculate state, transition, and transition-pair coverage from executed test traces.
+    """Calculate state, valid transition, state-operation, and transition-pair coverage
 
-    Each trace is a list of tuples: (from_state, command, accepted, to_state).
-    Explicit denominators are defined for each metric to guarantee academic transparency:
-    - State coverage denominator: 4 states.
-    - Valid transition denominator: 7 fundamental lifecycle transitions.
-    - State-Operation coverage denominator: 32 (4 states x 8 operations).
-    - Transition-pair coverage denominator: 64 possible consecutive operation pairs.
+    from executed test traces.
+
+    Each trace is a list of step tuples: (from_state, command, accepted, to_state).
+
+    Transition-pair coverage definition:
+    - An individual transition is represented as: (source_state, operation, target_state).
+    - A valid transition pair consists of two consecutive valid transitions (t1, t2) where
+      t1.target_state == t2.source_state.
+    - Invalid or rejected operations do not count as valid transitions and break the pair chain.
+    - Sequence boundaries reset the pair chain.
+    - Total possible transition pairs is derived from actual connected transitions in the
+      state machine (exactly 13 valid connected pairs).
     """
     visited_states: Set[State] = {State.AVAILABLE}  # Initial state is always visited
-    covered_valid_transitions: Set[Tuple[State, Operation, State]] = set()
+    covered_valid_transitions: Set[Transition] = set()
     covered_state_operations: Set[Tuple[State, Operation]] = set()
-    covered_transition_pairs: Set[Tuple[Operation, Operation]] = set()
+    covered_transition_pairs: Set[TransitionPair] = set()
 
     for trace in executed_traces:
-        prev_op: Optional[Operation] = None
+        prev_trans: Optional[Transition] = None
         for from_state, cmd, accepted, to_state in trace:
             visited_states.add(from_state)
             visited_states.add(to_state)
@@ -91,14 +130,20 @@ def calculate_coverage(executed_traces: List[List[Tuple[State, Command, bool, St
             op = cmd.operation
             covered_state_operations.add((from_state, op))
 
-            if accepted:
-                trans = (from_state, op, to_state)
-                if trans in VALID_STATE_TRANSITIONS:
-                    covered_valid_transitions.add(trans)
+            # Only accepted operations that correspond to valid state transitions count
+            if accepted and (from_state, op, to_state) in VALID_STATE_TRANSITIONS:
+                curr_trans: Transition = (from_state, op, to_state)
+                covered_valid_transitions.add(curr_trans)
 
-            if prev_op is not None:
-                covered_transition_pairs.add((prev_op, op))
-            prev_op = op
+                if prev_trans is not None and prev_trans[2] == curr_trans[0]:
+                    pair = (prev_trans, curr_trans)
+                    if pair in VALID_TRANSITION_PAIRS:
+                        covered_transition_pairs.add(pair)
+                prev_trans = curr_trans
+            else:
+                # Rejected or invalid operation: does not constitute a valid state transition
+                # and breaks consecutive transition pairing
+                prev_trans = None
 
     total_states = len(ALL_STATES)
     state_cov_pct = (len(visited_states) / total_states) * 100.0 if total_states else 0.0
@@ -109,7 +154,7 @@ def calculate_coverage(executed_traces: List[List[Tuple[State, Command, bool, St
     total_state_ops = len(ALL_STATE_OPERATIONS)
     state_ops_pct = (len(covered_state_operations) / total_state_ops) * 100.0 if total_state_ops else 0.0
 
-    total_pairs = len(Operation) * len(Operation)  # 8 x 8 = 64
+    total_pairs = len(VALID_TRANSITION_PAIRS)
     pair_cov_pct = (len(covered_transition_pairs) / total_pairs) * 100.0 if total_pairs else 0.0
 
     return CoverageReport(
@@ -154,10 +199,12 @@ def mutation_summary(mutant_results: Dict[str, Dict[str, Any]]) -> MutationSumma
     Expects mutant_results mapping mutant_name to a dictionary containing:
     - 'detected': bool
     - 'equivalent': bool (optional, default False)
-    - 'first_failing_test': str (optional)
+    - 'killing_test': str (optional)
+    - 'divergence_reason': str (optional)
     - 'description': str (optional)
 
     Mutation Score = (Detected Mutants / Total Non-Equivalent Mutants) * 100.
+    Equivalent mutants are excluded from the denominator.
     """
     total = len(mutant_results)
     detected = 0

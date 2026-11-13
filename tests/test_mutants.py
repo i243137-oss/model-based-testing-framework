@@ -1,12 +1,26 @@
 import unittest
-from locker.mutants import ALL_MUTANTS
+from locker.mutants import ALL_MUTANTS, Mutant1_ReserveOccupied
 from locker.runner import SequenceRunner
-from locker.types import Command, Operation
+from locker.types import Command, Operation, State
+from locker.sut import ParcelLocker
 
 
 class TestMutants(unittest.TestCase):
-    def test_all_mutants_are_detectable(self):
-        # We craft specific targeted test sequences designed to expose each mutant defect
+    def test_mutant1_reserve_occupied_isolated_defect(self):
+        # Verify Mutant1 rejects reservation when in RESERVED (not allowing all invalid reserves)
+        m1 = Mutant1_ReserveOccupied()
+        m1.execute(Command(Operation.RESERVE, customer_id="C1"))
+        self.assertEqual(m1.snapshot().state, State.RESERVED)
+        res = m1.execute(Command(Operation.RESERVE, customer_id="C2"))
+        self.assertFalse(res.accepted, "Mutant1 must not allow reservation while in RESERVED state")
+
+        # But Mutant1 FAILS (improperly accepts) when in OCCUPIED state
+        m1.execute(Command(Operation.DEPOSIT, customer_id="C1", code="R-C1"))
+        self.assertEqual(m1.snapshot().state, State.OCCUPIED)
+        buggy_res = m1.execute(Command(Operation.RESERVE, customer_id="C3"))
+        self.assertTrue(buggy_res.accepted, "Mutant1 defect: should improperly accept RESERVE in OCCUPIED")
+
+    def test_all_mutants_are_detectable_by_runner(self):
         detecting_sequences = {
             "Mutant1_ReserveOccupied": [
                 Command(Operation.RESERVE, customer_id="C1"),

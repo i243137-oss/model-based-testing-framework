@@ -4,10 +4,10 @@
     "seed": 101,
     "num_sequences": 500,
     "max_length": 20,
-    "generation_time_sec": 0.022274599999946076,
-    "sut_execution_time_sec": 0.04026339999836637,
-    "mutation_execution_time_sec": 0.005234399999608286,
-    "total_time_sec": 0.06777239999792073,
+    "generation_time_sec": 0.10866540000279201,
+    "sut_execution_time_sec": 0.19591760000184877,
+    "mutation_execution_time_sec": 0.036685699997178745,
+    "total_time_sec": 0.3412687000018195,
     "sut_passed_tests": 500,
     "sut_failed_tests": 0,
     "coverage": {
@@ -20,8 +20,8 @@
       "state_operations_covered": 32,
       "total_state_operations": 32,
       "state_operation_coverage_pct": 100.0,
-      "transition_pairs_covered": 64,
-      "total_transition_pairs": 64,
+      "transition_pairs_covered": 13,
+      "total_transition_pairs": 13,
       "transition_pair_coverage_pct": 100.0
     },
     "mutation": {
@@ -34,36 +34,36 @@
         "Mutant1_ReserveOccupied": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "RandomWalk_S101_T6",
-          "divergence_reason": "Result divergence at step 2 (Operation.RESERVE): expected Result(accepted=False, message='locker_not_available'), got Result(accepted=True, message='reserved')",
+          "killing_test": "RandomWalk_S101_T11",
+          "divergence_reason": "Result divergence at step 14 (Operation.RESERVE): expected Result(accepted=False, message='locker_not_available'), got Result(accepted=True, message='reserved')",
           "description": "Allows reserving compartment when it is already OCCUPIED."
         },
         "Mutant2_AcceptWrongReservationCode": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "RandomWalk_S101_T2",
-          "divergence_reason": "Result divergence at step 5 (Operation.DEPOSIT): expected Result(accepted=False, message='invalid_reservation_code'), got Result(accepted=True, message='deposited')",
+          "killing_test": "RandomWalk_S101_T12",
+          "divergence_reason": "Result divergence at step 8 (Operation.DEPOSIT): expected Result(accepted=False, message='invalid_reservation_code'), got Result(accepted=True, message='deposited')",
           "description": "Accepts incorrect reservation code during parcel deposit."
         },
         "Mutant3_RetrieveWithoutAuth": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "RandomWalk_S101_T17",
-          "divergence_reason": "Result divergence at step 9 (Operation.RETRIEVE): expected Result(accepted=False, message='invalid_retrieval_code'), got Result(accepted=True, message='retrieved')",
+          "killing_test": "RandomWalk_S101_T4",
+          "divergence_reason": "Result divergence at step 15 (Operation.RETRIEVE): expected Result(accepted=False, message='invalid_retrieval_code'), got Result(accepted=True, message='retrieved')",
           "description": "Allows parcel retrieval without valid authentication PIN."
         },
         "Mutant4_DoubleRetrieve": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "RandomWalk_S101_T17",
-          "divergence_reason": "Snapshot divergence at step 13 (Operation.RETRIEVE): expected Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C1', reservation_code='R-C1', retrieval_code='P-C1')",
+          "killing_test": "RandomWalk_S101_T32",
+          "divergence_reason": "Snapshot divergence at step 14 (Operation.RETRIEVE): expected Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C3', reservation_code='R-C3', retrieval_code='P-C3')",
           "description": "Fails to clear compartment upon retrieval, allowing duplicate retrieval."
         },
         "Mutant5_ExpireWhenNotExpired": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "RandomWalk_S101_T18",
-          "divergence_reason": "Result divergence at step 8 (Operation.EXPIRE): expected Result(accepted=False, message='not_expired'), got Result(accepted=True, message='expired')",
+          "killing_test": "RandomWalk_S101_T13",
+          "divergence_reason": "Result divergence at step 5 (Operation.EXPIRE): expected Result(accepted=False, message='not_expired'), got Result(accepted=True, message='expired')",
           "description": "Prematurely expires reservation when explicit expired flag is False."
         },
         "Mutant6_CancelRetainsCredentials": {
@@ -76,8 +76,8 @@
         "Mutant7_MaintenanceWhenReserved": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "RandomWalk_S101_T1",
-          "divergence_reason": "Result divergence at step 18 (Operation.DISABLE): expected Result(accepted=False, message='cannot_disable'), got Result(accepted=True, message='disabled')",
+          "killing_test": "RandomWalk_S101_T2",
+          "divergence_reason": "Result divergence at step 2 (Operation.DISABLE): expected Result(accepted=False, message='cannot_disable'), got Result(accepted=True, message='disabled')",
           "description": "Allows placing compartment into maintenance while reserved."
         },
         "Mutant8_EnableWhenNotMaintenance": {
@@ -90,15 +90,15 @@
         "Mutant9_DepositDuringMaintenance": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "RandomWalk_S101_T2",
-          "divergence_reason": "Result divergence at step 5 (Operation.DEPOSIT): expected Result(accepted=False, message='invalid_reservation_code'), got Result(accepted=True, message='deposited')",
+          "killing_test": "RandomWalk_S101_T3",
+          "divergence_reason": "Result divergence at step 19 (Operation.DEPOSIT): expected Result(accepted=False, message='not_reserved'), got Result(accepted=True, message='deposited')",
           "description": "Allows deposit into a compartment under maintenance."
         },
         "Mutant10_MutateOnInvalidDeposit": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "RandomWalk_S101_T2",
-          "divergence_reason": "Snapshot divergence at step 5 (Operation.DEPOSIT): expected Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C5', reservation_code='R-C5', retrieval_code=None), got Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C5', reservation_code='R-C5', retrieval_code='CORRUPTED_CODE')",
+          "killing_test": "RandomWalk_S101_T12",
+          "divergence_reason": "Snapshot divergence at step 8 (Operation.DEPOSIT): expected Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C4', reservation_code='R-C4', retrieval_code=None), got Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C4', reservation_code='R-C4', retrieval_code='CORRUPTED_CODE')",
           "description": "Mutates retrieval credential on rejected deposit attempt."
         }
       }
@@ -109,10 +109,10 @@
     "seed": 202,
     "num_sequences": 500,
     "max_length": 20,
-    "generation_time_sec": 0.023531200000434183,
-    "sut_execution_time_sec": 0.03826620000472758,
-    "mutation_execution_time_sec": 0.01019300000189105,
-    "total_time_sec": 0.07199040000705281,
+    "generation_time_sec": 0.1556503999963752,
+    "sut_execution_time_sec": 0.1936037999985274,
+    "mutation_execution_time_sec": 0.01969950000056997,
+    "total_time_sec": 0.36895369999547256,
     "sut_passed_tests": 500,
     "sut_failed_tests": 0,
     "coverage": {
@@ -125,8 +125,8 @@
       "state_operations_covered": 32,
       "total_state_operations": 32,
       "state_operation_coverage_pct": 100.0,
-      "transition_pairs_covered": 64,
-      "total_transition_pairs": 64,
+      "transition_pairs_covered": 13,
+      "total_transition_pairs": 13,
       "transition_pair_coverage_pct": 100.0
     },
     "mutation": {
@@ -139,71 +139,71 @@
         "Mutant1_ReserveOccupied": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "RandomWalk_S202_T19",
-          "divergence_reason": "Result divergence at step 9 (Operation.RESERVE): expected Result(accepted=False, message='locker_not_available'), got Result(accepted=True, message='reserved')",
+          "killing_test": "RandomWalk_S202_T6",
+          "divergence_reason": "Result divergence at step 14 (Operation.RESERVE): expected Result(accepted=False, message='locker_not_available'), got Result(accepted=True, message='reserved')",
           "description": "Allows reserving compartment when it is already OCCUPIED."
         },
         "Mutant2_AcceptWrongReservationCode": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "RandomWalk_S202_T13",
-          "divergence_reason": "Result divergence at step 8 (Operation.DEPOSIT): expected Result(accepted=False, message='invalid_reservation_code'), got Result(accepted=True, message='deposited')",
+          "killing_test": "RandomWalk_S202_T12",
+          "divergence_reason": "Result divergence at step 10 (Operation.DEPOSIT): expected Result(accepted=False, message='invalid_reservation_code'), got Result(accepted=True, message='deposited')",
           "description": "Accepts incorrect reservation code during parcel deposit."
         },
         "Mutant3_RetrieveWithoutAuth": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "RandomWalk_S202_T34",
-          "divergence_reason": "Result divergence at step 12 (Operation.RETRIEVE): expected Result(accepted=False, message='invalid_retrieval_code'), got Result(accepted=True, message='retrieved')",
+          "killing_test": "RandomWalk_S202_T6",
+          "divergence_reason": "Result divergence at step 5 (Operation.RETRIEVE): expected Result(accepted=False, message='invalid_retrieval_code'), got Result(accepted=True, message='retrieved')",
           "description": "Allows parcel retrieval without valid authentication PIN."
         },
         "Mutant4_DoubleRetrieve": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "RandomWalk_S202_T43",
-          "divergence_reason": "Snapshot divergence at step 8 (Operation.RETRIEVE): expected Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C2', reservation_code='R-C2', retrieval_code='P-C2')",
+          "killing_test": "RandomWalk_S202_T2",
+          "divergence_reason": "Snapshot divergence at step 7 (Operation.RETRIEVE): expected Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C2', reservation_code='R-C2', retrieval_code='P-C2')",
           "description": "Fails to clear compartment upon retrieval, allowing duplicate retrieval."
         },
         "Mutant5_ExpireWhenNotExpired": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "RandomWalk_S202_T13",
-          "divergence_reason": "Result divergence at step 3 (Operation.EXPIRE): expected Result(accepted=False, message='not_expired'), got Result(accepted=True, message='expired')",
+          "killing_test": "RandomWalk_S202_T5",
+          "divergence_reason": "Result divergence at step 18 (Operation.EXPIRE): expected Result(accepted=False, message='not_expired'), got Result(accepted=True, message='expired')",
           "description": "Prematurely expires reservation when explicit expired flag is False."
         },
         "Mutant6_CancelRetainsCredentials": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "RandomWalk_S202_T5",
-          "divergence_reason": "Snapshot divergence at step 2 (Operation.CANCEL): expected Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id='C2', reservation_code='R-C2', retrieval_code=None)",
+          "killing_test": "RandomWalk_S202_T2",
+          "divergence_reason": "Snapshot divergence at step 10 (Operation.CANCEL): expected Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id='C2', reservation_code='R-C2', retrieval_code=None)",
           "description": "Fails to clear customer and reservation credentials on cancel."
         },
         "Mutant7_MaintenanceWhenReserved": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "RandomWalk_S202_T2",
-          "divergence_reason": "Result divergence at step 3 (Operation.DISABLE): expected Result(accepted=False, message='cannot_disable'), got Result(accepted=True, message='disabled')",
+          "killing_test": "RandomWalk_S202_T11",
+          "divergence_reason": "Result divergence at step 5 (Operation.DISABLE): expected Result(accepted=False, message='cannot_disable'), got Result(accepted=True, message='disabled')",
           "description": "Allows placing compartment into maintenance while reserved."
         },
         "Mutant8_EnableWhenNotMaintenance": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "RandomWalk_S202_T5",
-          "divergence_reason": "Result divergence at step 1 (Operation.ENABLE): expected Result(accepted=False, message='not_in_maintenance'), got Result(accepted=True, message='enabled')",
+          "killing_test": "RandomWalk_S202_T1",
+          "divergence_reason": "Result divergence at step 0 (Operation.ENABLE): expected Result(accepted=False, message='not_in_maintenance'), got Result(accepted=True, message='enabled')",
           "description": "Allows enabling locker when it is not in maintenance."
         },
         "Mutant9_DepositDuringMaintenance": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "RandomWalk_S202_T13",
-          "divergence_reason": "Result divergence at step 8 (Operation.DEPOSIT): expected Result(accepted=False, message='invalid_reservation_code'), got Result(accepted=True, message='deposited')",
+          "killing_test": "RandomWalk_S202_T8",
+          "divergence_reason": "Result divergence at step 6 (Operation.DEPOSIT): expected Result(accepted=False, message='not_reserved'), got Result(accepted=True, message='deposited')",
           "description": "Allows deposit into a compartment under maintenance."
         },
         "Mutant10_MutateOnInvalidDeposit": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "RandomWalk_S202_T13",
-          "divergence_reason": "Snapshot divergence at step 8 (Operation.DEPOSIT): expected Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C5', reservation_code='R-C5', retrieval_code=None), got Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C5', reservation_code='R-C5', retrieval_code='CORRUPTED_CODE')",
+          "killing_test": "RandomWalk_S202_T12",
+          "divergence_reason": "Snapshot divergence at step 10 (Operation.DEPOSIT): expected Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C1', reservation_code='R-C1', retrieval_code=None), got Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C1', reservation_code='R-C1', retrieval_code='CORRUPTED_CODE')",
           "description": "Mutates retrieval credential on rejected deposit attempt."
         }
       }
@@ -214,10 +214,10 @@
     "seed": 303,
     "num_sequences": 500,
     "max_length": 20,
-    "generation_time_sec": 0.027083000000857282,
-    "sut_execution_time_sec": 0.049322400001983624,
-    "mutation_execution_time_sec": 0.017668599997705314,
-    "total_time_sec": 0.09407400000054622,
+    "generation_time_sec": 0.09473049999360228,
+    "sut_execution_time_sec": 0.15170930000022054,
+    "mutation_execution_time_sec": 0.011782000001403503,
+    "total_time_sec": 0.2582217999952263,
     "sut_passed_tests": 500,
     "sut_failed_tests": 0,
     "coverage": {
@@ -230,8 +230,8 @@
       "state_operations_covered": 32,
       "total_state_operations": 32,
       "state_operation_coverage_pct": 100.0,
-      "transition_pairs_covered": 64,
-      "total_transition_pairs": 64,
+      "transition_pairs_covered": 13,
+      "total_transition_pairs": 13,
       "transition_pair_coverage_pct": 100.0
     },
     "mutation": {
@@ -244,71 +244,71 @@
         "Mutant1_ReserveOccupied": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "RandomWalk_S303_T2",
-          "divergence_reason": "Result divergence at step 4 (Operation.RESERVE): expected Result(accepted=False, message='locker_not_available'), got Result(accepted=True, message='reserved')",
+          "killing_test": "RandomWalk_S303_T1",
+          "divergence_reason": "Result divergence at step 11 (Operation.RESERVE): expected Result(accepted=False, message='locker_not_available'), got Result(accepted=True, message='reserved')",
           "description": "Allows reserving compartment when it is already OCCUPIED."
         },
         "Mutant2_AcceptWrongReservationCode": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "RandomWalk_S303_T3",
-          "divergence_reason": "Result divergence at step 4 (Operation.DEPOSIT): expected Result(accepted=False, message='invalid_reservation_code'), got Result(accepted=True, message='deposited')",
+          "killing_test": "RandomWalk_S303_T14",
+          "divergence_reason": "Result divergence at step 15 (Operation.DEPOSIT): expected Result(accepted=False, message='invalid_reservation_code'), got Result(accepted=True, message='deposited')",
           "description": "Accepts incorrect reservation code during parcel deposit."
         },
         "Mutant3_RetrieveWithoutAuth": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "RandomWalk_S303_T130",
-          "divergence_reason": "Result divergence at step 13 (Operation.RETRIEVE): expected Result(accepted=False, message='invalid_retrieval_code'), got Result(accepted=True, message='retrieved')",
+          "killing_test": "RandomWalk_S303_T1",
+          "divergence_reason": "Result divergence at step 16 (Operation.RETRIEVE): expected Result(accepted=False, message='invalid_retrieval_code'), got Result(accepted=True, message='retrieved')",
           "description": "Allows parcel retrieval without valid authentication PIN."
         },
         "Mutant4_DoubleRetrieve": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "RandomWalk_S303_T35",
-          "divergence_reason": "Snapshot divergence at step 10 (Operation.RETRIEVE): expected Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C3', reservation_code='R-C3', retrieval_code='P-C3')",
+          "killing_test": "RandomWalk_S303_T5",
+          "divergence_reason": "Snapshot divergence at step 14 (Operation.RETRIEVE): expected Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C1', reservation_code='R-C1', retrieval_code='P-C1')",
           "description": "Fails to clear compartment upon retrieval, allowing duplicate retrieval."
         },
         "Mutant5_ExpireWhenNotExpired": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "RandomWalk_S303_T11",
-          "divergence_reason": "Result divergence at step 7 (Operation.EXPIRE): expected Result(accepted=False, message='not_expired'), got Result(accepted=True, message='expired')",
+          "killing_test": "RandomWalk_S303_T3",
+          "divergence_reason": "Result divergence at step 2 (Operation.EXPIRE): expected Result(accepted=False, message='not_expired'), got Result(accepted=True, message='expired')",
           "description": "Prematurely expires reservation when explicit expired flag is False."
         },
         "Mutant6_CancelRetainsCredentials": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "RandomWalk_S303_T4",
-          "divergence_reason": "Snapshot divergence at step 5 (Operation.CANCEL): expected Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id='C5', reservation_code='R-C5', retrieval_code=None)",
+          "killing_test": "RandomWalk_S303_T1",
+          "divergence_reason": "Snapshot divergence at step 1 (Operation.CANCEL): expected Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id='C2', reservation_code='R-C2', retrieval_code=None)",
           "description": "Fails to clear customer and reservation credentials on cancel."
         },
         "Mutant7_MaintenanceWhenReserved": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "RandomWalk_S303_T5",
-          "divergence_reason": "Result divergence at step 6 (Operation.DISABLE): expected Result(accepted=False, message='cannot_disable'), got Result(accepted=True, message='disabled')",
+          "killing_test": "RandomWalk_S303_T3",
+          "divergence_reason": "Result divergence at step 5 (Operation.DISABLE): expected Result(accepted=False, message='cannot_disable'), got Result(accepted=True, message='disabled')",
           "description": "Allows placing compartment into maintenance while reserved."
         },
         "Mutant8_EnableWhenNotMaintenance": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "RandomWalk_S303_T2",
-          "divergence_reason": "Result divergence at step 0 (Operation.ENABLE): expected Result(accepted=False, message='not_in_maintenance'), got Result(accepted=True, message='enabled')",
+          "killing_test": "RandomWalk_S303_T1",
+          "divergence_reason": "Result divergence at step 5 (Operation.ENABLE): expected Result(accepted=False, message='not_in_maintenance'), got Result(accepted=True, message='enabled')",
           "description": "Allows enabling locker when it is not in maintenance."
         },
         "Mutant9_DepositDuringMaintenance": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "RandomWalk_S303_T3",
-          "divergence_reason": "Result divergence at step 4 (Operation.DEPOSIT): expected Result(accepted=False, message='invalid_reservation_code'), got Result(accepted=True, message='deposited')",
+          "killing_test": "RandomWalk_S303_T2",
+          "divergence_reason": "Result divergence at step 12 (Operation.DEPOSIT): expected Result(accepted=False, message='not_reserved'), got Result(accepted=True, message='deposited')",
           "description": "Allows deposit into a compartment under maintenance."
         },
         "Mutant10_MutateOnInvalidDeposit": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "RandomWalk_S303_T3",
-          "divergence_reason": "Snapshot divergence at step 4 (Operation.DEPOSIT): expected Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C3', reservation_code='R-C3', retrieval_code=None), got Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C3', reservation_code='R-C3', retrieval_code='CORRUPTED_CODE')",
+          "killing_test": "RandomWalk_S303_T14",
+          "divergence_reason": "Snapshot divergence at step 15 (Operation.DEPOSIT): expected Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C1', reservation_code='R-C1', retrieval_code=None), got Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C1', reservation_code='R-C1', retrieval_code='CORRUPTED_CODE')",
           "description": "Mutates retrieval credential on rejected deposit attempt."
         }
       }
@@ -319,10 +319,10 @@
     "seed": 404,
     "num_sequences": 500,
     "max_length": 20,
-    "generation_time_sec": 0.04006170000502607,
-    "sut_execution_time_sec": 0.07340269999986049,
-    "mutation_execution_time_sec": 0.007409300000290386,
-    "total_time_sec": 0.12087370000517694,
+    "generation_time_sec": 0.09960719999799039,
+    "sut_execution_time_sec": 0.1717373999999836,
+    "mutation_execution_time_sec": 0.0465875000008964,
+    "total_time_sec": 0.3179320999988704,
     "sut_passed_tests": 500,
     "sut_failed_tests": 0,
     "coverage": {
@@ -335,8 +335,8 @@
       "state_operations_covered": 32,
       "total_state_operations": 32,
       "state_operation_coverage_pct": 100.0,
-      "transition_pairs_covered": 64,
-      "total_transition_pairs": 64,
+      "transition_pairs_covered": 13,
+      "total_transition_pairs": 13,
       "transition_pair_coverage_pct": 100.0
     },
     "mutation": {
@@ -349,71 +349,71 @@
         "Mutant1_ReserveOccupied": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "RandomWalk_S404_T7",
-          "divergence_reason": "Result divergence at step 5 (Operation.RESERVE): expected Result(accepted=False, message='locker_not_available'), got Result(accepted=True, message='reserved')",
+          "killing_test": "RandomWalk_S404_T36",
+          "divergence_reason": "Result divergence at step 10 (Operation.RESERVE): expected Result(accepted=False, message='locker_not_available'), got Result(accepted=True, message='reserved')",
           "description": "Allows reserving compartment when it is already OCCUPIED."
         },
         "Mutant2_AcceptWrongReservationCode": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "RandomWalk_S404_T8",
-          "divergence_reason": "Result divergence at step 9 (Operation.DEPOSIT): expected Result(accepted=False, message='invalid_reservation_code'), got Result(accepted=True, message='deposited')",
+          "killing_test": "RandomWalk_S404_T3",
+          "divergence_reason": "Result divergence at step 15 (Operation.DEPOSIT): expected Result(accepted=False, message='invalid_reservation_code'), got Result(accepted=True, message='deposited')",
           "description": "Accepts incorrect reservation code during parcel deposit."
         },
         "Mutant3_RetrieveWithoutAuth": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "RandomWalk_S404_T12",
-          "divergence_reason": "Result divergence at step 9 (Operation.RETRIEVE): expected Result(accepted=False, message='invalid_retrieval_code'), got Result(accepted=True, message='retrieved')",
+          "killing_test": "RandomWalk_S404_T80",
+          "divergence_reason": "Result divergence at step 17 (Operation.RETRIEVE): expected Result(accepted=False, message='invalid_retrieval_code'), got Result(accepted=True, message='retrieved')",
           "description": "Allows parcel retrieval without valid authentication PIN."
         },
         "Mutant4_DoubleRetrieve": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "RandomWalk_S404_T9",
-          "divergence_reason": "Snapshot divergence at step 4 (Operation.RETRIEVE): expected Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C2', reservation_code='R-C2', retrieval_code='P-C2')",
+          "killing_test": "RandomWalk_S404_T1",
+          "divergence_reason": "Snapshot divergence at step 14 (Operation.RETRIEVE): expected Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C5', reservation_code='R-C5', retrieval_code='P-C5')",
           "description": "Fails to clear compartment upon retrieval, allowing duplicate retrieval."
         },
         "Mutant5_ExpireWhenNotExpired": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "RandomWalk_S404_T8",
-          "divergence_reason": "Result divergence at step 12 (Operation.EXPIRE): expected Result(accepted=False, message='not_expired'), got Result(accepted=True, message='expired')",
+          "killing_test": "RandomWalk_S404_T3",
+          "divergence_reason": "Result divergence at step 18 (Operation.EXPIRE): expected Result(accepted=False, message='not_expired'), got Result(accepted=True, message='expired')",
           "description": "Prematurely expires reservation when explicit expired flag is False."
         },
         "Mutant6_CancelRetainsCredentials": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "RandomWalk_S404_T7",
-          "divergence_reason": "Snapshot divergence at step 7 (Operation.CANCEL): expected Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id='C1', reservation_code='R-C1', retrieval_code=None)",
+          "killing_test": "RandomWalk_S404_T3",
+          "divergence_reason": "Snapshot divergence at step 3 (Operation.CANCEL): expected Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id='C5', reservation_code='R-C5', retrieval_code=None)",
           "description": "Fails to clear customer and reservation credentials on cancel."
         },
         "Mutant7_MaintenanceWhenReserved": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "RandomWalk_S404_T7",
-          "divergence_reason": "Result divergence at step 1 (Operation.DISABLE): expected Result(accepted=False, message='cannot_disable'), got Result(accepted=True, message='disabled')",
+          "killing_test": "RandomWalk_S404_T5",
+          "divergence_reason": "Result divergence at step 2 (Operation.DISABLE): expected Result(accepted=False, message='cannot_disable'), got Result(accepted=True, message='disabled')",
           "description": "Allows placing compartment into maintenance while reserved."
         },
         "Mutant8_EnableWhenNotMaintenance": {
           "detected": true,
           "equivalent": false,
           "killing_test": "RandomWalk_S404_T1",
-          "divergence_reason": "Result divergence at step 0 (Operation.ENABLE): expected Result(accepted=False, message='not_in_maintenance'), got Result(accepted=True, message='enabled')",
+          "divergence_reason": "Result divergence at step 19 (Operation.ENABLE): expected Result(accepted=False, message='not_in_maintenance'), got Result(accepted=True, message='enabled')",
           "description": "Allows enabling locker when it is not in maintenance."
         },
         "Mutant9_DepositDuringMaintenance": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "RandomWalk_S404_T8",
-          "divergence_reason": "Result divergence at step 9 (Operation.DEPOSIT): expected Result(accepted=False, message='invalid_reservation_code'), got Result(accepted=True, message='deposited')",
+          "killing_test": "RandomWalk_S404_T1",
+          "divergence_reason": "Result divergence at step 5 (Operation.DEPOSIT): expected Result(accepted=False, message='not_reserved'), got Result(accepted=True, message='deposited')",
           "description": "Allows deposit into a compartment under maintenance."
         },
         "Mutant10_MutateOnInvalidDeposit": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "RandomWalk_S404_T8",
-          "divergence_reason": "Snapshot divergence at step 9 (Operation.DEPOSIT): expected Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C4', reservation_code='R-C4', retrieval_code=None), got Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C4', reservation_code='R-C4', retrieval_code='CORRUPTED_CODE')",
+          "killing_test": "RandomWalk_S404_T3",
+          "divergence_reason": "Snapshot divergence at step 15 (Operation.DEPOSIT): expected Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C4', reservation_code='R-C4', retrieval_code=None), got Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C4', reservation_code='R-C4', retrieval_code='CORRUPTED_CODE')",
           "description": "Mutates retrieval credential on rejected deposit attempt."
         }
       }
@@ -424,10 +424,10 @@
     "seed": 505,
     "num_sequences": 500,
     "max_length": 20,
-    "generation_time_sec": 0.03653649999614572,
-    "sut_execution_time_sec": 0.08484940000198549,
-    "mutation_execution_time_sec": 0.02079490000323858,
-    "total_time_sec": 0.1421808000013698,
+    "generation_time_sec": 0.08243139999831328,
+    "sut_execution_time_sec": 0.14544849999947473,
+    "mutation_execution_time_sec": 0.029456399999617133,
+    "total_time_sec": 0.25733629999740515,
     "sut_passed_tests": 500,
     "sut_failed_tests": 0,
     "coverage": {
@@ -440,8 +440,8 @@
       "state_operations_covered": 32,
       "total_state_operations": 32,
       "state_operation_coverage_pct": 100.0,
-      "transition_pairs_covered": 64,
-      "total_transition_pairs": 64,
+      "transition_pairs_covered": 13,
+      "total_transition_pairs": 13,
       "transition_pair_coverage_pct": 100.0
     },
     "mutation": {
@@ -454,71 +454,71 @@
         "Mutant1_ReserveOccupied": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "RandomWalk_S505_T11",
+          "killing_test": "RandomWalk_S505_T8",
           "divergence_reason": "Result divergence at step 7 (Operation.RESERVE): expected Result(accepted=False, message='locker_not_available'), got Result(accepted=True, message='reserved')",
           "description": "Allows reserving compartment when it is already OCCUPIED."
         },
         "Mutant2_AcceptWrongReservationCode": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "RandomWalk_S505_T13",
-          "divergence_reason": "Result divergence at step 11 (Operation.DEPOSIT): expected Result(accepted=False, message='invalid_reservation_code'), got Result(accepted=True, message='deposited')",
+          "killing_test": "RandomWalk_S505_T7",
+          "divergence_reason": "Result divergence at step 13 (Operation.DEPOSIT): expected Result(accepted=False, message='invalid_reservation_code'), got Result(accepted=True, message='deposited')",
           "description": "Accepts incorrect reservation code during parcel deposit."
         },
         "Mutant3_RetrieveWithoutAuth": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "RandomWalk_S505_T11",
-          "divergence_reason": "Result divergence at step 14 (Operation.RETRIEVE): expected Result(accepted=False, message='invalid_retrieval_code'), got Result(accepted=True, message='retrieved')",
+          "killing_test": "RandomWalk_S505_T31",
+          "divergence_reason": "Result divergence at step 6 (Operation.RETRIEVE): expected Result(accepted=False, message='invalid_retrieval_code'), got Result(accepted=True, message='retrieved')",
           "description": "Allows parcel retrieval without valid authentication PIN."
         },
         "Mutant4_DoubleRetrieve": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "RandomWalk_S505_T30",
-          "divergence_reason": "Snapshot divergence at step 4 (Operation.RETRIEVE): expected Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C5', reservation_code='R-C5', retrieval_code='P-C5')",
+          "killing_test": "RandomWalk_S505_T8",
+          "divergence_reason": "Snapshot divergence at step 14 (Operation.RETRIEVE): expected Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C2', reservation_code='R-C2', retrieval_code='P-C2')",
           "description": "Fails to clear compartment upon retrieval, allowing duplicate retrieval."
         },
         "Mutant5_ExpireWhenNotExpired": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "RandomWalk_S505_T18",
-          "divergence_reason": "Result divergence at step 2 (Operation.EXPIRE): expected Result(accepted=False, message='not_expired'), got Result(accepted=True, message='expired')",
+          "killing_test": "RandomWalk_S505_T22",
+          "divergence_reason": "Result divergence at step 5 (Operation.EXPIRE): expected Result(accepted=False, message='not_expired'), got Result(accepted=True, message='expired')",
           "description": "Prematurely expires reservation when explicit expired flag is False."
         },
         "Mutant6_CancelRetainsCredentials": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "RandomWalk_S505_T4",
-          "divergence_reason": "Snapshot divergence at step 5 (Operation.CANCEL): expected Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id='C4', reservation_code='R-C4', retrieval_code=None)",
+          "killing_test": "RandomWalk_S505_T3",
+          "divergence_reason": "Snapshot divergence at step 5 (Operation.CANCEL): expected Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id='C1', reservation_code='R-C1', retrieval_code=None)",
           "description": "Fails to clear customer and reservation credentials on cancel."
         },
         "Mutant7_MaintenanceWhenReserved": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "RandomWalk_S505_T1",
-          "divergence_reason": "Result divergence at step 2 (Operation.DISABLE): expected Result(accepted=False, message='cannot_disable'), got Result(accepted=True, message='disabled')",
+          "killing_test": "RandomWalk_S505_T3",
+          "divergence_reason": "Result divergence at step 4 (Operation.DISABLE): expected Result(accepted=False, message='cannot_disable'), got Result(accepted=True, message='disabled')",
           "description": "Allows placing compartment into maintenance while reserved."
         },
         "Mutant8_EnableWhenNotMaintenance": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "RandomWalk_S505_T2",
-          "divergence_reason": "Result divergence at step 3 (Operation.ENABLE): expected Result(accepted=False, message='not_in_maintenance'), got Result(accepted=True, message='enabled')",
+          "killing_test": "RandomWalk_S505_T1",
+          "divergence_reason": "Result divergence at step 11 (Operation.ENABLE): expected Result(accepted=False, message='not_in_maintenance'), got Result(accepted=True, message='enabled')",
           "description": "Allows enabling locker when it is not in maintenance."
         },
         "Mutant9_DepositDuringMaintenance": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "RandomWalk_S505_T3",
-          "divergence_reason": "Result divergence at step 12 (Operation.DEPOSIT): expected Result(accepted=False, message='not_reserved'), got Result(accepted=True, message='deposited')",
+          "killing_test": "RandomWalk_S505_T2",
+          "divergence_reason": "Result divergence at step 5 (Operation.DEPOSIT): expected Result(accepted=False, message='not_reserved'), got Result(accepted=True, message='deposited')",
           "description": "Allows deposit into a compartment under maintenance."
         },
         "Mutant10_MutateOnInvalidDeposit": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "RandomWalk_S505_T13",
-          "divergence_reason": "Snapshot divergence at step 11 (Operation.DEPOSIT): expected Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C3', reservation_code='R-C3', retrieval_code=None), got Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C3', reservation_code='R-C3', retrieval_code='CORRUPTED_CODE')",
+          "killing_test": "RandomWalk_S505_T7",
+          "divergence_reason": "Snapshot divergence at step 13 (Operation.DEPOSIT): expected Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C3', reservation_code='R-C3', retrieval_code=None), got Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C3', reservation_code='R-C3', retrieval_code='CORRUPTED_CODE')",
           "description": "Mutates retrieval credential on rejected deposit attempt."
         }
       }
@@ -529,10 +529,10 @@
     "seed": 101,
     "num_sequences": 500,
     "max_length": 20,
-    "generation_time_sec": 0.6790495999957784,
-    "sut_execution_time_sec": 0.06136129999504192,
-    "mutation_execution_time_sec": 0.0025788000057218596,
-    "total_time_sec": 0.7429896999965422,
+    "generation_time_sec": 2.1249850999956834,
+    "sut_execution_time_sec": 0.24071189999813214,
+    "mutation_execution_time_sec": 0.010506300000997726,
+    "total_time_sec": 2.3762032999948133,
     "sut_passed_tests": 500,
     "sut_failed_tests": 0,
     "coverage": {
@@ -545,9 +545,9 @@
       "state_operations_covered": 32,
       "total_state_operations": 32,
       "state_operation_coverage_pct": 100.0,
-      "transition_pairs_covered": 64,
-      "total_transition_pairs": 64,
-      "transition_pair_coverage_pct": 100.0
+      "transition_pairs_covered": 8,
+      "total_transition_pairs": 13,
+      "transition_pair_coverage_pct": 61.54
     },
     "mutation": {
       "total_mutants": 10,
@@ -559,8 +559,8 @@
         "Mutant1_ReserveOccupied": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "CoverageGuided_S101_T1",
-          "divergence_reason": "Result divergence at step 18 (Operation.RESERVE): expected Result(accepted=False, message='locker_not_available'), got Result(accepted=True, message='reserved')",
+          "killing_test": "CoverageGuided_S101_T5",
+          "divergence_reason": "Result divergence at step 7 (Operation.RESERVE): expected Result(accepted=False, message='locker_not_available'), got Result(accepted=True, message='reserved')",
           "description": "Allows reserving compartment when it is already OCCUPIED."
         },
         "Mutant2_AcceptWrongReservationCode": {
@@ -573,8 +573,8 @@
         "Mutant3_RetrieveWithoutAuth": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "CoverageGuided_S101_T3",
-          "divergence_reason": "Result divergence at step 15 (Operation.RETRIEVE): expected Result(accepted=False, message='invalid_retrieval_code'), got Result(accepted=True, message='retrieved')",
+          "killing_test": "CoverageGuided_S101_T2",
+          "divergence_reason": "Result divergence at step 18 (Operation.RETRIEVE): expected Result(accepted=False, message='invalid_retrieval_code'), got Result(accepted=True, message='retrieved')",
           "description": "Allows parcel retrieval without valid authentication PIN."
         },
         "Mutant4_DoubleRetrieve": {
@@ -587,22 +587,22 @@
         "Mutant5_ExpireWhenNotExpired": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "CoverageGuided_S101_T3",
-          "divergence_reason": "Result divergence at step 8 (Operation.EXPIRE): expected Result(accepted=False, message='not_expired'), got Result(accepted=True, message='expired')",
+          "killing_test": "CoverageGuided_S101_T2",
+          "divergence_reason": "Result divergence at step 16 (Operation.EXPIRE): expected Result(accepted=False, message='not_expired'), got Result(accepted=True, message='expired')",
           "description": "Prematurely expires reservation when explicit expired flag is False."
         },
         "Mutant6_CancelRetainsCredentials": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "CoverageGuided_S101_T4",
-          "divergence_reason": "Snapshot divergence at step 12 (Operation.CANCEL): expected Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id='C3', reservation_code='R-C3', retrieval_code=None)",
+          "killing_test": "CoverageGuided_S101_T3",
+          "divergence_reason": "Snapshot divergence at step 15 (Operation.CANCEL): expected Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id='C1', reservation_code='R-C1', retrieval_code=None)",
           "description": "Fails to clear customer and reservation credentials on cancel."
         },
         "Mutant7_MaintenanceWhenReserved": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "CoverageGuided_S101_T2",
-          "divergence_reason": "Result divergence at step 3 (Operation.DISABLE): expected Result(accepted=False, message='cannot_disable'), got Result(accepted=True, message='disabled')",
+          "killing_test": "CoverageGuided_S101_T1",
+          "divergence_reason": "Result divergence at step 19 (Operation.DISABLE): expected Result(accepted=False, message='cannot_disable'), got Result(accepted=True, message='disabled')",
           "description": "Allows placing compartment into maintenance while reserved."
         },
         "Mutant8_EnableWhenNotMaintenance": {
@@ -615,8 +615,8 @@
         "Mutant9_DepositDuringMaintenance": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "CoverageGuided_S101_T1",
-          "divergence_reason": "Result divergence at step 16 (Operation.DEPOSIT): expected Result(accepted=False, message='invalid_reservation_code'), got Result(accepted=True, message='deposited')",
+          "killing_test": "CoverageGuided_S101_T2",
+          "divergence_reason": "Result divergence at step 1 (Operation.DEPOSIT): expected Result(accepted=False, message='not_reserved'), got Result(accepted=True, message='deposited')",
           "description": "Allows deposit into a compartment under maintenance."
         },
         "Mutant10_MutateOnInvalidDeposit": {
@@ -634,10 +634,10 @@
     "seed": 202,
     "num_sequences": 500,
     "max_length": 20,
-    "generation_time_sec": 0.6336921999973129,
-    "sut_execution_time_sec": 0.07880869999644347,
-    "mutation_execution_time_sec": 0.0019555999970179982,
-    "total_time_sec": 0.7144564999907743,
+    "generation_time_sec": 2.1153086999984225,
+    "sut_execution_time_sec": 0.18976259999908507,
+    "mutation_execution_time_sec": 0.005816700002469588,
+    "total_time_sec": 2.310887999999977,
     "sut_passed_tests": 500,
     "sut_failed_tests": 0,
     "coverage": {
@@ -650,9 +650,9 @@
       "state_operations_covered": 32,
       "total_state_operations": 32,
       "state_operation_coverage_pct": 100.0,
-      "transition_pairs_covered": 64,
-      "total_transition_pairs": 64,
-      "transition_pair_coverage_pct": 100.0
+      "transition_pairs_covered": 9,
+      "total_transition_pairs": 13,
+      "transition_pair_coverage_pct": 69.23
     },
     "mutation": {
       "total_mutants": 10,
@@ -664,15 +664,15 @@
         "Mutant1_ReserveOccupied": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "CoverageGuided_S202_T1",
-          "divergence_reason": "Result divergence at step 15 (Operation.RESERVE): expected Result(accepted=False, message='locker_not_available'), got Result(accepted=True, message='reserved')",
+          "killing_test": "CoverageGuided_S202_T5",
+          "divergence_reason": "Result divergence at step 2 (Operation.RESERVE): expected Result(accepted=False, message='locker_not_available'), got Result(accepted=True, message='reserved')",
           "description": "Allows reserving compartment when it is already OCCUPIED."
         },
         "Mutant2_AcceptWrongReservationCode": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "CoverageGuided_S202_T3",
-          "divergence_reason": "Result divergence at step 4 (Operation.DEPOSIT): expected Result(accepted=False, message='invalid_reservation_code'), got Result(accepted=True, message='deposited')",
+          "killing_test": "CoverageGuided_S202_T2",
+          "divergence_reason": "Result divergence at step 16 (Operation.DEPOSIT): expected Result(accepted=False, message='invalid_reservation_code'), got Result(accepted=True, message='deposited')",
           "description": "Accepts incorrect reservation code during parcel deposit."
         },
         "Mutant3_RetrieveWithoutAuth": {
@@ -692,22 +692,22 @@
         "Mutant5_ExpireWhenNotExpired": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "CoverageGuided_S202_T3",
-          "divergence_reason": "Result divergence at step 8 (Operation.EXPIRE): expected Result(accepted=False, message='not_expired'), got Result(accepted=True, message='expired')",
+          "killing_test": "CoverageGuided_S202_T1",
+          "divergence_reason": "Result divergence at step 18 (Operation.EXPIRE): expected Result(accepted=False, message='not_expired'), got Result(accepted=True, message='expired')",
           "description": "Prematurely expires reservation when explicit expired flag is False."
         },
         "Mutant6_CancelRetainsCredentials": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "CoverageGuided_S202_T7",
-          "divergence_reason": "Snapshot divergence at step 10 (Operation.CANCEL): expected Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id='C3', reservation_code='R-C3', retrieval_code=None)",
+          "killing_test": "CoverageGuided_S202_T4",
+          "divergence_reason": "Snapshot divergence at step 4 (Operation.CANCEL): expected Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id='C1', reservation_code='R-C1', retrieval_code=None)",
           "description": "Fails to clear customer and reservation credentials on cancel."
         },
         "Mutant7_MaintenanceWhenReserved": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "CoverageGuided_S202_T2",
-          "divergence_reason": "Result divergence at step 2 (Operation.DISABLE): expected Result(accepted=False, message='cannot_disable'), got Result(accepted=True, message='disabled')",
+          "killing_test": "CoverageGuided_S202_T1",
+          "divergence_reason": "Result divergence at step 17 (Operation.DISABLE): expected Result(accepted=False, message='cannot_disable'), got Result(accepted=True, message='disabled')",
           "description": "Allows placing compartment into maintenance while reserved."
         },
         "Mutant8_EnableWhenNotMaintenance": {
@@ -721,14 +721,14 @@
           "detected": true,
           "equivalent": false,
           "killing_test": "CoverageGuided_S202_T2",
-          "divergence_reason": "Result divergence at step 5 (Operation.DEPOSIT): expected Result(accepted=False, message='not_reserved'), got Result(accepted=True, message='deposited')",
+          "divergence_reason": "Result divergence at step 6 (Operation.DEPOSIT): expected Result(accepted=False, message='not_reserved'), got Result(accepted=True, message='deposited')",
           "description": "Allows deposit into a compartment under maintenance."
         },
         "Mutant10_MutateOnInvalidDeposit": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "CoverageGuided_S202_T3",
-          "divergence_reason": "Snapshot divergence at step 4 (Operation.DEPOSIT): expected Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C1', reservation_code='R-C1', retrieval_code=None), got Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C1', reservation_code='R-C1', retrieval_code='CORRUPTED_CODE')",
+          "killing_test": "CoverageGuided_S202_T2",
+          "divergence_reason": "Snapshot divergence at step 16 (Operation.DEPOSIT): expected Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C2', reservation_code='R-C2', retrieval_code=None), got Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C2', reservation_code='R-C2', retrieval_code='CORRUPTED_CODE')",
           "description": "Mutates retrieval credential on rejected deposit attempt."
         }
       }
@@ -739,10 +739,10 @@
     "seed": 303,
     "num_sequences": 500,
     "max_length": 20,
-    "generation_time_sec": 0.6006827999954112,
-    "sut_execution_time_sec": 0.056515600001148414,
-    "mutation_execution_time_sec": 0.001834000002418179,
-    "total_time_sec": 0.6590323999989778,
+    "generation_time_sec": 1.8507343000019318,
+    "sut_execution_time_sec": 0.2917477000009967,
+    "mutation_execution_time_sec": 0.011801699998613913,
+    "total_time_sec": 2.1542837000015425,
     "sut_passed_tests": 500,
     "sut_failed_tests": 0,
     "coverage": {
@@ -755,9 +755,9 @@
       "state_operations_covered": 32,
       "total_state_operations": 32,
       "state_operation_coverage_pct": 100.0,
-      "transition_pairs_covered": 64,
-      "total_transition_pairs": 64,
-      "transition_pair_coverage_pct": 100.0
+      "transition_pairs_covered": 8,
+      "total_transition_pairs": 13,
+      "transition_pair_coverage_pct": 61.54
     },
     "mutation": {
       "total_mutants": 10,
@@ -769,22 +769,22 @@
         "Mutant1_ReserveOccupied": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "CoverageGuided_S303_T2",
-          "divergence_reason": "Result divergence at step 9 (Operation.RESERVE): expected Result(accepted=False, message='locker_not_available'), got Result(accepted=True, message='reserved')",
+          "killing_test": "CoverageGuided_S303_T5",
+          "divergence_reason": "Result divergence at step 5 (Operation.RESERVE): expected Result(accepted=False, message='locker_not_available'), got Result(accepted=True, message='reserved')",
           "description": "Allows reserving compartment when it is already OCCUPIED."
         },
         "Mutant2_AcceptWrongReservationCode": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "CoverageGuided_S303_T2",
-          "divergence_reason": "Result divergence at step 6 (Operation.DEPOSIT): expected Result(accepted=False, message='invalid_reservation_code'), got Result(accepted=True, message='deposited')",
+          "killing_test": "CoverageGuided_S303_T1",
+          "divergence_reason": "Result divergence at step 16 (Operation.DEPOSIT): expected Result(accepted=False, message='invalid_reservation_code'), got Result(accepted=True, message='deposited')",
           "description": "Accepts incorrect reservation code during parcel deposit."
         },
         "Mutant3_RetrieveWithoutAuth": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "CoverageGuided_S303_T4",
-          "divergence_reason": "Result divergence at step 7 (Operation.RETRIEVE): expected Result(accepted=False, message='invalid_retrieval_code'), got Result(accepted=True, message='retrieved')",
+          "killing_test": "CoverageGuided_S303_T5",
+          "divergence_reason": "Result divergence at step 3 (Operation.RETRIEVE): expected Result(accepted=False, message='invalid_retrieval_code'), got Result(accepted=True, message='retrieved')",
           "description": "Allows parcel retrieval without valid authentication PIN."
         },
         "Mutant4_DoubleRetrieve": {
@@ -797,22 +797,22 @@
         "Mutant5_ExpireWhenNotExpired": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "CoverageGuided_S303_T2",
-          "divergence_reason": "Result divergence at step 5 (Operation.EXPIRE): expected Result(accepted=False, message='not_expired'), got Result(accepted=True, message='expired')",
+          "killing_test": "CoverageGuided_S303_T1",
+          "divergence_reason": "Result divergence at step 15 (Operation.EXPIRE): expected Result(accepted=False, message='not_expired'), got Result(accepted=True, message='expired')",
           "description": "Prematurely expires reservation when explicit expired flag is False."
         },
         "Mutant6_CancelRetainsCredentials": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "CoverageGuided_S303_T5",
-          "divergence_reason": "Snapshot divergence at step 7 (Operation.CANCEL): expected Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id='C2', reservation_code='R-C2', retrieval_code=None)",
+          "killing_test": "CoverageGuided_S303_T3",
+          "divergence_reason": "Snapshot divergence at step 12 (Operation.CANCEL): expected Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id='C3', reservation_code='R-C3', retrieval_code=None)",
           "description": "Fails to clear customer and reservation credentials on cancel."
         },
         "Mutant7_MaintenanceWhenReserved": {
           "detected": true,
           "equivalent": false,
           "killing_test": "CoverageGuided_S303_T2",
-          "divergence_reason": "Result divergence at step 11 (Operation.DISABLE): expected Result(accepted=False, message='cannot_disable'), got Result(accepted=True, message='disabled')",
+          "divergence_reason": "Result divergence at step 17 (Operation.DISABLE): expected Result(accepted=False, message='cannot_disable'), got Result(accepted=True, message='disabled')",
           "description": "Allows placing compartment into maintenance while reserved."
         },
         "Mutant8_EnableWhenNotMaintenance": {
@@ -826,14 +826,14 @@
           "detected": true,
           "equivalent": false,
           "killing_test": "CoverageGuided_S303_T2",
-          "divergence_reason": "Result divergence at step 6 (Operation.DEPOSIT): expected Result(accepted=False, message='invalid_reservation_code'), got Result(accepted=True, message='deposited')",
+          "divergence_reason": "Result divergence at step 1 (Operation.DEPOSIT): expected Result(accepted=False, message='not_reserved'), got Result(accepted=True, message='deposited')",
           "description": "Allows deposit into a compartment under maintenance."
         },
         "Mutant10_MutateOnInvalidDeposit": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "CoverageGuided_S303_T2",
-          "divergence_reason": "Snapshot divergence at step 6 (Operation.DEPOSIT): expected Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C1', reservation_code='R-C1', retrieval_code=None), got Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C1', reservation_code='R-C1', retrieval_code='CORRUPTED_CODE')",
+          "killing_test": "CoverageGuided_S303_T1",
+          "divergence_reason": "Snapshot divergence at step 16 (Operation.DEPOSIT): expected Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C1', reservation_code='R-C1', retrieval_code=None), got Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C1', reservation_code='R-C1', retrieval_code='CORRUPTED_CODE')",
           "description": "Mutates retrieval credential on rejected deposit attempt."
         }
       }
@@ -844,10 +844,10 @@
     "seed": 404,
     "num_sequences": 500,
     "max_length": 20,
-    "generation_time_sec": 0.7611125000039465,
-    "sut_execution_time_sec": 0.07462559999839868,
-    "mutation_execution_time_sec": 0.002321999993000645,
-    "total_time_sec": 0.8380600999953458,
+    "generation_time_sec": 3.2665870999990148,
+    "sut_execution_time_sec": 0.2592685999989044,
+    "mutation_execution_time_sec": 0.00574199999391567,
+    "total_time_sec": 3.531597699991835,
     "sut_passed_tests": 500,
     "sut_failed_tests": 0,
     "coverage": {
@@ -860,9 +860,9 @@
       "state_operations_covered": 32,
       "total_state_operations": 32,
       "state_operation_coverage_pct": 100.0,
-      "transition_pairs_covered": 64,
-      "total_transition_pairs": 64,
-      "transition_pair_coverage_pct": 100.0
+      "transition_pairs_covered": 9,
+      "total_transition_pairs": 13,
+      "transition_pair_coverage_pct": 69.23
     },
     "mutation": {
       "total_mutants": 10,
@@ -882,14 +882,14 @@
           "detected": true,
           "equivalent": false,
           "killing_test": "CoverageGuided_S404_T2",
-          "divergence_reason": "Result divergence at step 10 (Operation.DEPOSIT): expected Result(accepted=False, message='invalid_reservation_code'), got Result(accepted=True, message='deposited')",
+          "divergence_reason": "Result divergence at step 17 (Operation.DEPOSIT): expected Result(accepted=False, message='invalid_reservation_code'), got Result(accepted=True, message='deposited')",
           "description": "Accepts incorrect reservation code during parcel deposit."
         },
         "Mutant3_RetrieveWithoutAuth": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "CoverageGuided_S404_T3",
-          "divergence_reason": "Result divergence at step 11 (Operation.RETRIEVE): expected Result(accepted=False, message='invalid_retrieval_code'), got Result(accepted=True, message='retrieved')",
+          "killing_test": "CoverageGuided_S404_T5",
+          "divergence_reason": "Result divergence at step 6 (Operation.RETRIEVE): expected Result(accepted=False, message='invalid_retrieval_code'), got Result(accepted=True, message='retrieved')",
           "description": "Allows parcel retrieval without valid authentication PIN."
         },
         "Mutant4_DoubleRetrieve": {
@@ -902,43 +902,43 @@
         "Mutant5_ExpireWhenNotExpired": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "CoverageGuided_S404_T2",
-          "divergence_reason": "Result divergence at step 5 (Operation.EXPIRE): expected Result(accepted=False, message='not_expired'), got Result(accepted=True, message='expired')",
+          "killing_test": "CoverageGuided_S404_T1",
+          "divergence_reason": "Result divergence at step 16 (Operation.EXPIRE): expected Result(accepted=False, message='not_expired'), got Result(accepted=True, message='expired')",
           "description": "Prematurely expires reservation when explicit expired flag is False."
         },
         "Mutant6_CancelRetainsCredentials": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "CoverageGuided_S404_T2",
-          "divergence_reason": "Snapshot divergence at step 11 (Operation.CANCEL): expected Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id='C2', reservation_code='R-C2', retrieval_code=None)",
+          "killing_test": "CoverageGuided_S404_T4",
+          "divergence_reason": "Snapshot divergence at step 3 (Operation.CANCEL): expected Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id='C3', reservation_code='R-C3', retrieval_code=None)",
           "description": "Fails to clear customer and reservation credentials on cancel."
         },
         "Mutant7_MaintenanceWhenReserved": {
           "detected": true,
           "equivalent": false,
           "killing_test": "CoverageGuided_S404_T1",
-          "divergence_reason": "Result divergence at step 1 (Operation.DISABLE): expected Result(accepted=False, message='cannot_disable'), got Result(accepted=True, message='disabled')",
+          "divergence_reason": "Result divergence at step 17 (Operation.DISABLE): expected Result(accepted=False, message='cannot_disable'), got Result(accepted=True, message='disabled')",
           "description": "Allows placing compartment into maintenance while reserved."
         },
         "Mutant8_EnableWhenNotMaintenance": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "CoverageGuided_S404_T2",
-          "divergence_reason": "Result divergence at step 0 (Operation.ENABLE): expected Result(accepted=False, message='not_in_maintenance'), got Result(accepted=True, message='enabled')",
+          "killing_test": "CoverageGuided_S404_T1",
+          "divergence_reason": "Result divergence at step 12 (Operation.ENABLE): expected Result(accepted=False, message='not_in_maintenance'), got Result(accepted=True, message='enabled')",
           "description": "Allows enabling locker when it is not in maintenance."
         },
         "Mutant9_DepositDuringMaintenance": {
           "detected": true,
           "equivalent": false,
           "killing_test": "CoverageGuided_S404_T2",
-          "divergence_reason": "Result divergence at step 10 (Operation.DEPOSIT): expected Result(accepted=False, message='invalid_reservation_code'), got Result(accepted=True, message='deposited')",
+          "divergence_reason": "Result divergence at step 3 (Operation.DEPOSIT): expected Result(accepted=False, message='not_reserved'), got Result(accepted=True, message='deposited')",
           "description": "Allows deposit into a compartment under maintenance."
         },
         "Mutant10_MutateOnInvalidDeposit": {
           "detected": true,
           "equivalent": false,
           "killing_test": "CoverageGuided_S404_T2",
-          "divergence_reason": "Snapshot divergence at step 10 (Operation.DEPOSIT): expected Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C2', reservation_code='R-C2', retrieval_code=None), got Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C2', reservation_code='R-C2', retrieval_code='CORRUPTED_CODE')",
+          "divergence_reason": "Snapshot divergence at step 17 (Operation.DEPOSIT): expected Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C1', reservation_code='R-C1', retrieval_code=None), got Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C1', reservation_code='R-C1', retrieval_code='CORRUPTED_CODE')",
           "description": "Mutates retrieval credential on rejected deposit attempt."
         }
       }
@@ -949,10 +949,10 @@
     "seed": 505,
     "num_sequences": 500,
     "max_length": 20,
-    "generation_time_sec": 0.7537413999962155,
-    "sut_execution_time_sec": 0.07719119999819668,
-    "mutation_execution_time_sec": 0.0020977000021957792,
-    "total_time_sec": 0.8330302999966079,
+    "generation_time_sec": 1.7475118000002112,
+    "sut_execution_time_sec": 0.17947730000014417,
+    "mutation_execution_time_sec": 0.006719199998769909,
+    "total_time_sec": 1.9337082999991253,
     "sut_passed_tests": 500,
     "sut_failed_tests": 0,
     "coverage": {
@@ -965,9 +965,9 @@
       "state_operations_covered": 32,
       "total_state_operations": 32,
       "state_operation_coverage_pct": 100.0,
-      "transition_pairs_covered": 64,
-      "total_transition_pairs": 64,
-      "transition_pair_coverage_pct": 100.0
+      "transition_pairs_covered": 8,
+      "total_transition_pairs": 13,
+      "transition_pair_coverage_pct": 61.54
     },
     "mutation": {
       "total_mutants": 10,
@@ -987,14 +987,14 @@
           "detected": true,
           "equivalent": false,
           "killing_test": "CoverageGuided_S505_T2",
-          "divergence_reason": "Result divergence at step 8 (Operation.DEPOSIT): expected Result(accepted=False, message='invalid_reservation_code'), got Result(accepted=True, message='deposited')",
+          "divergence_reason": "Result divergence at step 17 (Operation.DEPOSIT): expected Result(accepted=False, message='invalid_reservation_code'), got Result(accepted=True, message='deposited')",
           "description": "Accepts incorrect reservation code during parcel deposit."
         },
         "Mutant3_RetrieveWithoutAuth": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "CoverageGuided_S505_T3",
-          "divergence_reason": "Result divergence at step 12 (Operation.RETRIEVE): expected Result(accepted=False, message='invalid_retrieval_code'), got Result(accepted=True, message='retrieved')",
+          "killing_test": "CoverageGuided_S505_T5",
+          "divergence_reason": "Result divergence at step 7 (Operation.RETRIEVE): expected Result(accepted=False, message='invalid_retrieval_code'), got Result(accepted=True, message='retrieved')",
           "description": "Allows parcel retrieval without valid authentication PIN."
         },
         "Mutant4_DoubleRetrieve": {
@@ -1007,43 +1007,43 @@
         "Mutant5_ExpireWhenNotExpired": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "CoverageGuided_S505_T2",
-          "divergence_reason": "Result divergence at step 7 (Operation.EXPIRE): expected Result(accepted=False, message='not_expired'), got Result(accepted=True, message='expired')",
+          "killing_test": "CoverageGuided_S505_T1",
+          "divergence_reason": "Result divergence at step 19 (Operation.EXPIRE): expected Result(accepted=False, message='not_expired'), got Result(accepted=True, message='expired')",
           "description": "Prematurely expires reservation when explicit expired flag is False."
         },
         "Mutant6_CancelRetainsCredentials": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "CoverageGuided_S505_T2",
-          "divergence_reason": "Snapshot divergence at step 10 (Operation.CANCEL): expected Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id='C2', reservation_code='R-C2', retrieval_code=None)",
+          "killing_test": "CoverageGuided_S505_T4",
+          "divergence_reason": "Snapshot divergence at step 3 (Operation.CANCEL): expected Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id='C1', reservation_code='R-C1', retrieval_code=None)",
           "description": "Fails to clear customer and reservation credentials on cancel."
         },
         "Mutant7_MaintenanceWhenReserved": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "CoverageGuided_S505_T2",
-          "divergence_reason": "Result divergence at step 5 (Operation.DISABLE): expected Result(accepted=False, message='cannot_disable'), got Result(accepted=True, message='disabled')",
+          "killing_test": "CoverageGuided_S505_T1",
+          "divergence_reason": "Result divergence at step 17 (Operation.DISABLE): expected Result(accepted=False, message='cannot_disable'), got Result(accepted=True, message='disabled')",
           "description": "Allows placing compartment into maintenance while reserved."
         },
         "Mutant8_EnableWhenNotMaintenance": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "CoverageGuided_S505_T2",
-          "divergence_reason": "Result divergence at step 0 (Operation.ENABLE): expected Result(accepted=False, message='not_in_maintenance'), got Result(accepted=True, message='enabled')",
+          "killing_test": "CoverageGuided_S505_T1",
+          "divergence_reason": "Result divergence at step 13 (Operation.ENABLE): expected Result(accepted=False, message='not_in_maintenance'), got Result(accepted=True, message='enabled')",
           "description": "Allows enabling locker when it is not in maintenance."
         },
         "Mutant9_DepositDuringMaintenance": {
           "detected": true,
           "equivalent": false,
           "killing_test": "CoverageGuided_S505_T2",
-          "divergence_reason": "Result divergence at step 8 (Operation.DEPOSIT): expected Result(accepted=False, message='invalid_reservation_code'), got Result(accepted=True, message='deposited')",
+          "divergence_reason": "Result divergence at step 3 (Operation.DEPOSIT): expected Result(accepted=False, message='not_reserved'), got Result(accepted=True, message='deposited')",
           "description": "Allows deposit into a compartment under maintenance."
         },
         "Mutant10_MutateOnInvalidDeposit": {
           "detected": true,
           "equivalent": false,
           "killing_test": "CoverageGuided_S505_T2",
-          "divergence_reason": "Snapshot divergence at step 8 (Operation.DEPOSIT): expected Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C2', reservation_code='R-C2', retrieval_code=None), got Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C2', reservation_code='R-C2', retrieval_code='CORRUPTED_CODE')",
+          "divergence_reason": "Snapshot divergence at step 17 (Operation.DEPOSIT): expected Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C2', reservation_code='R-C2', retrieval_code=None), got Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C2', reservation_code='R-C2', retrieval_code='CORRUPTED_CODE')",
           "description": "Mutates retrieval credential on rejected deposit attempt."
         }
       }
@@ -1054,10 +1054,10 @@
     "seed": 101,
     "num_sequences": 500,
     "max_length": 20,
-    "generation_time_sec": 0.7556291000000783,
-    "sut_execution_time_sec": 0.08386479999899166,
-    "mutation_execution_time_sec": 0.35764530000597006,
-    "total_time_sec": 1.19713920000504,
+    "generation_time_sec": 0.24429619999864371,
+    "sut_execution_time_sec": 0.30879010000353446,
+    "mutation_execution_time_sec": 2.129154299997026,
+    "total_time_sec": 2.6822405999992043,
     "sut_passed_tests": 500,
     "sut_failed_tests": 0,
     "coverage": {
@@ -1067,25 +1067,25 @@
       "valid_transitions_covered": 7,
       "total_valid_transitions": 7,
       "valid_transition_coverage_pct": 100.0,
-      "state_operations_covered": 25,
+      "state_operations_covered": 7,
       "total_state_operations": 32,
-      "state_operation_coverage_pct": 78.12,
-      "transition_pairs_covered": 64,
-      "total_transition_pairs": 64,
+      "state_operation_coverage_pct": 21.88,
+      "transition_pairs_covered": 13,
+      "total_transition_pairs": 13,
       "transition_pair_coverage_pct": 100.0
     },
     "mutation": {
       "total_mutants": 10,
-      "detected_mutants": 5,
-      "survived_mutants": 5,
+      "detected_mutants": 2,
+      "survived_mutants": 8,
       "equivalent_mutants": 0,
-      "mutation_score": 50.0,
+      "mutation_score": 20.0,
       "mutant_details": {
         "Mutant1_ReserveOccupied": {
-          "detected": true,
+          "detected": false,
           "equivalent": false,
-          "killing_test": "TransitionPair_S101_T3",
-          "divergence_reason": "Result divergence at step 11 (Operation.RESERVE): expected Result(accepted=False, message='locker_not_available'), got Result(accepted=True, message='reserved')",
+          "killing_test": null,
+          "divergence_reason": null,
           "description": "Allows reserving compartment when it is already OCCUPIED."
         },
         "Mutant2_AcceptWrongReservationCode": {
@@ -1106,7 +1106,7 @@
           "detected": true,
           "equivalent": false,
           "killing_test": "TransitionPair_S101_T1",
-          "divergence_reason": "Snapshot divergence at step 2 (Operation.RETRIEVE): expected Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C1', reservation_code='R-C1', retrieval_code='P-C1')",
+          "divergence_reason": "Snapshot divergence at step 6 (Operation.RETRIEVE): expected Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C1', reservation_code='R-C1', retrieval_code='P-C1')",
           "description": "Fails to clear compartment upon retrieval, allowing duplicate retrieval."
         },
         "Mutant5_ExpireWhenNotExpired": {
@@ -1120,21 +1120,21 @@
           "detected": true,
           "equivalent": false,
           "killing_test": "TransitionPair_S101_T1",
-          "divergence_reason": "Snapshot divergence at step 4 (Operation.CANCEL): expected Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id='C2', reservation_code='R-C2', retrieval_code=None)",
+          "divergence_reason": "Snapshot divergence at step 3 (Operation.CANCEL): expected Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id='C1', reservation_code='R-C1', retrieval_code=None)",
           "description": "Fails to clear customer and reservation credentials on cancel."
         },
         "Mutant7_MaintenanceWhenReserved": {
-          "detected": true,
+          "detected": false,
           "equivalent": false,
-          "killing_test": "TransitionPair_S101_T3",
-          "divergence_reason": "Result divergence at step 12 (Operation.DISABLE): expected Result(accepted=False, message='cannot_disable'), got Result(accepted=True, message='disabled')",
+          "killing_test": null,
+          "divergence_reason": null,
           "description": "Allows placing compartment into maintenance while reserved."
         },
         "Mutant8_EnableWhenNotMaintenance": {
-          "detected": true,
+          "detected": false,
           "equivalent": false,
-          "killing_test": "TransitionPair_S101_T4",
-          "divergence_reason": "Result divergence at step 10 (Operation.ENABLE): expected Result(accepted=False, message='not_in_maintenance'), got Result(accepted=True, message='enabled')",
+          "killing_test": null,
+          "divergence_reason": null,
           "description": "Allows enabling locker when it is not in maintenance."
         },
         "Mutant9_DepositDuringMaintenance": {
@@ -1159,10 +1159,10 @@
     "seed": 202,
     "num_sequences": 500,
     "max_length": 20,
-    "generation_time_sec": 0.7716375000018161,
-    "sut_execution_time_sec": 0.081266000001051,
-    "mutation_execution_time_sec": 0.24856719999661436,
-    "total_time_sec": 1.1014706999994814,
+    "generation_time_sec": 0.3640242999972543,
+    "sut_execution_time_sec": 0.3086178999947151,
+    "mutation_execution_time_sec": 1.651326600003813,
+    "total_time_sec": 2.3239687999957823,
     "sut_passed_tests": 500,
     "sut_failed_tests": 0,
     "coverage": {
@@ -1172,25 +1172,25 @@
       "valid_transitions_covered": 7,
       "total_valid_transitions": 7,
       "valid_transition_coverage_pct": 100.0,
-      "state_operations_covered": 25,
+      "state_operations_covered": 7,
       "total_state_operations": 32,
-      "state_operation_coverage_pct": 78.12,
-      "transition_pairs_covered": 63,
-      "total_transition_pairs": 64,
-      "transition_pair_coverage_pct": 98.44
+      "state_operation_coverage_pct": 21.88,
+      "transition_pairs_covered": 13,
+      "total_transition_pairs": 13,
+      "transition_pair_coverage_pct": 100.0
     },
     "mutation": {
       "total_mutants": 10,
-      "detected_mutants": 6,
-      "survived_mutants": 4,
+      "detected_mutants": 2,
+      "survived_mutants": 8,
       "equivalent_mutants": 0,
-      "mutation_score": 60.0,
+      "mutation_score": 20.0,
       "mutant_details": {
         "Mutant1_ReserveOccupied": {
-          "detected": true,
+          "detected": false,
           "equivalent": false,
-          "killing_test": "TransitionPair_S202_T4",
-          "divergence_reason": "Result divergence at step 1 (Operation.RESERVE): expected Result(accepted=False, message='locker_not_available'), got Result(accepted=True, message='reserved')",
+          "killing_test": null,
+          "divergence_reason": null,
           "description": "Allows reserving compartment when it is already OCCUPIED."
         },
         "Mutant2_AcceptWrongReservationCode": {
@@ -1210,8 +1210,8 @@
         "Mutant4_DoubleRetrieve": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "TransitionPair_S202_T2",
-          "divergence_reason": "Snapshot divergence at step 6 (Operation.RETRIEVE): expected Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C2', reservation_code='R-C2', retrieval_code='P-C2')",
+          "killing_test": "TransitionPair_S202_T1",
+          "divergence_reason": "Snapshot divergence at step 8 (Operation.RETRIEVE): expected Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C1', reservation_code='R-C1', retrieval_code='P-C1')",
           "description": "Fails to clear compartment upon retrieval, allowing duplicate retrieval."
         },
         "Mutant5_ExpireWhenNotExpired": {
@@ -1225,28 +1225,28 @@
           "detected": true,
           "equivalent": false,
           "killing_test": "TransitionPair_S202_T1",
-          "divergence_reason": "Snapshot divergence at step 6 (Operation.CANCEL): expected Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id='C1', reservation_code='R-C1', retrieval_code=None)",
+          "divergence_reason": "Snapshot divergence at step 1 (Operation.CANCEL): expected Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id='C1', reservation_code='R-C1', retrieval_code=None)",
           "description": "Fails to clear customer and reservation credentials on cancel."
         },
         "Mutant7_MaintenanceWhenReserved": {
-          "detected": true,
+          "detected": false,
           "equivalent": false,
-          "killing_test": "TransitionPair_S202_T2",
-          "divergence_reason": "Result divergence at step 10 (Operation.DISABLE): expected Result(accepted=False, message='cannot_disable'), got Result(accepted=True, message='disabled')",
+          "killing_test": null,
+          "divergence_reason": null,
           "description": "Allows placing compartment into maintenance while reserved."
         },
         "Mutant8_EnableWhenNotMaintenance": {
-          "detected": true,
+          "detected": false,
           "equivalent": false,
-          "killing_test": "TransitionPair_S202_T3",
-          "divergence_reason": "Result divergence at step 2 (Operation.ENABLE): expected Result(accepted=False, message='not_in_maintenance'), got Result(accepted=True, message='enabled')",
+          "killing_test": null,
+          "divergence_reason": null,
           "description": "Allows enabling locker when it is not in maintenance."
         },
         "Mutant9_DepositDuringMaintenance": {
-          "detected": true,
+          "detected": false,
           "equivalent": false,
-          "killing_test": "TransitionPair_S202_T1",
-          "divergence_reason": "Result divergence at step 3 (Operation.DEPOSIT): expected Result(accepted=False, message='not_reserved'), got Result(accepted=True, message='deposited')",
+          "killing_test": null,
+          "divergence_reason": null,
           "description": "Allows deposit into a compartment under maintenance."
         },
         "Mutant10_MutateOnInvalidDeposit": {
@@ -1264,10 +1264,10 @@
     "seed": 303,
     "num_sequences": 500,
     "max_length": 20,
-    "generation_time_sec": 0.8110032000040519,
-    "sut_execution_time_sec": 0.06986159999360098,
-    "mutation_execution_time_sec": 0.3445248999996693,
-    "total_time_sec": 1.2253896999973222,
+    "generation_time_sec": 0.3433727000010549,
+    "sut_execution_time_sec": 0.32664899999508634,
+    "mutation_execution_time_sec": 1.8813607999982196,
+    "total_time_sec": 2.551382499994361,
     "sut_passed_tests": 500,
     "sut_failed_tests": 0,
     "coverage": {
@@ -1277,25 +1277,25 @@
       "valid_transitions_covered": 7,
       "total_valid_transitions": 7,
       "valid_transition_coverage_pct": 100.0,
-      "state_operations_covered": 28,
+      "state_operations_covered": 7,
       "total_state_operations": 32,
-      "state_operation_coverage_pct": 87.5,
-      "transition_pairs_covered": 63,
-      "total_transition_pairs": 64,
-      "transition_pair_coverage_pct": 98.44
+      "state_operation_coverage_pct": 21.88,
+      "transition_pairs_covered": 13,
+      "total_transition_pairs": 13,
+      "transition_pair_coverage_pct": 100.0
     },
     "mutation": {
       "total_mutants": 10,
-      "detected_mutants": 6,
-      "survived_mutants": 4,
+      "detected_mutants": 2,
+      "survived_mutants": 8,
       "equivalent_mutants": 0,
-      "mutation_score": 60.0,
+      "mutation_score": 20.0,
       "mutant_details": {
         "Mutant1_ReserveOccupied": {
-          "detected": true,
+          "detected": false,
           "equivalent": false,
-          "killing_test": "TransitionPair_S303_T4",
-          "divergence_reason": "Result divergence at step 16 (Operation.RESERVE): expected Result(accepted=False, message='locker_not_available'), got Result(accepted=True, message='reserved')",
+          "killing_test": null,
+          "divergence_reason": null,
           "description": "Allows reserving compartment when it is already OCCUPIED."
         },
         "Mutant2_AcceptWrongReservationCode": {
@@ -1315,8 +1315,8 @@
         "Mutant4_DoubleRetrieve": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "TransitionPair_S303_T3",
-          "divergence_reason": "Snapshot divergence at step 2 (Operation.RETRIEVE): expected Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C3', reservation_code='R-C3', retrieval_code='P-C3')",
+          "killing_test": "TransitionPair_S303_T1",
+          "divergence_reason": "Snapshot divergence at step 6 (Operation.RETRIEVE): expected Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C1', reservation_code='R-C1', retrieval_code='P-C1')",
           "description": "Fails to clear compartment upon retrieval, allowing duplicate retrieval."
         },
         "Mutant5_ExpireWhenNotExpired": {
@@ -1330,28 +1330,28 @@
           "detected": true,
           "equivalent": false,
           "killing_test": "TransitionPair_S303_T1",
-          "divergence_reason": "Snapshot divergence at step 3 (Operation.CANCEL): expected Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id='C1', reservation_code='R-C1', retrieval_code=None)",
+          "divergence_reason": "Snapshot divergence at step 1 (Operation.CANCEL): expected Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id='C1', reservation_code='R-C1', retrieval_code=None)",
           "description": "Fails to clear customer and reservation credentials on cancel."
         },
         "Mutant7_MaintenanceWhenReserved": {
-          "detected": true,
+          "detected": false,
           "equivalent": false,
-          "killing_test": "TransitionPair_S303_T2",
-          "divergence_reason": "Result divergence at step 8 (Operation.DISABLE): expected Result(accepted=False, message='cannot_disable'), got Result(accepted=True, message='disabled')",
+          "killing_test": null,
+          "divergence_reason": null,
           "description": "Allows placing compartment into maintenance while reserved."
         },
         "Mutant8_EnableWhenNotMaintenance": {
-          "detected": true,
+          "detected": false,
           "equivalent": false,
-          "killing_test": "TransitionPair_S303_T2",
-          "divergence_reason": "Result divergence at step 3 (Operation.ENABLE): expected Result(accepted=False, message='not_in_maintenance'), got Result(accepted=True, message='enabled')",
+          "killing_test": null,
+          "divergence_reason": null,
           "description": "Allows enabling locker when it is not in maintenance."
         },
         "Mutant9_DepositDuringMaintenance": {
-          "detected": true,
+          "detected": false,
           "equivalent": false,
-          "killing_test": "TransitionPair_S303_T4",
-          "divergence_reason": "Result divergence at step 1 (Operation.DEPOSIT): expected Result(accepted=False, message='not_reserved'), got Result(accepted=True, message='deposited')",
+          "killing_test": null,
+          "divergence_reason": null,
           "description": "Allows deposit into a compartment under maintenance."
         },
         "Mutant10_MutateOnInvalidDeposit": {
@@ -1369,10 +1369,10 @@
     "seed": 404,
     "num_sequences": 500,
     "max_length": 20,
-    "generation_time_sec": 0.8120753000039258,
-    "sut_execution_time_sec": 0.07236150000244379,
-    "mutation_execution_time_sec": 0.24190509999607457,
-    "total_time_sec": 1.1263419000024442,
+    "generation_time_sec": 0.1883908000017982,
+    "sut_execution_time_sec": 0.16418240000348305,
+    "mutation_execution_time_sec": 1.0459274999957415,
+    "total_time_sec": 1.3985007000010228,
     "sut_passed_tests": 500,
     "sut_failed_tests": 0,
     "coverage": {
@@ -1382,25 +1382,25 @@
       "valid_transitions_covered": 7,
       "total_valid_transitions": 7,
       "valid_transition_coverage_pct": 100.0,
-      "state_operations_covered": 25,
+      "state_operations_covered": 7,
       "total_state_operations": 32,
-      "state_operation_coverage_pct": 78.12,
-      "transition_pairs_covered": 64,
-      "total_transition_pairs": 64,
+      "state_operation_coverage_pct": 21.88,
+      "transition_pairs_covered": 13,
+      "total_transition_pairs": 13,
       "transition_pair_coverage_pct": 100.0
     },
     "mutation": {
       "total_mutants": 10,
-      "detected_mutants": 6,
-      "survived_mutants": 4,
+      "detected_mutants": 2,
+      "survived_mutants": 8,
       "equivalent_mutants": 0,
-      "mutation_score": 60.0,
+      "mutation_score": 20.0,
       "mutant_details": {
         "Mutant1_ReserveOccupied": {
-          "detected": true,
+          "detected": false,
           "equivalent": false,
-          "killing_test": "TransitionPair_S404_T3",
-          "divergence_reason": "Result divergence at step 17 (Operation.RESERVE): expected Result(accepted=False, message='locker_not_available'), got Result(accepted=True, message='reserved')",
+          "killing_test": null,
+          "divergence_reason": null,
           "description": "Allows reserving compartment when it is already OCCUPIED."
         },
         "Mutant2_AcceptWrongReservationCode": {
@@ -1435,28 +1435,28 @@
           "detected": true,
           "equivalent": false,
           "killing_test": "TransitionPair_S404_T1",
-          "divergence_reason": "Snapshot divergence at step 3 (Operation.CANCEL): expected Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id='C1', reservation_code='R-C1', retrieval_code=None)",
+          "divergence_reason": "Snapshot divergence at step 1 (Operation.CANCEL): expected Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id='C1', reservation_code='R-C1', retrieval_code=None)",
           "description": "Fails to clear customer and reservation credentials on cancel."
         },
         "Mutant7_MaintenanceWhenReserved": {
-          "detected": true,
+          "detected": false,
           "equivalent": false,
-          "killing_test": "TransitionPair_S404_T1",
-          "divergence_reason": "Result divergence at step 10 (Operation.DISABLE): expected Result(accepted=False, message='cannot_disable'), got Result(accepted=True, message='disabled')",
+          "killing_test": null,
+          "divergence_reason": null,
           "description": "Allows placing compartment into maintenance while reserved."
         },
         "Mutant8_EnableWhenNotMaintenance": {
-          "detected": true,
+          "detected": false,
           "equivalent": false,
-          "killing_test": "TransitionPair_S404_T2",
-          "divergence_reason": "Result divergence at step 5 (Operation.ENABLE): expected Result(accepted=False, message='not_in_maintenance'), got Result(accepted=True, message='enabled')",
+          "killing_test": null,
+          "divergence_reason": null,
           "description": "Allows enabling locker when it is not in maintenance."
         },
         "Mutant9_DepositDuringMaintenance": {
-          "detected": true,
+          "detected": false,
           "equivalent": false,
-          "killing_test": "TransitionPair_S404_T1",
-          "divergence_reason": "Result divergence at step 16 (Operation.DEPOSIT): expected Result(accepted=False, message='not_reserved'), got Result(accepted=True, message='deposited')",
+          "killing_test": null,
+          "divergence_reason": null,
           "description": "Allows deposit into a compartment under maintenance."
         },
         "Mutant10_MutateOnInvalidDeposit": {
@@ -1474,10 +1474,10 @@
     "seed": 505,
     "num_sequences": 500,
     "max_length": 20,
-    "generation_time_sec": 0.9391568999999436,
-    "sut_execution_time_sec": 0.09314030000678031,
-    "mutation_execution_time_sec": 0.3090873000037391,
-    "total_time_sec": 1.341384500010463,
+    "generation_time_sec": 0.1691337999945972,
+    "sut_execution_time_sec": 0.1493482000005315,
+    "mutation_execution_time_sec": 1.041959299996961,
+    "total_time_sec": 1.3604412999920896,
     "sut_passed_tests": 500,
     "sut_failed_tests": 0,
     "coverage": {
@@ -1487,25 +1487,25 @@
       "valid_transitions_covered": 7,
       "total_valid_transitions": 7,
       "valid_transition_coverage_pct": 100.0,
-      "state_operations_covered": 25,
+      "state_operations_covered": 7,
       "total_state_operations": 32,
-      "state_operation_coverage_pct": 78.12,
-      "transition_pairs_covered": 63,
-      "total_transition_pairs": 64,
-      "transition_pair_coverage_pct": 98.44
+      "state_operation_coverage_pct": 21.88,
+      "transition_pairs_covered": 13,
+      "total_transition_pairs": 13,
+      "transition_pair_coverage_pct": 100.0
     },
     "mutation": {
       "total_mutants": 10,
-      "detected_mutants": 6,
-      "survived_mutants": 4,
+      "detected_mutants": 2,
+      "survived_mutants": 8,
       "equivalent_mutants": 0,
-      "mutation_score": 60.0,
+      "mutation_score": 20.0,
       "mutant_details": {
         "Mutant1_ReserveOccupied": {
-          "detected": true,
+          "detected": false,
           "equivalent": false,
-          "killing_test": "TransitionPair_S505_T3",
-          "divergence_reason": "Result divergence at step 10 (Operation.RESERVE): expected Result(accepted=False, message='locker_not_available'), got Result(accepted=True, message='reserved')",
+          "killing_test": null,
+          "divergence_reason": null,
           "description": "Allows reserving compartment when it is already OCCUPIED."
         },
         "Mutant2_AcceptWrongReservationCode": {
@@ -1544,24 +1544,24 @@
           "description": "Fails to clear customer and reservation credentials on cancel."
         },
         "Mutant7_MaintenanceWhenReserved": {
-          "detected": true,
+          "detected": false,
           "equivalent": false,
-          "killing_test": "TransitionPair_S505_T3",
-          "divergence_reason": "Result divergence at step 5 (Operation.DISABLE): expected Result(accepted=False, message='cannot_disable'), got Result(accepted=True, message='disabled')",
+          "killing_test": null,
+          "divergence_reason": null,
           "description": "Allows placing compartment into maintenance while reserved."
         },
         "Mutant8_EnableWhenNotMaintenance": {
-          "detected": true,
+          "detected": false,
           "equivalent": false,
-          "killing_test": "TransitionPair_S505_T2",
-          "divergence_reason": "Result divergence at step 3 (Operation.ENABLE): expected Result(accepted=False, message='not_in_maintenance'), got Result(accepted=True, message='enabled')",
+          "killing_test": null,
+          "divergence_reason": null,
           "description": "Allows enabling locker when it is not in maintenance."
         },
         "Mutant9_DepositDuringMaintenance": {
-          "detected": true,
+          "detected": false,
           "equivalent": false,
-          "killing_test": "TransitionPair_S505_T3",
-          "divergence_reason": "Result divergence at step 6 (Operation.DEPOSIT): expected Result(accepted=False, message='not_reserved'), got Result(accepted=True, message='deposited')",
+          "killing_test": null,
+          "divergence_reason": null,
           "description": "Allows deposit into a compartment under maintenance."
         },
         "Mutant10_MutateOnInvalidDeposit": {
