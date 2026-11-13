@@ -219,6 +219,75 @@ class TestGenerators(unittest.TestCase):
         self.assertIn((t2, t3), report.covered_transition_pairs)
         self.assertEqual(len(report.covered_transition_pairs), 1)
 
+    def test_transition_pair_detects_mutant7_disable_when_reserved(self):
+        """Regression Test for Mutant 7:
+
+        1. Verify the generator can produce a DISABLE command while in RESERVED state.
+        2. Verify reference SUT and independent model consistently reject it with 'cannot_disable'.
+        3. Verify Mutant 7 is detected when executing this sequence.
+        4. Verify existing generator behavior is not broken.
+        """
+        from locker.sut import ParcelLocker
+        from locker.mutants import Mutant7_MaintenanceWhenReserved
+
+        gen = TransitionPairGenerator(seed=101, max_length=20, invalid_prob=0.30)
+        seqs = gen.generate(30)
+
+        # Find a sequence that attempts DISABLE while in RESERVED state
+        found_target_sequence = False
+        target_seq = None
+        target_step_idx = -1
+
+        for seq in seqs:
+            sim_model = LockerModel()
+            for idx, cmd in enumerate(seq):
+                curr_state = sim_model.state
+                if curr_state == State.RESERVED and cmd.operation == Operation.DISABLE:
+                    found_target_sequence = True
+                    target_seq = seq
+                    target_step_idx = idx
+                    break
+                sim_model.step(cmd)
+            if found_target_sequence:
+                break
+
+        self.assertTrue(found_target_sequence, "Generator must be able to synthesize DISABLE while in RESERVED state")
+
+        # Verify behavior on reference SUT and independent Model
+        ref_sut = ParcelLocker()
+        model = LockerModel()
+
+        # Step up to the target command
+        for i in range(target_step_idx):
+            cmd = target_seq[i]
+            ref_res = ref_sut.execute(cmd)
+            mod_res = model.step(cmd)
+            self.assertEqual(ref_res.accepted, mod_res.accepted)
+
+        self.assertEqual(model.state, State.RESERVED)
+        self.assertEqual(ref_sut.snapshot().state, State.RESERVED)
+
+        # The target DISABLE command
+        dis_cmd = target_seq[target_step_idx]
+        self.assertEqual(dis_cmd.operation, Operation.DISABLE)
+
+        ref_dis_res = ref_sut.execute(dis_cmd)
+        mod_dis_res = model.step(dis_cmd)
+
+        # Both reference SUT and model must reject it identically
+        self.assertFalse(ref_dis_res.accepted)
+        self.assertEqual(ref_dis_res.message, "cannot_disable")
+        self.assertFalse(mod_dis_res.accepted)
+        self.assertEqual(mod_dis_res.message, "cannot_disable")
+
+        # Now run against Mutant 7 using SequenceRunner
+        runner_mutant7 = SequenceRunner(sut_factory=Mutant7_MaintenanceWhenReserved)
+        res_mutant7 = runner_mutant7.run(target_seq, test_id="TEST_MUTANT7_DETECT")
+
+        self.assertFalse(res_mutant7.passed, "Mutant 7 must be detected by the sequence")
+        self.assertLessEqual(res_mutant7.failure_step, target_step_idx)
+        self.assertIn("divergence", res_mutant7.failure_details)
+
 
 if __name__ == "__main__":
     unittest.main()

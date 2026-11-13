@@ -5,7 +5,7 @@ Mutant3_RetrieveWithoutAuth,Authentication Bypass,No,Allows parcel retrieval wit
 Mutant4_DoubleRetrieve,Post-Condition & Cleanup Omission,No,"Fails to clear compartment upon retrieval, allowing duplicate retrieval.",100%,100%,100%
 Mutant5_ExpireWhenNotExpired,Guard Condition Omission,No,Prematurely expires reservation when explicit expired flag is False.,100%,100%,100%
 Mutant6_CancelRetainsCredentials,State Leak / Invariant Violation,No,Fails to clear customer and reservation credentials on cancel.,100%,100%,100%
-Mutant7_MaintenanceWhenReserved,Precondition Bypass,No,Allows placing compartment into maintenance while reserved.,100%,100%,0%
+Mutant7_MaintenanceWhenReserved,Precondition Bypass,No,Allows placing compartment into maintenance while reserved.,100%,100%,100%
 Mutant8_EnableWhenNotMaintenance,Precondition Bypass,No,Allows enabling locker when it is not in maintenance.,100%,100%,100%
 Mutant9_DepositDuringMaintenance,Precondition Bypass,No,Allows deposit into a compartment under maintenance.,100%,100%,100%
 Mutant10_MutateOnInvalidDeposit,Side-Effect / Non-Mutation Violation,No,Mutates retrieval credential on rejected deposit attempt.,100%,100%,100%

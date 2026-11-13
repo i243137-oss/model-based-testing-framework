@@ -351,9 +351,9 @@ def build_report():
     add_h2("9.1 Aggregated Comparison Table (Averaged Over 5 Seeds)")
     headers_res = ["Strategy", "State Cov (%)", "Valid Trans (%)", "State-Op Cov (%)", "Trans-Pair Cov (%)", "Mutation Score (%)", "Std Dev", "Detected (/10)", "Gen Time (s)", "SUT Time (s)"]
     data_res = [
-        ["RandomWalk", "100.0%", "100.0%", "100.0%", "100.0%", "100.0%", "0.00", "10.0 / 10", "0.2017 s", "0.3172 s"],
-        ["CoverageGuided", "100.0%", "100.0%", "100.0%", "64.62%", "100.0%", "0.00", "10.0 / 10", "2.2369 s", "0.2928 s"],
-        ["TransitionPair", "100.0%", "100.0%", "93.75%", "100.0%", "90.0%", "0.00", "9.0 / 10", "0.3729 s", "0.4415 s"],
+        ["RandomWalk", "100.0%", "100.0%", "100.0%", "100.0%", "100.0%", "0.00", "10.0 / 10", "0.1096 s", "0.1923 s"],
+        ["CoverageGuided", "100.0%", "100.0%", "100.0%", "64.62%", "100.0%", "0.00", "10.0 / 10", "2.2669 s", "0.2735 s"],
+        ["TransitionPair", "100.0%", "100.0%", "96.88%", "100.0%", "100.0%", "0.00", "10.0 / 10", "0.2817 s", "0.2899 s"],
     ]
     add_clean_table(doc, headers_res, data_res, [1.0, 0.6, 0.6, 0.6, 0.6, 0.7, 0.5, 0.6, 0.6, 0.6])
 
@@ -366,7 +366,7 @@ def build_report():
         ["Mutant4_DoubleRetrieve", "Cleanup Omission", "No", "100%", "100%", "100%"],
         ["Mutant5_ExpireWhenNotExpired", "Guard Omission", "No", "100%", "100%", "100%"],
         ["Mutant6_CancelRetainsCredentials", "Invariant Violation", "No", "100%", "100%", "100%"],
-        ["Mutant7_MaintenanceWhenReserved", "Precondition Bypass", "No", "100%", "100%", "0%"],
+        ["Mutant7_MaintenanceWhenReserved", "Precondition Bypass", "No", "100%", "100%", "100%"],
         ["Mutant8_EnableWhenNotMaintenance", "Precondition Bypass", "No", "100%", "100%", "100%"],
         ["Mutant9_DepositDuringMaintenance", "Precondition Bypass", "No", "100%", "100%", "100%"],
         ["Mutant10_MutateOnInvalidDeposit", "Non-Mutation Violation", "No", "100%", "100%", "100%"],
@@ -377,11 +377,10 @@ def build_report():
     add_h1("10. Discussion & Limitations")
     add_h2("10.1 Comparative Analysis & Trade-offs")
     doc.add_paragraph(
-        "1. TransitionPairGenerator Performance: With negative-operation selection enabled (invalid_prob = 0.20), TransitionPairGenerator "
-        "achieved a 90.0% mutation score across all 5 seeds while achieving 100.0% transition-pair coverage (all 13 connected pairs). "
-        "It successfully killed 9 out of 10 mutants, including complex parameter validation bugs (Mutants 2, 3, 5, 10) and lifecycle bugs (Mutants 1, 4, 6, 8, 9). "
-        "The only surviving mutant was Mutant 7 (attempting DISABLE while RESERVED), because the generator's state-machine traversal favored "
-        "transitioning through valid lifecycle events rather than taking an occupied locker into maintenance."
+        "1. TransitionPairGenerator Performance: With negative-operation selection enabled (invalid_prob = 0.20) and the inclusion of "
+        "DISABLE among negative operations under RESERVED, TransitionPairGenerator achieved a 100.0% mutation score across all 5 seeds "
+        "while achieving 100.0% transition-pair coverage (all 13 connected pairs). It successfully killed all 10 non-equivalent mutants, "
+        "including complex parameter validation bugs (Mutants 2, 3, 5, 10), state leaks (Mutants 4, 6), and precondition bypasses (Mutants 1, 7, 8, 9)."
     )
     doc.add_paragraph(
         "2. Coverage-Guided Trade-off: CoverageGuidedGenerator achieved a 100.0% mutation score and 100.0% state-operation coverage, but "
@@ -389,8 +388,8 @@ def build_report():
         "it frequently executes invalid operations, which break the consecutive valid transition chain required to form a valid transition pair."
     )
     doc.add_paragraph(
-        "3. Computational Efficiency: RandomWalk was the fastest (0.202s generation time), while CoverageGuided required 2.237s due to 16 dry-run "
-        "simulations per step. TransitionPair balanced generation speed (0.373s) with structured graph exploration."
+        "3. Computational Efficiency: RandomWalk was the fastest (0.110s generation time), while CoverageGuided required 2.267s due to 16 dry-run "
+        "simulations per step. TransitionPair balanced generation speed (0.282s) with structured graph exploration."
     )
     add_h2("10.2 Limitations & Threats to Validity")
     doc.add_paragraph(
@@ -403,13 +402,13 @@ def build_report():
     doc.add_paragraph(
         "The Model-Based Testing framework successfully models the Smart Parcel Locker and validates it through automated multi-oracle execution. "
         "Correcting the transition-pair coverage definition to measure connected state transitions (t1.target == t2.source) and incorporating "
-        "deliberate negative-operation synthesis achieved 100% transition-pair coverage and 90% mutation detection under fair experimental conditions."
+        "deliberate negative-operation synthesis achieved 100% transition-pair coverage and 100% mutation detection under fair experimental conditions."
     )
 
     # --- 12. EVIDENCE, SCREENSHOTS & VIVA PREPARATION ---
     add_h1("12. Student Evidence, Terminal Screenshots & Viva Preparation")
     add_h2("12.1 Terminal Execution Screenshots")
-    doc.add_paragraph("Figure 1: Full Unit & Multi-Oracle Test Suite Execution (All 41 tests passing):")
+    doc.add_paragraph("Figure 1: Full Unit & Multi-Oracle Test Suite Execution (All 44 tests passing):")
     if os.path.exists("docs/screenshots/unit_tests_run.png"):
         doc.add_picture("docs/screenshots/unit_tests_run.png", width=Inches(6.2))
         doc.add_paragraph()

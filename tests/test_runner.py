@@ -123,6 +123,42 @@ class TestSequenceRunner(unittest.TestCase):
         self.assertEqual(len(results), 2)
         self.assertTrue(all(r.passed for r in results))
 
+    def test_divergence_midway_failure_state_reporting(self):
+        """Verify that when divergence occurs midway through a sequence:
+
+        1. The runner halts execution immediately at the divergence step.
+        2. failure_step correctly identifies the divergence index.
+        3. expected_state_at_failure and actual_state_at_failure accurately record
+           states at that exact failure point.
+        4. Backward-compatible aliases expected_final_state and actual_final_state match.
+        """
+        # Mutant 2 accepts bad reservation code during DEPOSIT (step 1)
+        faulty_runner = SequenceRunner(sut_factory=Mutant2_AcceptWrongReservationCode)
+        long_seq = [
+            Command(Operation.RESERVE, customer_id="C1"),
+            Command(Operation.DEPOSIT, customer_id="C1", code="BAD_CODE"),  # Divergence here (step 1)
+            Command(Operation.RETRIEVE, customer_id="C1", code="P-C1"),    # Should NOT be reached
+            Command(Operation.DISABLE),                                     # Should NOT be reached
+            Command(Operation.ENABLE),                                      # Should NOT be reached
+        ]
+        res = faulty_runner.run(long_seq, test_id="T_MIDWAY")
+        self.assertFalse(res.passed)
+        self.assertEqual(res.failure_step, 1)
+
+        # Runner must halt on step 1: exactly 2 step records recorded (steps 0 and 1)
+        self.assertEqual(len(res.step_records), 2)
+        self.assertEqual(len(res.trace), 2)
+
+        # State reporting at failure:
+        # Expected model rejected deposit -> remained in RESERVED
+        # Actual faulty mutant accepted deposit -> transitioned to OCCUPIED
+        self.assertEqual(res.expected_state_at_failure, State.RESERVED)
+        self.assertEqual(res.actual_state_at_failure, State.OCCUPIED)
+
+        # Check backward-compatibility property aliases
+        self.assertEqual(res.expected_final_state, State.RESERVED)
+        self.assertEqual(res.actual_final_state, State.OCCUPIED)
+
 
 if __name__ == "__main__":
     unittest.main()

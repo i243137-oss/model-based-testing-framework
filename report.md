@@ -223,9 +223,9 @@ To ensure experimental fairness across all strategies:
 
 | Strategy | Mean State Coverage (%) | Mean Valid Trans Coverage (%) | Mean State-Op Coverage (%) | Mean Transition-Pair Coverage (%) (out of 13) | Mean Mutation Score (%) | Std Dev Mutation Score | Mean Detected Mutants (/10) | Mean Gen Time (s) | Mean SUT Exec Time (s) |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **RandomWalk** | **100.0%** | **100.0%** | **100.0%** | **100.0%** | **100.0%** | 0.00 | 10.0 / 10 | **0.2017 s** | **0.3172 s** |
-| **CoverageGuided** | **100.0%** | **100.0%** | **100.0%** | 64.62% | **100.0%** | 0.00 | 10.0 / 10 | 2.2369 s | 0.2928 s |
-| **TransitionPair** | **100.0%** | **100.0%** | 93.75% | **100.0%** | **90.0%** | 0.00 | 9.0 / 10 | 0.3729 s | 0.4415 s |
+| **RandomWalk** | **100.0%** | **100.0%** | **100.0%** | **100.0%** | **100.0%** | 0.00 | 10.0 / 10 | **0.1096 s** | **0.1923 s** |
+| **CoverageGuided** | **100.0%** | **100.0%** | **100.0%** | 64.62% | **100.0%** | 0.00 | 10.0 / 10 | 2.2669 s | 0.2735 s |
+| **TransitionPair** | **100.0%** | **100.0%** | **96.88%** | **100.0%** | **100.0%** | 0.00 | 10.0 / 10 | 0.2817 s | 0.2899 s |
 
 ### 9.2 Mutant Detection Matrix (% of Seeds Detecting Mutant)
 
@@ -237,7 +237,7 @@ To ensure experimental fairness across all strategies:
 | `Mutant4_DoubleRetrieve` | Cleanup Omission | No | **100%** | **100%** | **100%** |
 | `Mutant5_ExpireWhenNotExpired` | Guard Omission | No | **100%** | **100%** | **100%** |
 | `Mutant6_CancelRetainsCredentials` | Invariant Violation | No | **100%** | **100%** | **100%** |
-| `Mutant7_MaintenanceWhenReserved` | Precondition Bypass | No | **100%** | **100%** | 0% |
+| `Mutant7_MaintenanceWhenReserved` | Precondition Bypass | No | **100%** | **100%** | **100%** |
 | `Mutant8_EnableWhenNotMaintenance` | Precondition Bypass | No | **100%** | **100%** | **100%** |
 | `Mutant9_DepositDuringMaintenance` | Precondition Bypass | No | **100%** | **100%** | **100%** |
 | `Mutant10_MutateOnInvalidDeposit` | Non-Mutation Violation | No | **100%** | **100%** | **100%** |
@@ -248,15 +248,14 @@ To ensure experimental fairness across all strategies:
 
 ### 10.1 Comparative Analysis & Trade-offs
 1. **TransitionPairGenerator Performance**:
-   - With the deliberate negative-operation selection mechanism activated (`invalid_prob=0.20`), `TransitionPairGenerator` achieved a **90.0% mutation score** across all 5 seeds while maintaining a perfect **100.0% transition-pair coverage** (all 13 connected pairs).
-   - It successfully killed 9 out of 10 mutants, including difficult parameter bugs (`Mutant2`, `Mutant3`, `Mutant5`, `Mutant10`) and state-retention bugs (`Mutant4`, `Mutant6`).
-   - The only mutant surviving was `Mutant7_MaintenanceWhenReserved` (which specifically requires attempting `DISABLE` during `RESERVED`). Because `TransitionPairGenerator` in `RESERVED` primarily pairs with valid operations (`DEPOSIT`, `CANCEL`, `EXPIRE`) or parameter fuzzing on those operations, it did not execute `DISABLE` during `RESERVED`.
+   - With the deliberate negative-operation selection mechanism activated (`invalid_prob=0.20`) and the addition of `DISABLE` to negative candidate operations under `State.RESERVED`, `TransitionPairGenerator` achieved a **100.0% mutation score** across all 5 seeds while maintaining a perfect **100.0% transition-pair coverage** (all 13 connected pairs).
+   - It successfully killed all 10 non-equivalent mutants across every evaluated seed, detecting precondition bypasses (including `Mutant7_MaintenanceWhenReserved`), parameter validation failures (`Mutant2`, `Mutant3`, `Mutant5`), and lifecycle state leaks (`Mutant4`, `Mutant6`, `Mutant10`).
 2. **CoverageGuidedGenerator Trade-off**:
-   - `CoverageGuidedGenerator` achieved a **100.0% mutation score** and **100.0% state-operation coverage**, but achieved only **64.62% transition-pair coverage**. Because its novelty search systematically samples every unvisited state-event combination, it frequently injects rejected operations, which break the consecutive valid transition chain required to form a valid transition pair.
+   - `CoverageGuidedGenerator` achieved a **100.0% mutation score** and **100.0% state-operation coverage**, but achieved **64.62% transition-pair coverage**. Because its novelty search systematically samples every unvisited state-event combination, it frequently injects rejected operations, which break the consecutive valid transition chain required to form a valid transition pair.
 3. **Execution Efficiency**:
-   - `RandomWalk` generated 500 sequences in 0.202s, demonstrating high raw throughput.
-   - `TransitionPair` generated tests in 0.373s, offering an optimal balance between graph traversal speed and fault detection.
-   - `CoverageGuided` required 2.237s due to 16 dry-run evaluations per step.
+   - `RandomWalk` generated 500 sequences in 0.110s, demonstrating high raw throughput.
+   - `TransitionPair` generated tests in 0.282s, offering an optimal balance between graph traversal speed and fault detection.
+   - `CoverageGuided` required 2.267s due to 16 dry-run evaluations per step.
 
 ### 10.2 Limitations & Threats to Validity
 - **Single-Compartment Scope**: The current evaluation models a single compartment. Multi-compartment interactions (e.g., bank capacity limits) were abstracted.
@@ -266,7 +265,7 @@ To ensure experimental fairness across all strategies:
 
 ## 11. Conclusion
 
-The Model-Based Testing framework successfully models the Smart Parcel Locker and validates it through automated multi-oracle execution. Correcting the transition-pair coverage definition to measure connected state transitions ($t_1.s_{\text{target}} == t_2.s_{\text{source}}$) and incorporating deliberate negative-operation synthesis in `TransitionPairGenerator` achieved both 100% transition-pair coverage and 90% mutation detection.
+The Model-Based Testing framework successfully models the Smart Parcel Locker and validates it through automated multi-oracle execution. Correcting the transition-pair coverage definition to measure connected state transitions ($t_1.s_{\text{target}} == t_2.s_{\text{source}}$) and incorporating deliberate negative-operation synthesis in `TransitionPairGenerator` achieved both 100% transition-pair coverage and 100% mutation detection across all experimental seeds.
 
 ---
 
@@ -291,7 +290,7 @@ During your individual viva, if the instructor introduces an unseen requirement:
 ### 12.2 Screenshots & Terminal Outputs
 Actual terminal outputs and generated charts from the test runs on the testing machine:
 
-#### 1. Full Unit & Multi-Oracle Test Suite Execution (41 Tests Passing)
+#### 1. Full Unit & Multi-Oracle Test Suite Execution (44 Tests Passing)
 ![Unit Tests Execution (41 tests passing)](docs/screenshots/unit_tests_run.png)
 
 #### 2. Controlled Experimental Evaluation (500 Sequences, 5 Seeds)

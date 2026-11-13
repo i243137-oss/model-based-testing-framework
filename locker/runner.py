@@ -27,8 +27,8 @@ class TestExecutionResult:
     sequence: List[Command]
     initial_state: State
     passed: bool
-    expected_final_state: State
-    actual_final_state: State
+    expected_state_at_failure: State
+    actual_state_at_failure: State
     failure_step: Optional[int] = None
     failure_details: Optional[str] = None
     expected_result: Optional[Result] = None
@@ -36,6 +36,16 @@ class TestExecutionResult:
     execution_time: float = 0.0
     trace: List[Tuple[State, Command, bool, State]] = field(default_factory=list)
     step_records: List[StepRecord] = field(default_factory=list)
+
+    @property
+    def expected_final_state(self) -> State:
+        """Alias representing the expected state at sequence conclusion or termination point."""
+        return self.expected_state_at_failure
+
+    @property
+    def actual_final_state(self) -> State:
+        """Alias representing the actual state at sequence conclusion or termination point."""
+        return self.actual_state_at_failure
 
 
 class SequenceRunner:
@@ -186,8 +196,8 @@ class SequenceRunner:
             sequence=sequence,
             initial_state=initial_state,
             passed=passed,
-            expected_final_state=final_model_state,
-            actual_final_state=final_sut_state,
+            expected_state_at_failure=final_model_state,
+            actual_state_at_failure=final_sut_state,
             failure_step=failure_step,
             failure_details=failure_details,
             expected_result=last_exp_res,

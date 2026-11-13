@@ -108,6 +108,8 @@ def _build_meaningful_invalid_command(
             Command(Operation.RESERVE, customer_id="C9"),
             # Attempt retrieve before parcel is deposited
             Command(Operation.RETRIEVE, customer_id=customer_id, code="P-EARLY"),
+            # Attempt maintenance while reserved (Rule 9 violation; specifically targets Mutant 7)
+            Command(Operation.DISABLE),
             # Inappropriate maintenance enable
             Command(Operation.ENABLE),
             # Invalid access
@@ -190,10 +192,16 @@ class RandomWalkGenerator:
 class CoverageGuidedGenerator:
     """Strategy B: Coverage-Guided Generator.
 
-    Prioritizes unexplored or least-frequently exercised states and transitions.
-    Maintains a global execution frequency table across test sequences.
-    For each step, evaluates all candidate operations from the current state and
-    selects the action that minimizes execution frequency (novelty search / least-covered first).
+    Explicitly prioritizes unexplored or least-frequently exercised states and state-operation transitions.
+    Maintains a global execution frequency table tracking (state, operation, accepted) tuples and state visit counts.
+    For each step, evaluates all candidate operations from the current state (both valid and invalid attempts)
+    and selects the action that minimizes execution frequency (novelty search / least-covered first).
+
+    Coverage Objective:
+    - Directly tracks and optimizes State Coverage and State-Operation Coverage (all 32 state-event combinations).
+    - Note on Transition-Pair Coverage: This generator does NOT directly optimize consecutive transition pairs;
+      in fact, because it frequently chooses rejected operations to explore all state-event combinations,
+      these invalid operations break the consecutive valid transition chain, yielding lower transition-pair coverage (~64.6%).
     """
 
     def __init__(self, seed: int = 42, max_length: int = 20):

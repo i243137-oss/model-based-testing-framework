@@ -64,7 +64,7 @@ pip install matplotlib pandas
 
 ### 3.1 Run All Unit Tests and Smoke Tests
 
-To run the complete test suite (41 tests across 6 test modules):
+To run the complete test suite (44 tests across 6 test modules):
 
 ```bash
 python -m unittest discover -s tests -v
