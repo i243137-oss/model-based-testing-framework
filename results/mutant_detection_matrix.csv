@@ -1,11 +1,11 @@
-Mutant Name,Defect Description,RandomWalk,CoverageGuided,TransitionPair
-Mutant1_ReserveOccupied,Allows reserving compartment when it is already OCCUPIED.,100%,100%,0%
-Mutant2_AcceptWrongReservationCode,Accepts incorrect reservation code during parcel deposit.,100%,100%,0%
-Mutant3_RetrieveWithoutAuth,Allows parcel retrieval without valid authentication PIN.,100%,100%,0%
-Mutant4_DoubleRetrieve,"Fails to clear compartment upon retrieval, allowing duplicate retrieval.",100%,100%,100%
-Mutant5_ExpireWhenNotExpired,Prematurely expires reservation when explicit expired flag is False.,100%,100%,0%
-Mutant6_CancelRetainsCredentials,Fails to clear customer and reservation credentials on cancel.,100%,100%,100%
-Mutant7_MaintenanceWhenReserved,Allows placing compartment into maintenance while reserved.,100%,100%,0%
-Mutant8_EnableWhenNotMaintenance,Allows enabling locker when it is not in maintenance.,100%,100%,0%
-Mutant9_DepositDuringMaintenance,Allows deposit into a compartment under maintenance.,100%,100%,0%
-Mutant10_MutateOnInvalidDeposit,Mutates retrieval credential on rejected deposit attempt.,100%,100%,0%
+Mutant Name,Defect Category,Equivalent,Defect Description,RandomWalk,CoverageGuided,TransitionPair
+Mutant1_ReserveOccupied,Precondition Bypass,No,Allows reserving compartment when it is already OCCUPIED.,100%,100%,100%
+Mutant2_AcceptWrongReservationCode,Credential Verification Bypass,No,Accepts incorrect reservation code during parcel deposit.,100%,100%,100%
+Mutant3_RetrieveWithoutAuth,Authentication Bypass,No,Allows parcel retrieval without valid authentication PIN.,100%,100%,100%
+Mutant4_DoubleRetrieve,Post-Condition & Cleanup Omission,No,"Fails to clear compartment upon retrieval, allowing duplicate retrieval.",100%,100%,100%
+Mutant5_ExpireWhenNotExpired,Guard Condition Omission,No,Prematurely expires reservation when explicit expired flag is False.,100%,100%,100%
+Mutant6_CancelRetainsCredentials,State Leak / Invariant Violation,No,Fails to clear customer and reservation credentials on cancel.,100%,100%,100%
+Mutant7_MaintenanceWhenReserved,Precondition Bypass,No,Allows placing compartment into maintenance while reserved.,100%,100%,0%
+Mutant8_EnableWhenNotMaintenance,Precondition Bypass,No,Allows enabling locker when it is not in maintenance.,100%,100%,100%
+Mutant9_DepositDuringMaintenance,Precondition Bypass,No,Allows deposit into a compartment under maintenance.,100%,100%,100%
+Mutant10_MutateOnInvalidDeposit,Side-Effect / Non-Mutation Violation,No,Mutates retrieval credential on rejected deposit attempt.,100%,100%,100%

@@ -22,7 +22,7 @@ from locker.generators import (
 )
 from locker.runner import SequenceRunner
 from locker.metrics import calculate_coverage, mutation_summary
-from locker.mutants import ALL_MUTANTS, MUTANT_DESCRIPTIONS
+from locker.mutants import ALL_MUTANTS, ALL_MUTANT_METADATA, MUTANT_DESCRIPTIONS
 
 
 def run_strategy_experiment(
@@ -73,12 +73,20 @@ def run_strategy_experiment(
                 divergence_reason = m_res.failure_details
                 break
 
+        m_meta = ALL_MUTANT_METADATA.get(m_name)
+        is_equiv = m_meta.is_equivalent if m_meta else False
+        desc = m_meta.description if m_meta else MUTANT_DESCRIPTIONS.get(m_name, "")
+        cat = m_meta.defect_category if m_meta else "General Defect"
+        equiv_reason = m_meta.equivalence_rationale if m_meta else "Evaluated as non-equivalent"
+
         mutant_eval[m_name] = {
             "detected": detected,
-            "equivalent": False,
+            "equivalent": is_equiv,
             "killing_test": killing_test,
             "divergence_reason": divergence_reason,
-            "description": MUTANT_DESCRIPTIONS.get(m_name, ""),
+            "description": desc,
+            "defect_category": cat,
+            "equivalence_rationale": equiv_reason,
         }
 
     total_mutation_time = time.perf_counter() - mut_exec_start
@@ -306,11 +314,16 @@ def main():
     mutant_matrix_csv = os.path.join(output_dir, "mutant_detection_matrix.csv")
     with open(mutant_matrix_csv, "w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
-        header = ["Mutant Name", "Defect Description"] + list(strategy_map.keys())
+        header = ["Mutant Name", "Defect Category", "Equivalent", "Defect Description"] + list(strategy_map.keys())
         writer.writerow(header)
 
         for m_name in ALL_MUTANTS.keys():
-            row = [m_name, MUTANT_DESCRIPTIONS.get(m_name, "")]
+            m_meta = ALL_MUTANT_METADATA.get(m_name)
+            cat = m_meta.defect_category if m_meta else "General"
+            is_equiv = "Yes" if (m_meta and m_meta.is_equivalent) else "No"
+            desc = m_meta.description if m_meta else MUTANT_DESCRIPTIONS.get(m_name, "")
+
+            row = [m_name, cat, is_equiv, desc]
             for strat in strategy_map.keys():
                 strat_runs = [r for r in all_raw_runs if r["strategy"] == strat]
                 # Proportion of seeds that detected this mutant

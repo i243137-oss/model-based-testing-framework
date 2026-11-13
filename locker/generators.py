@@ -49,7 +49,7 @@ def _build_command(
         if valid_attempt and model.retrieval_code:
             code = model.retrieval_code
         else:
-            code = "WRONG_CODE" if rng.random() < 0.7 else f"P-BAD-{rng.randint(10, 99)}"
+            code = "WRONG_PIN" if rng.random() < 0.7 else f"P-BAD-{rng.randint(10, 99)}"
         return Command(operation=Operation.RETRIEVE, customer_id=customer_id, code=code)
 
     elif op == Operation.EXPIRE:
@@ -69,6 +69,85 @@ def _build_command(
         return Command(operation=Operation.INVALID_ACCESS, code="INVALID_KEY")
 
     return Command(operation=op)
+
+
+def _build_meaningful_invalid_command(
+    model: LockerModel,
+    rng: random.Random,
+    customer_id: str = "C1",
+) -> Command:
+    """Synthesize a meaningful invalid/rejected command tailored to the current model state.
+
+    Examples:
+    - AVAILABLE: attempt CANCEL, DEPOSIT, RETRIEVE, ENABLE, EXPIRE, or INVALID_ACCESS
+    - RESERVED: attempt RESERVE, DEPOSIT with bad code, EXPIRE with expired=False, RETRIEVE, or ENABLE
+    - OCCUPIED: attempt RESERVE, DEPOSIT, RETRIEVE with bad PIN, CANCEL, EXPIRE, or DISABLE
+    - MAINTENANCE: attempt RESERVE, DEPOSIT, RETRIEVE, CANCEL, EXPIRE, or DISABLE
+    """
+    state = model.state
+
+    if state == State.AVAILABLE:
+        invalid_ops = [
+            Operation.CANCEL,
+            Operation.DEPOSIT,
+            Operation.RETRIEVE,
+            Operation.ENABLE,
+            Operation.EXPIRE,
+            Operation.INVALID_ACCESS,
+        ]
+        op = rng.choice(invalid_ops)
+        return _build_command(op, model, valid_attempt=False, rng=rng, customer_id=customer_id)
+
+    elif state == State.RESERVED:
+        choices = [
+            # Wrong reservation code during deposit
+            Command(Operation.DEPOSIT, customer_id=customer_id, code="WRONG_RES_CODE"),
+            # Expire with expired=False
+            Command(Operation.EXPIRE, customer_id=customer_id, expired=False),
+            # Attempt to reserve an already reserved locker
+            Command(Operation.RESERVE, customer_id="C9"),
+            # Attempt retrieve before parcel is deposited
+            Command(Operation.RETRIEVE, customer_id=customer_id, code="P-EARLY"),
+            # Inappropriate maintenance enable
+            Command(Operation.ENABLE),
+            # Invalid access
+            Command(Operation.INVALID_ACCESS, code="BAD_AUTH"),
+        ]
+        return rng.choice(choices)
+
+    elif state == State.OCCUPIED:
+        choices = [
+            # Retrieve with invalid PIN
+            Command(Operation.RETRIEVE, customer_id=customer_id, code="WRONG_PIN"),
+            # Attempt to reserve an already occupied locker
+            Command(Operation.RESERVE, customer_id="C9"),
+            # Attempt deposit into already occupied locker
+            Command(Operation.DEPOSIT, customer_id=customer_id, code="R-EXTRA"),
+            # Attempt cancel after deposit
+            Command(Operation.CANCEL, customer_id=customer_id),
+            # Attempt expire when occupied
+            Command(Operation.EXPIRE, customer_id=customer_id, expired=True),
+            # Attempt disable when occupied
+            Command(Operation.DISABLE),
+            # Invalid access
+            Command(Operation.INVALID_ACCESS, code="BAD_PIN"),
+        ]
+        return rng.choice(choices)
+
+    elif state == State.MAINTENANCE:
+        invalid_ops = [
+            Operation.RESERVE,
+            Operation.DEPOSIT,
+            Operation.RETRIEVE,
+            Operation.CANCEL,
+            Operation.EXPIRE,
+            Operation.DISABLE,
+            Operation.INVALID_ACCESS,
+        ]
+        op = rng.choice(invalid_ops)
+        return _build_command(op, model, valid_attempt=False, rng=rng, customer_id=customer_id)
+
+    return Command(Operation.INVALID_ACCESS, code="UNKNOWN_STATE")
 
 
 class RandomWalkGenerator:
@@ -188,14 +267,19 @@ class TransitionPairGenerator:
         (t1, t2) where t1.target_state == t2.source_state
     as defined by the state machine (all 13 valid transition pairs).
 
-    The generator tracks globally covered transition pairs and actively steers
-    sequences to complete uncovered pairs, chaining transitions while also
-    testing negative edge cases.
+    The generator balances two primary goals:
+    1. Primary Goal (1 - invalid_prob): Directly target uncovered connected transition pairs
+       in the state machine, steering through sequences of valid transitions.
+    2. Negative Testing Goal (invalid_prob): Periodically inject meaningful rejected/negative
+       operations (wrong PIN, wrong reservation code, unexpired EXPIRE, invalid state actions).
+       These rejected operations break the transition-pair chain without mutating model state,
+       providing rigorous negative testing and mutant detection.
     """
 
-    def __init__(self, seed: int = 42, max_length: int = 20):
+    def __init__(self, seed: int = 42, max_length: int = 20, invalid_prob: float = 0.20):
         self.seed = seed
         self.max_length = max(1, max_length)
+        self.invalid_prob = max(0.0, min(1.0, invalid_prob))
 
     def generate(self, count: int) -> List[List[Command]]:
         """Generate `count` independent test sequences targeting state-machine transition pairs."""
@@ -218,59 +302,70 @@ class TransitionPairGenerator:
 
             for _ in range(seq_len):
                 current_state = sim_model.state
+
+                # Check if this step should deliberately inject a negative/invalid operation
+                # (Controlled probability, configurable via self.invalid_prob)
+                if rng.random() < self.invalid_prob:
+                    cust_id = f"C{(seq_idx % 4) + 1}"
+                    cmd = _build_meaningful_invalid_command(sim_model, rng, customer_id=cust_id)
+                    sim_model.step(cmd)
+                    # Invalid operations break the transition-pair chain
+                    prev_trans = None
+                    seq.append(cmd)
+                    continue
+
+                # Otherwise, execute a valid transition targeting uncovered transition pairs
                 available_outgoing = transitions_from.get(current_state, [])
 
-                # Evaluate outgoing transitions that can form an uncovered pair with prev_trans
-                candidate_actions = []
-
                 if available_outgoing:
+                    scored_candidates = []
                     for t in available_outgoing:
                         op = t[1]
                         pair = (prev_trans, t) if prev_trans is not None and prev_trans[2] == t[0] else None
                         is_new_pair = pair is not None and pair in VALID_TRANSITION_PAIRS and pair not in covered_pairs
 
-                        # Score for choosing this transition:
-                        # - Big bonus if it directly completes an uncovered transition pair
-                        # - Bonus if the target state has outgoing transitions with uncovered pairs
+                        # Priority:
+                        # 1. Directly completes an uncovered transition pair with prev_trans (+1000)
+                        # 2. Reaches a target state that has uncovered outgoing pairs (+100 per future pair)
+                        # 3. Exercises less-covered individual transitions
                         priority = 0
                         if is_new_pair:
                             priority += 1000
 
-                        # Look ahead: how many uncovered pairs can be formed from target state t[2]?
                         future_uncovered = sum(
                             1 for next_t in transitions_from.get(t[2], [])
                             if (t, next_t) in VALID_TRANSITION_PAIRS and (t, next_t) not in covered_pairs
                         )
                         priority += future_uncovered * 100
 
-                        candidate_actions.append((priority, op, True, t))
+                        scored_candidates.append((priority, op, t))
 
-                # Also consider invalid operations occasionally (20% chance) to fuzz guards
-                # while preserving transition-pair focus
-                if not candidate_actions or rng.random() < 0.20:
-                    invalid_op = rng.choice(ALL_OPERATIONS)
-                    candidate_actions.append((-50, invalid_op, False, None))
+                    # Shuffle to break ties stochastically, then select highest priority
+                    rng.shuffle(scored_candidates)
+                    scored_candidates.sort(key=lambda c: c[0], reverse=True)
 
-                # Shuffle to randomize ties, then sort by highest priority
-                rng.shuffle(candidate_actions)
-                candidate_actions.sort(key=lambda a: a[0], reverse=True)
+                    _, chosen_op, chosen_trans = scored_candidates[0]
+                    cust_id = f"C{(seq_idx % 4) + 1}"
+                    cmd = _build_command(chosen_op, sim_model, valid_attempt=True, rng=rng, customer_id=cust_id)
+                    res = sim_model.step(cmd)
 
-                chosen_priority, chosen_op, valid_attempt, next_trans = candidate_actions[0]
-                cust_id = f"C{(seq_idx % 4) + 1}"
-                cmd = _build_command(chosen_op, sim_model, valid_attempt, rng, customer_id=cust_id)
-                res = sim_model.step(cmd)
+                    if res.accepted:
+                        curr_trans = (current_state, chosen_op, sim_model.state)
+                        if prev_trans is not None and prev_trans[2] == curr_trans[0]:
+                            pair = (prev_trans, curr_trans)
+                            if pair in VALID_TRANSITION_PAIRS:
+                                covered_pairs.add(pair)
+                        prev_trans = curr_trans
+                    else:
+                        prev_trans = None
 
-                if res.accepted and next_trans is not None:
-                    curr_trans = (current_state, chosen_op, sim_model.state)
-                    if prev_trans is not None and prev_trans[2] == curr_trans[0]:
-                        pair = (prev_trans, curr_trans)
-                        if pair in VALID_TRANSITION_PAIRS:
-                            covered_pairs.add(pair)
-                    prev_trans = curr_trans
+                    seq.append(cmd)
                 else:
+                    # In case no outgoing transitions exist (not possible in our graph, but safe fallback)
+                    cmd = Command(Operation.INVALID_ACCESS)
+                    sim_model.step(cmd)
                     prev_trans = None
-
-                seq.append(cmd)
+                    seq.append(cmd)
 
             sequences.append(seq)
 

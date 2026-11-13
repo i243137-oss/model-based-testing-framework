@@ -17,7 +17,13 @@ from .metrics import (
     is_valid_transition,
     is_valid_transition_pair,
 )
-from .mutants import ALL_MUTANTS, MUTANT_DESCRIPTIONS
+from .mutants import (
+    ALL_MUTANTS,
+    ALL_MUTANT_METADATA,
+    MUTANT_DESCRIPTIONS,
+    MutantMetadata,
+    EquivalentMutant_RedundantCheck,
+)
 
 __all__ = [
     "State",
@@ -41,5 +47,8 @@ __all__ = [
     "is_valid_transition",
     "is_valid_transition_pair",
     "ALL_MUTANTS",
+    "ALL_MUTANT_METADATA",
     "MUTANT_DESCRIPTIONS",
+    "MutantMetadata",
+    "EquivalentMutant_RedundantCheck",
 ]

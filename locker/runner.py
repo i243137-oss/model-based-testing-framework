@@ -17,7 +17,7 @@ class StepRecord:
     expected_snapshot: Snapshot
     actual_snapshot: Snapshot
     diverged: bool
-    invariant_violation: Optional[str] = None
+    violations: List[str] = field(default_factory=list)
 
 
 @dataclass
@@ -39,14 +39,16 @@ class TestExecutionResult:
 
 
 class SequenceRunner:
-    """Automated test execution engine and oracle.
+    """Automated test execution engine and multi-oracle verifier.
 
     Executes command sequences against both the System Under Test (SUT) and
-    the independent executable model. Performs dual-oracle verification:
+    the independent executable model. Evaluates all verification checks independently
+    at each step to provide complete, comprehensive diagnostics without masking violations:
     1. Operational Result comparison (accepted flag and message).
     2. Complete observable Snapshot comparison (state and credentials).
-    3. Structural domain invariant checks after each step.
-    4. Non-mutation checks on all rejected operations.
+    3. Structural domain invariant verification.
+    4. Rejected-operation non-mutation verification.
+    5. Successful-operation credential-cleanup verification.
     """
 
     def __init__(
@@ -99,61 +101,56 @@ class SequenceRunner:
             # Record step transition trace based on actual execution on SUT
             trace.append((sut_before.state, cmd, act_res.accepted, sut_after.state))
 
-            diverged = False
-            invariant_err: Optional[str] = None
+            # Independently collect all violations at this step
+            step_violations: List[str] = []
 
             # 1. Operational Result verification
             if exp_res.accepted != act_res.accepted or exp_res.message != act_res.message:
-                diverged = True
-                failure_details = (
-                    f"Result divergence at step {idx} ({cmd.operation}): "
-                    f"expected Result(accepted={exp_res.accepted}, message='{exp_res.message}'), "
-                    f"got Result(accepted={act_res.accepted}, message='{act_res.message}')"
+                step_violations.append(
+                    f"Result divergence (expected Result(accepted={exp_res.accepted}, message='{exp_res.message}'), "
+                    f"got Result(accepted={act_res.accepted}, message='{act_res.message}'))"
                 )
 
             # 2. Complete Snapshot verification
-            elif (
+            if (
                 sut_after.state != model_after.state
                 or sut_after.customer_id != model_after.customer_id
                 or sut_after.reservation_code != model_after.reservation_code
                 or sut_after.retrieval_code != model_after.retrieval_code
             ):
-                diverged = True
-                failure_details = (
-                    f"Snapshot divergence at step {idx} ({cmd.operation}): "
-                    f"expected {model_after}, got {sut_after}"
+                step_violations.append(
+                    f"Snapshot divergence (expected {model_after}, got {sut_after})"
                 )
 
             # 3. Domain Invariant verification
-            else:
-                inv_ok, inv_msg = LockerModel.verify_invariants(sut_after)
-                if not inv_ok:
-                    diverged = True
-                    invariant_err = inv_msg
-                    failure_details = f"Invariant violation at step {idx} ({cmd.operation}): {inv_msg}"
+            inv_ok, inv_msg = LockerModel.verify_invariants(sut_after)
+            if not inv_ok:
+                step_violations.append(f"Domain invariant violation ({inv_msg})")
 
-                # Non-mutation invariant: rejected operations must not mutate state or credentials
-                elif not act_res.accepted:
-                    if (
-                        sut_after.state != sut_before.state
-                        or sut_after.customer_id != sut_before.customer_id
-                        or sut_after.reservation_code != sut_before.reservation_code
-                        or sut_after.retrieval_code != sut_before.retrieval_code
-                    ):
-                        diverged = True
-                        invariant_err = "Rejected operation mutated SUT state or credentials"
-                        failure_details = f"Non-mutation invariant violation at step {idx}: rejected operation changed state"
+            # 4. Non-mutation invariant check on rejected operations
+            if not act_res.accepted:
+                if (
+                    sut_after.state != sut_before.state
+                    or sut_after.customer_id != sut_before.customer_id
+                    or sut_after.reservation_code != sut_before.reservation_code
+                    or sut_after.retrieval_code != sut_before.retrieval_code
+                ):
+                    step_violations.append(
+                        f"Non-mutation invariant violation (rejected operation mutated SUT from {sut_before} to {sut_after})"
+                    )
 
-                # Post-operation cleanup invariant: RETRIEVE, CANCEL, EXPIRE when accepted must clear credentials
-                elif act_res.accepted and cmd.operation in (Operation.RETRIEVE, Operation.CANCEL, Operation.EXPIRE):
-                    if (
-                        sut_after.customer_id is not None
-                        or sut_after.reservation_code is not None
-                        or sut_after.retrieval_code is not None
-                    ):
-                        diverged = True
-                        invariant_err = f"Successful {cmd.operation} failed to clear customer/credentials"
-                        failure_details = f"Cleanup invariant violation at step {idx}: credentials retained after {cmd.operation}"
+            # 5. Post-operation cleanup verification on RETRIEVE, CANCEL, EXPIRE
+            if act_res.accepted and cmd.operation in (Operation.RETRIEVE, Operation.CANCEL, Operation.EXPIRE):
+                if (
+                    sut_after.customer_id is not None
+                    or sut_after.reservation_code is not None
+                    or sut_after.retrieval_code is not None
+                ):
+                    step_violations.append(
+                        f"Cleanup invariant violation (credentials retained after successful {cmd.operation}: {sut_after})"
+                    )
+
+            diverged = len(step_violations) > 0
 
             step_records.append(
                 StepRecord(
@@ -165,14 +162,18 @@ class SequenceRunner:
                     expected_snapshot=model_after,
                     actual_snapshot=sut_after,
                     diverged=diverged,
-                    invariant_violation=invariant_err,
+                    violations=step_violations,
                 )
             )
 
             if diverged and passed:
                 passed = False
                 failure_step = idx
-                # Stop on first divergence to pinpoint exact defect
+                failure_details = (
+                    f"Failure at step {idx} ({cmd.operation}): "
+                    + "; ".join(step_violations)
+                )
+                # Halt on first divergence to pinpoint precise failure point
                 break
 
         elapsed = time.perf_counter() - start_time

@@ -16,8 +16,8 @@ Model-Based Testing (MBT) represents an advanced testing paradigm where an abstr
 The objective of this project is to design, implement, and evaluate a complete MBT framework for a Smart Parcel Locker Management System. The project encompasses:
 1. Developing an independent executable state-machine model.
 2. Implementing three distinct test-generation algorithms (Random Walk, Coverage-Guided, and Transition-Pair).
-3. Constructing an automated dual-oracle execution engine with state-invariant verification.
-4. Designing a suite of 10 realistic faulty system implementations (mutants) with isolated defects.
+3. Constructing an automated multi-oracle execution engine with independent state-invariant and diagnostic verification.
+4. Designing a suite of 10 realistic faulty system implementations (mutants) with isolated defects and formal equivalence metadata.
 5. Conducting controlled empirical experiments across 5 random seeds to evaluate coverage, mutation score, and execution performance under fair experimental budgets.
 
 ### 1.2 Case Study Overview
@@ -162,41 +162,46 @@ Three algorithmically distinct test generators are implemented in `locker/genera
 - **Limitations**: Requires dry-run evaluation per step ($O(|\text{Ops}| \times 2)$), introducing slight generation latency.
 
 ### 5.3 Strategy C: Transition-Pair Generation (`TransitionPairGenerator`)
-- **Algorithm**: Specifically designed to target all 13 valid connected transition pairs $(t_1, t_2)$. It tracks a global set of covered transition pairs. At each step, it identifies candidate outgoing transitions from the current state that complete an uncovered pair with the predecessor transition, with lookaheads towards states containing future uncovered pairs.
-- **Advantages**: Directly exercises sequential lifecycle dependencies and pair interactions.
-- **Limitations**: Because its objective is completing consecutive valid transitions, it primarily generates valid credentials, reducing the proportion of negative parameter fuzzing unless explicitly forced.
+- **Algorithm**: Specifically designed to target all 13 valid connected transition pairs $(t_1, t_2)$. It balances two goals:
+  1. **Primary Exploration Goal ($1 - \text{invalid\_prob}$)**: Tracks globally covered transition pairs and steers through outgoing transitions that complete uncovered pairs with the predecessor transition, with lookaheads towards states containing future uncovered pairs.
+  2. **Negative Testing Goal ($\text{invalid\_prob} = 0.20$)**: Deliberately injects state-tailored negative operations (wrong reservation codes, invalid retrieval PINs, unexpired `EXPIRE`, illegal state actions, and bad credentials). When a negative operation occurs, it breaks the transition-pair chain (`prev_trans = None`) without mutating model state.
+- **Advantages**: Combines systematic pair-coverage traversal with authentic negative testing.
+- **Limitations**: Slightly slower generation than pure random walk due to graph lookahead calculations.
 
 ---
 
-## 6. Automated Test Runner & Dual Oracle
+## 6. Automated Test Runner & Independent Multi-Oracle Diagnostics
 
-The test execution engine (`locker/runner.py`) provides automated verification:
-1. **Fresh Environment Isolation**: For each sequence, independent instances of the SUT and `LockerModel` are instantiated.
-2. **Step-by-Step Dual Oracle**:
-   - **Operational Oracle**: Verifies `actual.accepted == expected.accepted` and `actual.message == expected.message`.
-   - **Snapshot Oracle**: Verifies complete observable state consistency: `(state, customer_id, reservation_code, retrieval_code)`.
-   - **Domain Invariant Oracle**: Evaluates structural system invariants and asserts non-mutation on all rejected commands.
-   - **Post-Operation Cleanup Oracle**: Asserts that successful cancellations, expirations, and retrievals wipe all credential fields.
-3. **Divergence Isolation**: Records the precise step index, command, expected result, actual result, and invariant violation details upon first failure.
+The test execution engine (`locker/runner.py`) provides automated verification. Unlike basic oracles that halt upon the first error, `SequenceRunner` independently evaluates all five verification dimensions on every single step, ensuring that no violation is masked by another:
+1. **Operational Result Comparison**: Verifies `actual.accepted == expected.accepted` and `actual.message == expected.message`.
+2. **Complete Snapshot Comparison**: Verifies complete observable state consistency: `(state, customer_id, reservation_code, retrieval_code)`.
+3. **Domain Invariant Verification**: Validates structural system invariants (e.g. empty credential cleanliness, reservation code format).
+4. **Non-Mutation Verification on Rejected Operations**: Ensures that when `accepted=False`, the SUT state and credentials remain identical before and after.
+5. **Post-Operation Cleanup Verification**: Asserts that successful cancellations, expirations, and retrievals wipe all credential fields.
+6. **Exception Capturing**: Captures and records any unexpected internal exceptions raised by SUT variants without crashing the test runner.
 
 ---
 
-## 7. Mutation Testing & Fault Injection
+## 7. Mutation Testing & Equivalence Analysis
 
-Ten realistic, non-trivial mutant variants were implemented in `locker/mutants.py`, each featuring an isolated defect:
+Ten realistic, non-trivial mutant variants were implemented in `locker/mutants.py`. Every mutant is backed by formal `MutantMetadata` documenting its defect category and non-equivalence justification:
 
-| Mutant Identifier | Fault Category | Implementation Defect | Expected Failure Mode |
-| :--- | :--- | :--- | :--- |
-| `Mutant1_ReserveOccupied` | Guard Bypass | Allows `RESERVE` when locker is `OCCUPIED` (isolated from other states) | Result & Snapshot divergence |
-| `Mutant2_AcceptWrongReservationCode` | Credential Validation | Accepts any code during `DEPOSIT` | Acceptance of invalid code |
-| `Mutant3_RetrieveWithoutAuth` | Authentication Bypass | Allows `RETRIEVE` with incorrect PIN | Acceptance of unauthorized access |
-| `Mutant4_DoubleRetrieve` | State Persistence | Fails to clear locker on retrieval | State remains `OCCUPIED` |
-| `Mutant5_ExpireWhenNotExpired` | Condition Ignorance | Expires reservation when `expired=False` | Premature expiration divergence |
-| `Mutant6_CancelRetainsCredentials` | Credential Leak | Fails to clear credentials on `CANCEL` | Invariant violation (stale credentials) |
-| `Mutant7_MaintenanceWhenReserved` | Precondition Violation | Allows `DISABLE` when `RESERVED` | Allows maintenance on active reservation |
-| `Mutant8_EnableWhenNotMaintenance` | State Precondition | Allows `ENABLE` when not in `MAINTENANCE` | Acceptance from invalid state |
-| `Mutant9_DepositDuringMaintenance` | Guard Bypass | Accepts deposit while in `MAINTENANCE` | Depositing into serviced compartment |
-| `Mutant10_MutateOnInvalidDeposit` | Side-Effect Leak | Mutates retrieval code on rejected deposit | Non-mutation invariant failure |
+| Mutant Identifier | Defect Category | Equivalent? | Equivalence & Behavioral Justification |
+| :--- | :--- | :---: | :--- |
+| `Mutant1_ReserveOccupied` | Precondition Bypass | **No** | Permits `RESERVE` when state is `OCCUPIED`. Observable difference: SUT returns `Result(False, 'locker_not_available')` while mutant returns `Result(True, 'reserved')`. |
+| `Mutant2_AcceptWrongReservationCode` | Credential Bypass | **No** | Accepts deposit with invalid code. Observable difference: SUT returns `Result(False, 'invalid_reservation_code')` while mutant transitions to `OCCUPIED`. |
+| `Mutant3_RetrieveWithoutAuth` | Authentication Bypass | **No** | Accepts retrieval with invalid PIN. Observable difference: SUT returns `Result(False, 'invalid_retrieval_code')` while mutant transitions to `AVAILABLE`. |
+| `Mutant4_DoubleRetrieve` | Cleanup Omission | **No** | Fails to clear locker on retrieval. Observable difference: Snapshot state remains `OCCUPIED` instead of `AVAILABLE`, allowing duplicate retrieval. |
+| `Mutant5_ExpireWhenNotExpired` | Guard Omission | **No** | Prematurely expires when `expired=False`. Observable difference: SUT returns `Result(False, 'not_expired')` while mutant returns `Result(True, 'expired')`. |
+| `Mutant6_CancelRetainsCredentials` | Invariant Violation | **No** | Retains credentials upon cancel. Observable difference: Snapshot fields `customer_id` and `reservation_code` remain non-None in `AVAILABLE` state. |
+| `Mutant7_MaintenanceWhenReserved` | Precondition Bypass | **No** | Allows `DISABLE` when `RESERVED`. Observable difference: SUT returns `Result(False, 'cannot_disable')` while mutant transitions to `MAINTENANCE`. |
+| `Mutant8_EnableWhenNotMaintenance` | Precondition Bypass | **No** | Allows `ENABLE` when in `AVAILABLE`/`RESERVED`. Observable difference: SUT returns `Result(False, 'not_in_maintenance')` while mutant returns `Result(True, 'enabled')`. |
+| `Mutant9_DepositDuringMaintenance` | Precondition Bypass | **No** | Allows deposit while in `MAINTENANCE`. Observable difference: SUT returns `Result(False, 'not_reserved')` while mutant accepts deposit and transitions to `OCCUPIED`. |
+| `Mutant10_MutateOnInvalidDeposit` | Non-Mutation Violation | **No** | Corrupts `retrieval_code` on rejected deposit. Observable difference: Violates the non-mutation invariant on rejected operations. |
+
+### Mutation Score Formula
+Equivalent mutants are excluded from the denominator:
+$$\text{Mutation Score} = \left( \frac{\text{Detected Non-Equivalent Mutants}}{\text{Total Non-Equivalent Mutants}} \right) \times 100$$
 
 ---
 
@@ -207,8 +212,8 @@ To ensure experimental fairness across all strategies:
 - **Sequences per Strategy**: 500 test sequences
 - **Sequence Length Budget**: Consistent budget of exactly 20 operations per sequence across all strategies ($500 \times 20 = 10,000$ operations per strategy evaluation).
 - **Random Seeds**: 5 independent seeds (`101`, `202`, `303`, `404`, `505`).
-- **Evaluated Mutants**: 10 mutants.
-- **Total Test Sequences Executed**: $3 \text{ strategies} \times 5 \text{ seeds} \times 500 = 7,500$ test sequences against reference SUT, plus full mutant evaluation runs.
+- **Evaluated Mutants**: 10 non-equivalent mutants.
+- **Total Test Sequences Executed**: $3 \text{ strategies} \times 5 \text{ seeds} \times 500 = 7,500$ test sequences against reference SUT, plus full mutant evaluation suites.
 
 ---
 
@@ -218,50 +223,50 @@ To ensure experimental fairness across all strategies:
 
 | Strategy | Mean State Coverage (%) | Mean Valid Trans Coverage (%) | Mean State-Op Coverage (%) | Mean Transition-Pair Coverage (%) (out of 13) | Mean Mutation Score (%) | Std Dev Mutation Score | Mean Detected Mutants (/10) | Mean Gen Time (s) | Mean SUT Exec Time (s) |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **RandomWalk** | **100.0%** | **100.0%** | **100.0%** | **100.0%** | **100.0%** | 0.00 | 10.0 / 10 | **0.1082 s** | **0.1717 s** |
-| **CoverageGuided** | **100.0%** | **100.0%** | **100.0%** | 64.62% | **100.0%** | 0.00 | 10.0 / 10 | 2.2210 s | 0.2322 s |
-| **TransitionPair** | **100.0%** | **100.0%** | 21.88% | **100.0%** | 20.0% | 0.00 | 2.0 / 10 | 0.2618 s | 0.2515 s |
+| **RandomWalk** | **100.0%** | **100.0%** | **100.0%** | **100.0%** | **100.0%** | 0.00 | 10.0 / 10 | **0.2017 s** | **0.3172 s** |
+| **CoverageGuided** | **100.0%** | **100.0%** | **100.0%** | 64.62% | **100.0%** | 0.00 | 10.0 / 10 | 2.2369 s | 0.2928 s |
+| **TransitionPair** | **100.0%** | **100.0%** | 93.75% | **100.0%** | **90.0%** | 0.00 | 9.0 / 10 | 0.3729 s | 0.4415 s |
 
 ### 9.2 Mutant Detection Matrix (% of Seeds Detecting Mutant)
 
-| Mutant Identifier | Defect Description | RandomWalk | CoverageGuided | TransitionPair |
-| :--- | :--- | :---: | :---: | :---: |
-| `Mutant1_ReserveOccupied` | Allows reserving compartment when already OCCUPIED | **100%** | **100%** | 0% |
-| `Mutant2_AcceptWrongReservationCode` | Accepts incorrect reservation code during deposit | **100%** | **100%** | 0% |
-| `Mutant3_RetrieveWithoutAuth` | Allows parcel retrieval without valid PIN | **100%** | **100%** | 0% |
-| `Mutant4_DoubleRetrieve` | Fails to clear compartment upon retrieval | **100%** | **100%** | **100%** |
-| `Mutant5_ExpireWhenNotExpired` | Prematurely expires when `expired=False` | **100%** | **100%** | 0% |
-| `Mutant6_CancelRetainsCredentials` | Fails to clear credentials on cancel | **100%** | **100%** | **100%** |
-| `Mutant7_MaintenanceWhenReserved` | Allows maintenance while reserved | **100%** | **100%** | 0% |
-| `Mutant8_EnableWhenNotMaintenance` | Allows enabling when not in maintenance | **100%** | **100%** | 0% |
-| `Mutant9_DepositDuringMaintenance` | Allows deposit into maintenance compartment | **100%** | **100%** | 0% |
-| `Mutant10_MutateOnInvalidDeposit` | Mutates retrieval credential on rejected deposit | **100%** | **100%** | 0% |
+| Mutant Identifier | Defect Category | Equivalent? | RandomWalk | CoverageGuided | TransitionPair |
+| :--- | :--- | :---: | :---: | :---: | :---: |
+| `Mutant1_ReserveOccupied` | Precondition Bypass | No | **100%** | **100%** | **100%** |
+| `Mutant2_AcceptWrongReservationCode` | Credential Bypass | No | **100%** | **100%** | **100%** |
+| `Mutant3_RetrieveWithoutAuth` | Authentication Bypass | No | **100%** | **100%** | **100%** |
+| `Mutant4_DoubleRetrieve` | Cleanup Omission | No | **100%** | **100%** | **100%** |
+| `Mutant5_ExpireWhenNotExpired` | Guard Omission | No | **100%** | **100%** | **100%** |
+| `Mutant6_CancelRetainsCredentials` | Invariant Violation | No | **100%** | **100%** | **100%** |
+| `Mutant7_MaintenanceWhenReserved` | Precondition Bypass | No | **100%** | **100%** | 0% |
+| `Mutant8_EnableWhenNotMaintenance` | Precondition Bypass | No | **100%** | **100%** | **100%** |
+| `Mutant9_DepositDuringMaintenance` | Precondition Bypass | No | **100%** | **100%** | **100%** |
+| `Mutant10_MutateOnInvalidDeposit` | Non-Mutation Violation | No | **100%** | **100%** | **100%** |
 
 ---
 
 ## 10. Discussion & Limitations
 
 ### 10.1 Comparative Analysis & Trade-offs
-1. **Transition-Pair Coverage vs. State-Operation Coverage**:
-   - `TransitionPairGenerator` achieved a perfect **100.0%** transition-pair coverage, successfully exercising all 13 connected transition pairs in the state machine. However, because its selection heuristic prioritized completing valid state-to-state transitions, it exercised only 21.88% of state-operation pairs (the 7 valid primary transitions out of 32 total combinations).
-   - In contrast, `CoverageGuidedGenerator` achieved **100.0%** state-operation coverage by systematically attempting all operations from every state, but achieved only **64.62%** transition-pair coverage. This occurs because attempting invalid or rejected operations breaks the consecutive valid transition chain required to form a valid transition pair.
-2. **Mutation Score Discrepancy**:
-   - `RandomWalk` and `CoverageGuided` killed 100% of mutants because they frequently generated invalid parameters (wrong codes, `expired=False`, wrong state operations).
-   - `TransitionPair` killed 20% of mutants (`Mutant4_DoubleRetrieve` and `Mutant6_CancelRetainsCredentials`). Both of these mutants represent subtle state and credential persistence defects that occur on valid transition sequences. The remaining 8 mutants survived because they specifically require injecting invalid input values or out-of-order operations that `TransitionPair` avoids when chaining valid paths.
+1. **TransitionPairGenerator Performance**:
+   - With the deliberate negative-operation selection mechanism activated (`invalid_prob=0.20`), `TransitionPairGenerator` achieved a **90.0% mutation score** across all 5 seeds while maintaining a perfect **100.0% transition-pair coverage** (all 13 connected pairs).
+   - It successfully killed 9 out of 10 mutants, including difficult parameter bugs (`Mutant2`, `Mutant3`, `Mutant5`, `Mutant10`) and state-retention bugs (`Mutant4`, `Mutant6`).
+   - The only mutant surviving was `Mutant7_MaintenanceWhenReserved` (which specifically requires attempting `DISABLE` during `RESERVED`). Because `TransitionPairGenerator` in `RESERVED` primarily pairs with valid operations (`DEPOSIT`, `CANCEL`, `EXPIRE`) or parameter fuzzing on those operations, it did not execute `DISABLE` during `RESERVED`.
+2. **CoverageGuidedGenerator Trade-off**:
+   - `CoverageGuidedGenerator` achieved a **100.0% mutation score** and **100.0% state-operation coverage**, but achieved only **64.62% transition-pair coverage**. Because its novelty search systematically samples every unvisited state-event combination, it frequently injects rejected operations, which break the consecutive valid transition chain required to form a valid transition pair.
 3. **Execution Efficiency**:
-   - `RandomWalk` generated 500 sequences in 0.108s, making it by far the fastest.
-   - `CoverageGuided` required 2.221s due to dry-run state lookaheads across 16 operation candidates at every step.
-   - `TransitionPair` generated tests in 0.262s, balancing lookahead efficiency with graph traversal.
+   - `RandomWalk` generated 500 sequences in 0.202s, demonstrating high raw throughput.
+   - `TransitionPair` generated tests in 0.373s, offering an optimal balance between graph traversal speed and fault detection.
+   - `CoverageGuided` required 2.237s due to 16 dry-run evaluations per step.
 
 ### 10.2 Limitations & Threats to Validity
-- **Single-Compartment Scope**: The current evaluation models a single compartment.
+- **Single-Compartment Scope**: The current evaluation models a single compartment. Multi-compartment interactions (e.g., bank capacity limits) were abstracted.
 - **Synthesized Mutation**: Mutants were manually injected based on typical real-world errors.
 
 ---
 
 ## 11. Conclusion
 
-The Model-Based Testing framework successfully models the Smart Parcel Locker and validates it through automated dual-oracle execution. Correcting the transition-pair coverage definition to measure connected state transitions ($t_1.s_{\text{target}} == t_2.s_{\text{source}}$) revealed significant behavioral differences between test-generation strategies: coverage-guided testing excels at finding input-guard defects, while transition-pair testing excels at exploring sequential state lifecycle paths.
+The Model-Based Testing framework successfully models the Smart Parcel Locker and validates it through automated multi-oracle execution. Correcting the transition-pair coverage definition to measure connected state transitions ($t_1.s_{\text{target}} == t_2.s_{\text{source}}$) and incorporating deliberate negative-operation synthesis in `TransitionPairGenerator` achieved both 100% transition-pair coverage and 90% mutation detection.
 
 ---
 

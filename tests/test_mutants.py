@@ -1,6 +1,12 @@
 import unittest
-from locker.mutants import ALL_MUTANTS, Mutant1_ReserveOccupied
+from locker.mutants import (
+    ALL_MUTANTS,
+    ALL_MUTANT_METADATA,
+    Mutant1_ReserveOccupied,
+    EquivalentMutant_RedundantCheck,
+)
 from locker.runner import SequenceRunner
+from locker.metrics import mutation_summary
 from locker.types import Command, Operation, State
 from locker.sut import ParcelLocker
 
@@ -77,6 +83,46 @@ class TestMutants(unittest.TestCase):
                 result.passed,
                 f"Mutant '{mutant_name}' should have failed test sequence but passed!",
             )
+
+    def test_mutant_metadata_and_equivalence_documentation(self):
+        """Verify that every mutant has structured metadata, defect category,
+
+        and documented non-equivalence rationale.
+        """
+        self.assertGreaterEqual(len(ALL_MUTANT_METADATA), 10)
+        for m_name in ALL_MUTANTS.keys():
+            self.assertIn(m_name, ALL_MUTANT_METADATA)
+            meta = ALL_MUTANT_METADATA[m_name]
+            self.assertEqual(meta.name, m_name)
+            self.assertFalse(meta.is_equivalent, f"{m_name} should be documented as non-equivalent")
+            self.assertGreater(len(meta.equivalence_rationale), 10)
+            self.assertGreater(len(meta.defect_category), 0)
+
+    def test_equivalent_mutant_handling(self):
+        """Verify that equivalent mutants are recognized and excluded from mutation score denominator."""
+        meta_equiv = ALL_MUTANT_METADATA.get("EquivalentMutant_RedundantCheck")
+        self.assertIsNotNone(meta_equiv)
+        self.assertTrue(meta_equiv.is_equivalent)
+
+        # Execute equivalent mutant with sample commands: should match reference SUT
+        equiv_sut = EquivalentMutant_RedundantCheck()
+        ref_sut = ParcelLocker()
+        cmd = Command(Operation.DISABLE)
+        self.assertEqual(equiv_sut.execute(cmd), ref_sut.execute(cmd))
+
+        # Check mutation metric calculation: equivalent mutants must be excluded from denominator
+        mock_results = {
+            "m1": {"detected": True, "equivalent": False},
+            "m2": {"detected": False, "equivalent": False},
+            "equiv1": {"detected": False, "equivalent": True},
+        }
+        summary = mutation_summary(mock_results)
+        self.assertEqual(summary.total_mutants, 3)
+        self.assertEqual(summary.equivalent_mutants, 1)
+        self.assertEqual(summary.detected_mutants, 1)
+        self.assertEqual(summary.survived_mutants, 1)
+        # Score = 1 / (3 - 1) * 100 = 50.0%
+        self.assertEqual(summary.mutation_score, 50.0)
 
 
 if __name__ == "__main__":

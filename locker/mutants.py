@@ -1,6 +1,20 @@
-from typing import Dict, Type, Any
+from dataclasses import dataclass
+from typing import Dict, Type, Any, Optional
 from .types import State, Operation, Command, Result, Snapshot
 from .sut import ParcelLocker
+
+
+@dataclass(frozen=True)
+class MutantMetadata:
+    """Detailed metadata for a system mutant, documenting defect category
+
+    and explicit justification for equivalence or non-equivalence.
+    """
+    name: str
+    description: str
+    defect_category: str
+    is_equivalent: bool
+    equivalence_rationale: str
 
 
 class Mutant1_ReserveOccupied(ParcelLocker):
@@ -165,7 +179,20 @@ class Mutant10_MutateOnInvalidDeposit(ParcelLocker):
         return super().execute(command)
 
 
-# Registry of all implemented mutants
+class EquivalentMutant_RedundantCheck(ParcelLocker):
+    """Example Equivalent Mutant: Contains an internal syntactic variation that does not
+
+    alter observable behavior under any input sequence.
+    """
+    def execute(self, command: Command) -> Result:
+        # Syntactic variation: redundant defensive check that evaluates to the same behavior
+        if command.operation == Operation.DISABLE and self.state == State.AVAILABLE:
+            self.state = State.MAINTENANCE
+            return Result(True, "disabled")
+        return super().execute(command)
+
+
+# Registry of the primary 10 evaluation mutants
 ALL_MUTANTS: Dict[str, Type[ParcelLocker]] = {
     "Mutant1_ReserveOccupied": Mutant1_ReserveOccupied,
     "Mutant2_AcceptWrongReservationCode": Mutant2_AcceptWrongReservationCode,
@@ -179,15 +206,120 @@ ALL_MUTANTS: Dict[str, Type[ParcelLocker]] = {
     "Mutant10_MutateOnInvalidDeposit": Mutant10_MutateOnInvalidDeposit,
 }
 
+# Explicit metadata documenting equivalence status and rationale for every mutant
+ALL_MUTANT_METADATA: Dict[str, MutantMetadata] = {
+    "Mutant1_ReserveOccupied": MutantMetadata(
+        name="Mutant1_ReserveOccupied",
+        description="Allows reserving compartment when it is already OCCUPIED.",
+        defect_category="Precondition Bypass",
+        is_equivalent=False,
+        equivalence_rationale=(
+            "Non-equivalent: Permits RESERVE when state is OCCUPIED. Observable difference: "
+            "SUT returns Result(False, 'locker_not_available') while mutant returns Result(True, 'reserved')."
+        ),
+    ),
+    "Mutant2_AcceptWrongReservationCode": MutantMetadata(
+        name="Mutant2_AcceptWrongReservationCode",
+        description="Accepts incorrect reservation code during parcel deposit.",
+        defect_category="Credential Verification Bypass",
+        is_equivalent=False,
+        equivalence_rationale=(
+            "Non-equivalent: Accepts deposit with invalid code. Observable difference: "
+            "SUT returns Result(False, 'invalid_reservation_code') while mutant transitions to OCCUPIED."
+        ),
+    ),
+    "Mutant3_RetrieveWithoutAuth": MutantMetadata(
+        name="Mutant3_RetrieveWithoutAuth",
+        description="Allows parcel retrieval without valid authentication PIN.",
+        defect_category="Authentication Bypass",
+        is_equivalent=False,
+        equivalence_rationale=(
+            "Non-equivalent: Accepts retrieval with invalid PIN. Observable difference: "
+            "SUT returns Result(False, 'invalid_retrieval_code') while mutant transitions to AVAILABLE."
+        ),
+    ),
+    "Mutant4_DoubleRetrieve": MutantMetadata(
+        name="Mutant4_DoubleRetrieve",
+        description="Fails to clear compartment upon retrieval, allowing duplicate retrieval.",
+        defect_category="Post-Condition & Cleanup Omission",
+        is_equivalent=False,
+        equivalence_rationale=(
+            "Non-equivalent: Fails to clear locker on retrieval. Observable difference: "
+            "Snapshot state remains OCCUPIED instead of AVAILABLE, allowing duplicate retrieval."
+        ),
+    ),
+    "Mutant5_ExpireWhenNotExpired": MutantMetadata(
+        name="Mutant5_ExpireWhenNotExpired",
+        description="Prematurely expires reservation when explicit expired flag is False.",
+        defect_category="Guard Condition Omission",
+        is_equivalent=False,
+        equivalence_rationale=(
+            "Non-equivalent: Prematurely expires when expired=False. Observable difference: "
+            "SUT returns Result(False, 'not_expired') while mutant returns Result(True, 'expired')."
+        ),
+    ),
+    "Mutant6_CancelRetainsCredentials": MutantMetadata(
+        name="Mutant6_CancelRetainsCredentials",
+        description="Fails to clear customer and reservation credentials on cancel.",
+        defect_category="State Leak / Invariant Violation",
+        is_equivalent=False,
+        equivalence_rationale=(
+            "Non-equivalent: Retains credentials upon cancel. Observable difference: "
+            "Snapshot fields customer_id and reservation_code remain non-None in AVAILABLE state."
+        ),
+    ),
+    "Mutant7_MaintenanceWhenReserved": MutantMetadata(
+        name="Mutant7_MaintenanceWhenReserved",
+        description="Allows placing compartment into maintenance while reserved.",
+        defect_category="Precondition Bypass",
+        is_equivalent=False,
+        equivalence_rationale=(
+            "Non-equivalent: Allows DISABLE when RESERVED. Observable difference: "
+            "SUT returns Result(False, 'cannot_disable') while mutant transitions to MAINTENANCE."
+        ),
+    ),
+    "Mutant8_EnableWhenNotMaintenance": MutantMetadata(
+        name="Mutant8_EnableWhenNotMaintenance",
+        description="Allows enabling locker when it is not in maintenance.",
+        defect_category="Precondition Bypass",
+        is_equivalent=False,
+        equivalence_rationale=(
+            "Non-equivalent: Allows ENABLE when in AVAILABLE/RESERVED. Observable difference: "
+            "SUT returns Result(False, 'not_in_maintenance') while mutant returns Result(True, 'enabled')."
+        ),
+    ),
+    "Mutant9_DepositDuringMaintenance": MutantMetadata(
+        name="Mutant9_DepositDuringMaintenance",
+        description="Allows deposit into a compartment under maintenance.",
+        defect_category="Precondition Bypass",
+        is_equivalent=False,
+        equivalence_rationale=(
+            "Non-equivalent: Allows deposit while in MAINTENANCE. Observable difference: "
+            "SUT returns Result(False, 'not_reserved') while mutant accepts deposit and transitions to OCCUPIED."
+        ),
+    ),
+    "Mutant10_MutateOnInvalidDeposit": MutantMetadata(
+        name="Mutant10_MutateOnInvalidDeposit",
+        description="Mutates retrieval credential on rejected deposit attempt.",
+        defect_category="Side-Effect / Non-Mutation Violation",
+        is_equivalent=False,
+        equivalence_rationale=(
+            "Non-equivalent: Corrupts retrieval_code on rejected deposit. Observable difference: "
+            "Violates the non-mutation invariant on rejected operations."
+        ),
+    ),
+    "EquivalentMutant_RedundantCheck": MutantMetadata(
+        name="EquivalentMutant_RedundantCheck",
+        description="Adds redundant internal check before disabling available locker.",
+        defect_category="Syntactic Redundancy",
+        is_equivalent=True,
+        equivalence_rationale=(
+            "Semantically equivalent: Produces identical outputs and state transitions "
+            "for all valid and invalid operation sequences."
+        ),
+    ),
+}
+
 MUTANT_DESCRIPTIONS: Dict[str, str] = {
-    "Mutant1_ReserveOccupied": "Allows reserving compartment when it is already OCCUPIED.",
-    "Mutant2_AcceptWrongReservationCode": "Accepts incorrect reservation code during parcel deposit.",
-    "Mutant3_RetrieveWithoutAuth": "Allows parcel retrieval without valid authentication PIN.",
-    "Mutant4_DoubleRetrieve": "Fails to clear compartment upon retrieval, allowing duplicate retrieval.",
-    "Mutant5_ExpireWhenNotExpired": "Prematurely expires reservation when explicit expired flag is False.",
-    "Mutant6_CancelRetainsCredentials": "Fails to clear customer and reservation credentials on cancel.",
-    "Mutant7_MaintenanceWhenReserved": "Allows placing compartment into maintenance while reserved.",
-    "Mutant8_EnableWhenNotMaintenance": "Allows enabling locker when it is not in maintenance.",
-    "Mutant9_DepositDuringMaintenance": "Allows deposit into a compartment under maintenance.",
-    "Mutant10_MutateOnInvalidDeposit": "Mutates retrieval credential on rejected deposit attempt.",
+    m_name: meta.description for m_name, meta in ALL_MUTANT_METADATA.items()
 }
