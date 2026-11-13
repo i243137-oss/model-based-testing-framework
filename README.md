@@ -9,7 +9,6 @@ An end-to-end, academic-grade Model-Based Testing (MBT) framework for a Smart Pa
 ```
 model-based-testing-framework/
 ├── Assignment Statemachine.pdf   # Official assignment specification
-├── instructions.md               # Detailed academic implementation requirements
 ├── README.md                     # Framework documentation & run instructions
 ├── report.md                     # Full Technical Report with experimental findings
 ├── data/

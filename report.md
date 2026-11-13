@@ -304,8 +304,8 @@ Actual terminal outputs and generated charts from the test runs on the testing m
 - **Execution Time Breakdown**:
   ![Execution Time Breakdown](results/execution_time_comparison.png)
 
-### 12.3 Demonstration Video Placeholder
-- Video Link / File Name: `[INSERT_DEMO_RECORDING_LINK_OR_FILENAME]`
+### 12.3 Demonstration Video Link & Deliverable
+- Demonstration Video Link: [Google Drive Demonstration Folder](https://drive.google.com/drive/folders/1-Kb7thnMnVmejFaTyHMmRMHE4Wgzs9rp?usp=drive_link)
 - Demonstration Checklist:
   1. Show test suite execution (`python -m unittest discover -s tests -v`).
   2. Show generation of test sequences using all 3 strategies.
