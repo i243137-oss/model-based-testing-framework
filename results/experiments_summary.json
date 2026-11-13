@@ -7,9 +7,9 @@
     "mean_mutation_score": 100.0,
     "std_mutation_score": 0.0,
     "mean_detected_mutants": 10,
-    "mean_generation_time": 0.2017,
-    "mean_sut_exec_time": 0.3172,
-    "mean_mut_exec_time": 0.0508
+    "mean_generation_time": 0.0714,
+    "mean_sut_exec_time": 0.1184,
+    "mean_mut_exec_time": 0.0178
   },
   "CoverageGuided": {
     "mean_state_cov": 100.0,
@@ -19,9 +19,9 @@
     "mean_mutation_score": 100.0,
     "std_mutation_score": 0.0,
     "mean_detected_mutants": 10,
-    "mean_generation_time": 2.2369,
-    "mean_sut_exec_time": 0.2928,
-    "mean_mut_exec_time": 0.0109
+    "mean_generation_time": 1.0196,
+    "mean_sut_exec_time": 0.1174,
+    "mean_mut_exec_time": 0.0036
   },
   "TransitionPair": {
     "mean_state_cov": 100.0,
@@ -31,8 +31,8 @@
     "mean_mutation_score": 90.0,
     "std_mutation_score": 0.0,
     "mean_detected_mutants": 9,
-    "mean_generation_time": 0.3729,
-    "mean_sut_exec_time": 0.4415,
-    "mean_mut_exec_time": 0.5086
+    "mean_generation_time": 0.1354,
+    "mean_sut_exec_time": 0.146,
+    "mean_mut_exec_time": 0.1263
   }
 }

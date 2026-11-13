@@ -288,11 +288,22 @@ During your individual viva, if the instructor introduces an unseen requirement:
   1. Add `EXPIRED = "EXPIRED"` to `State` enum in `locker/types.py`.
   2. In `locker/model.py`, update `EXPIRE` transition to enter `State.EXPIRED` instead of directly `AVAILABLE`.
 
-### 12.2 Screenshots & Terminal Outputs Placeholder
-*Take genuine terminal screenshots on your machine and insert here:*
-- `[INSERT_SCREENSHOT_UNIT_TESTS: python -m unittest discover -s tests -v]`
-- `[INSERT_SCREENSHOT_EXPERIMENTS: python experiments/run_experiments.py --sequences 500 --max-length 20 --seeds 101 202 303 404 505 --output-dir results]`
-- `[INSERT_SCREENSHOT_CHARTS: results/coverage_comparison.png]`
+### 12.2 Screenshots & Terminal Outputs
+Actual terminal outputs and generated charts from the test runs on the testing machine:
+
+#### 1. Full Unit & Multi-Oracle Test Suite Execution (41 Tests Passing)
+![Unit Tests Execution (41 tests passing)](docs/screenshots/unit_tests_run.png)
+
+#### 2. Controlled Experimental Evaluation (500 Sequences, 5 Seeds)
+![Controlled Experiments Execution (500 sequences, 5 seeds)](docs/screenshots/experiments_run.png)
+
+#### 3. Visual Charts Generated from Experimental Evaluation
+- **Coverage Comparison**:
+  ![Coverage Comparison Across Strategies](results/coverage_comparison.png)
+- **Mutation Score Comparison**:
+  ![Mutation Score Comparison](results/mutation_score_comparison.png)
+- **Execution Time Breakdown**:
+  ![Execution Time Breakdown](results/execution_time_comparison.png)
 
 ### 12.3 Demonstration Video Placeholder
 - Video Link / File Name: `[INSERT_DEMO_RECORDING_LINK_OR_FILENAME]`

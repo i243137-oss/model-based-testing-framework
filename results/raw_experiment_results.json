@@ -4,10 +4,10 @@
     "seed": 101,
     "num_sequences": 500,
     "max_length": 20,
-    "generation_time_sec": 0.2644633000018075,
-    "sut_execution_time_sec": 0.3986718000014662,
-    "mutation_execution_time_sec": 0.07784380000521196,
-    "total_time_sec": 0.7409789000084857,
+    "generation_time_sec": 0.07527300000219839,
+    "sut_execution_time_sec": 0.12804990000586258,
+    "mutation_execution_time_sec": 0.01682509999955073,
+    "total_time_sec": 0.2201480000076117,
     "sut_passed_tests": 500,
     "sut_failed_tests": 0,
     "coverage": {
@@ -129,10 +129,10 @@
     "seed": 202,
     "num_sequences": 500,
     "max_length": 20,
-    "generation_time_sec": 0.24364220000279602,
-    "sut_execution_time_sec": 0.3979951000001165,
-    "mutation_execution_time_sec": 0.03259809999872232,
-    "total_time_sec": 0.6742354000016348,
+    "generation_time_sec": 0.056319600000279024,
+    "sut_execution_time_sec": 0.10494939999625785,
+    "mutation_execution_time_sec": 0.0166555999967386,
+    "total_time_sec": 0.17792459999327548,
     "sut_passed_tests": 500,
     "sut_failed_tests": 0,
     "coverage": {
@@ -254,10 +254,10 @@
     "seed": 303,
     "num_sequences": 500,
     "max_length": 20,
-    "generation_time_sec": 0.17062969999824418,
-    "sut_execution_time_sec": 0.2555094000053941,
-    "mutation_execution_time_sec": 0.03450890000385698,
-    "total_time_sec": 0.4606480000074953,
+    "generation_time_sec": 0.07652499999676365,
+    "sut_execution_time_sec": 0.12528680000104941,
+    "mutation_execution_time_sec": 0.009964700002456084,
+    "total_time_sec": 0.21177650000026915,
     "sut_passed_tests": 500,
     "sut_failed_tests": 0,
     "coverage": {
@@ -379,10 +379,10 @@
     "seed": 404,
     "num_sequences": 500,
     "max_length": 20,
-    "generation_time_sec": 0.18000770000071498,
-    "sut_execution_time_sec": 0.25452030000451487,
-    "mutation_execution_time_sec": 0.07594840000092518,
-    "total_time_sec": 0.510476400006155,
+    "generation_time_sec": 0.07966989999840735,
+    "sut_execution_time_sec": 0.11678779999783728,
+    "mutation_execution_time_sec": 0.027999799996905494,
+    "total_time_sec": 0.22445749999315012,
     "sut_passed_tests": 500,
     "sut_failed_tests": 0,
     "coverage": {
@@ -504,10 +504,10 @@
     "seed": 505,
     "num_sequences": 500,
     "max_length": 20,
-    "generation_time_sec": 0.14971370000421302,
-    "sut_execution_time_sec": 0.2792591999968863,
-    "mutation_execution_time_sec": 0.0331542999992962,
-    "total_time_sec": 0.46212720000039553,
+    "generation_time_sec": 0.06900319999840576,
+    "sut_execution_time_sec": 0.11695229999895673,
+    "mutation_execution_time_sec": 0.017689799999061506,
+    "total_time_sec": 0.203645299996424,
     "sut_passed_tests": 500,
     "sut_failed_tests": 0,
     "coverage": {
@@ -629,10 +629,10 @@
     "seed": 101,
     "num_sequences": 500,
     "max_length": 20,
-    "generation_time_sec": 2.048350600001868,
-    "sut_execution_time_sec": 0.24811610000324436,
-    "mutation_execution_time_sec": 0.010436399999889545,
-    "total_time_sec": 2.3069031000050018,
+    "generation_time_sec": 1.0054072999992059,
+    "sut_execution_time_sec": 0.10230330000194954,
+    "mutation_execution_time_sec": 0.0030677999966428615,
+    "total_time_sec": 1.1107783999977983,
     "sut_passed_tests": 500,
     "sut_failed_tests": 0,
     "coverage": {
@@ -754,10 +754,10 @@
     "seed": 202,
     "num_sequences": 500,
     "max_length": 20,
-    "generation_time_sec": 1.9223727999997209,
-    "sut_execution_time_sec": 0.1864782999982708,
-    "mutation_execution_time_sec": 0.008160599994880613,
-    "total_time_sec": 2.1170116999928723,
+    "generation_time_sec": 0.9850838000056683,
+    "sut_execution_time_sec": 0.10923799999727635,
+    "mutation_execution_time_sec": 0.003383400005986914,
+    "total_time_sec": 1.0977052000089316,
     "sut_passed_tests": 500,
     "sut_failed_tests": 0,
     "coverage": {
@@ -879,10 +879,10 @@
     "seed": 303,
     "num_sequences": 500,
     "max_length": 20,
-    "generation_time_sec": 1.8362158000018098,
-    "sut_execution_time_sec": 0.22781460000260267,
-    "mutation_execution_time_sec": 0.004188799997791648,
-    "total_time_sec": 2.068219200002204,
+    "generation_time_sec": 1.010937400002149,
+    "sut_execution_time_sec": 0.14716369999950984,
+    "mutation_execution_time_sec": 0.00404780000098981,
+    "total_time_sec": 1.1621489000026486,
     "sut_passed_tests": 500,
     "sut_failed_tests": 0,
     "coverage": {
@@ -1004,10 +1004,10 @@
     "seed": 404,
     "num_sequences": 500,
     "max_length": 20,
-    "generation_time_sec": 2.4769856999992044,
-    "sut_execution_time_sec": 0.2790813999963575,
-    "mutation_execution_time_sec": 0.011264400003710762,
-    "total_time_sec": 2.7673314999992726,
+    "generation_time_sec": 1.0511456000022008,
+    "sut_execution_time_sec": 0.09752860000298824,
+    "mutation_execution_time_sec": 0.0030299999998533167,
+    "total_time_sec": 1.1517042000050424,
     "sut_passed_tests": 500,
     "sut_failed_tests": 0,
     "coverage": {
@@ -1129,10 +1129,10 @@
     "seed": 505,
     "num_sequences": 500,
     "max_length": 20,
-    "generation_time_sec": 2.9003467000002274,
-    "sut_execution_time_sec": 0.5223523999957251,
-    "mutation_execution_time_sec": 0.02067469999747118,
-    "total_time_sec": 3.4433737999934237,
+    "generation_time_sec": 1.0452737000014167,
+    "sut_execution_time_sec": 0.13098239999817451,
+    "mutation_execution_time_sec": 0.004241999995429069,
+    "total_time_sec": 1.1804980999950203,
     "sut_passed_tests": 500,
     "sut_failed_tests": 0,
     "coverage": {
@@ -1254,10 +1254,10 @@
     "seed": 101,
     "num_sequences": 500,
     "max_length": 20,
-    "generation_time_sec": 0.37014150000322843,
-    "sut_execution_time_sec": 0.3112777000060305,
-    "mutation_execution_time_sec": 0.36541939999733586,
-    "total_time_sec": 1.0468386000065948,
+    "generation_time_sec": 0.12754940000013448,
+    "sut_execution_time_sec": 0.12860610000643646,
+    "mutation_execution_time_sec": 0.12167069999850355,
+    "total_time_sec": 0.3778262000050745,
     "sut_passed_tests": 500,
     "sut_failed_tests": 0,
     "coverage": {
@@ -1284,8 +1284,8 @@
         "Mutant1_ReserveOccupied": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "TransitionPair_S101_T42",
-          "divergence_reason": "Failure at step 5 (Operation.RESERVE): Result divergence (expected Result(accepted=False, message='locker_not_available'), got Result(accepted=True, message='reserved')); Snapshot divergence (expected Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C2', reservation_code='R-C2', retrieval_code='P-C2'), got Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C9', reservation_code='R-C9', retrieval_code='P-C2')); Domain invariant violation (RESERVED state must not have a retrieval_code before deposit)",
+          "killing_test": "TransitionPair_S101_T8",
+          "divergence_reason": "Failure at step 13 (Operation.RESERVE): Result divergence (expected Result(accepted=False, message='locker_not_available'), got Result(accepted=True, message='reserved')); Snapshot divergence (expected Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C4', reservation_code='R-C4', retrieval_code='P-C4'), got Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C9', reservation_code='R-C9', retrieval_code='P-C4')); Domain invariant violation (RESERVED state must not have a retrieval_code before deposit)",
           "description": "Allows reserving compartment when it is already OCCUPIED.",
           "defect_category": "Precondition Bypass",
           "equivalence_rationale": "Non-equivalent: Permits RESERVE when state is OCCUPIED. Observable difference: SUT returns Result(False, 'locker_not_available') while mutant returns Result(True, 'reserved')."
@@ -1293,8 +1293,8 @@
         "Mutant2_AcceptWrongReservationCode": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "TransitionPair_S101_T1",
-          "divergence_reason": "Failure at step 7 (Operation.DEPOSIT): Result divergence (expected Result(accepted=False, message='invalid_reservation_code'), got Result(accepted=True, message='deposited')); Snapshot divergence (expected Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C1', reservation_code='R-C1', retrieval_code=None), got Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C1', reservation_code='R-C1', retrieval_code='P-C1'))",
+          "killing_test": "TransitionPair_S101_T4",
+          "divergence_reason": "Failure at step 12 (Operation.DEPOSIT): Result divergence (expected Result(accepted=False, message='invalid_reservation_code'), got Result(accepted=True, message='deposited')); Snapshot divergence (expected Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C4', reservation_code='R-C4', retrieval_code=None), got Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C4', reservation_code='R-C4', retrieval_code='P-C4'))",
           "description": "Accepts incorrect reservation code during parcel deposit.",
           "defect_category": "Credential Verification Bypass",
           "equivalence_rationale": "Non-equivalent: Accepts deposit with invalid code. Observable difference: SUT returns Result(False, 'invalid_reservation_code') while mutant transitions to OCCUPIED."
@@ -1302,7 +1302,7 @@
         "Mutant3_RetrieveWithoutAuth": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "TransitionPair_S101_T20",
+          "killing_test": "TransitionPair_S101_T12",
           "divergence_reason": "Failure at step 11 (Operation.RETRIEVE): Result divergence (expected Result(accepted=False, message='invalid_retrieval_code'), got Result(accepted=True, message='retrieved')); Snapshot divergence (expected Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C4', reservation_code='R-C4', retrieval_code='P-C4'), got Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None))",
           "description": "Allows parcel retrieval without valid authentication PIN.",
           "defect_category": "Authentication Bypass",
@@ -1312,7 +1312,7 @@
           "detected": true,
           "equivalent": false,
           "killing_test": "TransitionPair_S101_T1",
-          "divergence_reason": "Failure at step 10 (Operation.RETRIEVE): Snapshot divergence (expected Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C1', reservation_code='R-C1', retrieval_code='P-C1')); Cleanup invariant violation (credentials retained after successful Operation.RETRIEVE: Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C1', reservation_code='R-C1', retrieval_code='P-C1'))",
+          "divergence_reason": "Failure at step 6 (Operation.RETRIEVE): Snapshot divergence (expected Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C1', reservation_code='R-C1', retrieval_code='P-C1')); Cleanup invariant violation (credentials retained after successful Operation.RETRIEVE: Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C1', reservation_code='R-C1', retrieval_code='P-C1'))",
           "description": "Fails to clear compartment upon retrieval, allowing duplicate retrieval.",
           "defect_category": "Post-Condition & Cleanup Omission",
           "equivalence_rationale": "Non-equivalent: Fails to clear locker on retrieval. Observable difference: Snapshot state remains OCCUPIED instead of AVAILABLE, allowing duplicate retrieval."
@@ -1320,8 +1320,8 @@
         "Mutant5_ExpireWhenNotExpired": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "TransitionPair_S101_T3",
-          "divergence_reason": "Failure at step 9 (Operation.EXPIRE): Result divergence (expected Result(accepted=False, message='not_expired'), got Result(accepted=True, message='expired')); Snapshot divergence (expected Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C3', reservation_code='R-C3', retrieval_code=None), got Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None))",
+          "killing_test": "TransitionPair_S101_T8",
+          "divergence_reason": "Failure at step 6 (Operation.EXPIRE): Result divergence (expected Result(accepted=False, message='not_expired'), got Result(accepted=True, message='expired')); Snapshot divergence (expected Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C4', reservation_code='R-C4', retrieval_code=None), got Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None))",
           "description": "Prematurely expires reservation when explicit expired flag is False.",
           "defect_category": "Guard Condition Omission",
           "equivalence_rationale": "Non-equivalent: Prematurely expires when expired=False. Observable difference: SUT returns Result(False, 'not_expired') while mutant returns Result(True, 'expired')."
@@ -1347,8 +1347,8 @@
         "Mutant8_EnableWhenNotMaintenance": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "TransitionPair_S101_T2",
-          "divergence_reason": "Failure at step 11 (Operation.ENABLE): Result divergence (expected Result(accepted=False, message='not_in_maintenance'), got Result(accepted=True, message='enabled')); Snapshot divergence (expected Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C2', reservation_code='R-C2', retrieval_code=None), got Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id='C2', reservation_code='R-C2', retrieval_code=None)); Domain invariant violation (AVAILABLE state must not retain customer or credential information)",
+          "killing_test": "TransitionPair_S101_T1",
+          "divergence_reason": "Failure at step 7 (Operation.ENABLE): Result divergence (expected Result(accepted=False, message='not_in_maintenance'), got Result(accepted=True, message='enabled'))",
           "description": "Allows enabling locker when it is not in maintenance.",
           "defect_category": "Precondition Bypass",
           "equivalence_rationale": "Non-equivalent: Allows ENABLE when in AVAILABLE/RESERVED. Observable difference: SUT returns Result(False, 'not_in_maintenance') while mutant returns Result(True, 'enabled')."
@@ -1365,8 +1365,8 @@
         "Mutant10_MutateOnInvalidDeposit": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "TransitionPair_S101_T1",
-          "divergence_reason": "Failure at step 7 (Operation.DEPOSIT): Snapshot divergence (expected Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C1', reservation_code='R-C1', retrieval_code=None), got Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C1', reservation_code='R-C1', retrieval_code='CORRUPTED_CODE')); Domain invariant violation (RESERVED state must not have a retrieval_code before deposit); Non-mutation invariant violation (rejected operation mutated SUT from Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C1', reservation_code='R-C1', retrieval_code=None) to Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C1', reservation_code='R-C1', retrieval_code='CORRUPTED_CODE'))",
+          "killing_test": "TransitionPair_S101_T4",
+          "divergence_reason": "Failure at step 12 (Operation.DEPOSIT): Snapshot divergence (expected Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C4', reservation_code='R-C4', retrieval_code=None), got Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C4', reservation_code='R-C4', retrieval_code='CORRUPTED_CODE')); Domain invariant violation (RESERVED state must not have a retrieval_code before deposit); Non-mutation invariant violation (rejected operation mutated SUT from Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C4', reservation_code='R-C4', retrieval_code=None) to Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C4', reservation_code='R-C4', retrieval_code='CORRUPTED_CODE'))",
           "description": "Mutates retrieval credential on rejected deposit attempt.",
           "defect_category": "Side-Effect / Non-Mutation Violation",
           "equivalence_rationale": "Non-equivalent: Corrupts retrieval_code on rejected deposit. Observable difference: Violates the non-mutation invariant on rejected operations."
@@ -1379,10 +1379,10 @@
     "seed": 202,
     "num_sequences": 500,
     "max_length": 20,
-    "generation_time_sec": 0.3651488000032259,
-    "sut_execution_time_sec": 0.39707649999763817,
-    "mutation_execution_time_sec": 0.42321150000498164,
-    "total_time_sec": 1.1854368000058457,
+    "generation_time_sec": 0.1515261999957147,
+    "sut_execution_time_sec": 0.14235309999639867,
+    "mutation_execution_time_sec": 0.11919940000370843,
+    "total_time_sec": 0.4130786999958218,
     "sut_passed_tests": 500,
     "sut_failed_tests": 0,
     "coverage": {
@@ -1409,8 +1409,8 @@
         "Mutant1_ReserveOccupied": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "TransitionPair_S202_T94",
-          "divergence_reason": "Failure at step 6 (Operation.RESERVE): Result divergence (expected Result(accepted=False, message='locker_not_available'), got Result(accepted=True, message='reserved')); Snapshot divergence (expected Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C2', reservation_code='R-C2', retrieval_code='P-C2'), got Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C9', reservation_code='R-C9', retrieval_code='P-C2')); Domain invariant violation (RESERVED state must not have a retrieval_code before deposit)",
+          "killing_test": "TransitionPair_S202_T15",
+          "divergence_reason": "Failure at step 8 (Operation.RESERVE): Result divergence (expected Result(accepted=False, message='locker_not_available'), got Result(accepted=True, message='reserved')); Snapshot divergence (expected Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C3', reservation_code='R-C3', retrieval_code='P-C3'), got Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C9', reservation_code='R-C9', retrieval_code='P-C3')); Domain invariant violation (RESERVED state must not have a retrieval_code before deposit)",
           "description": "Allows reserving compartment when it is already OCCUPIED.",
           "defect_category": "Precondition Bypass",
           "equivalence_rationale": "Non-equivalent: Permits RESERVE when state is OCCUPIED. Observable difference: SUT returns Result(False, 'locker_not_available') while mutant returns Result(True, 'reserved')."
@@ -1418,8 +1418,8 @@
         "Mutant2_AcceptWrongReservationCode": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "TransitionPair_S202_T5",
-          "divergence_reason": "Failure at step 6 (Operation.DEPOSIT): Result divergence (expected Result(accepted=False, message='invalid_reservation_code'), got Result(accepted=True, message='deposited')); Snapshot divergence (expected Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C1', reservation_code='R-C1', retrieval_code=None), got Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C1', reservation_code='R-C1', retrieval_code='P-C1'))",
+          "killing_test": "TransitionPair_S202_T7",
+          "divergence_reason": "Failure at step 1 (Operation.DEPOSIT): Result divergence (expected Result(accepted=False, message='invalid_reservation_code'), got Result(accepted=True, message='deposited')); Snapshot divergence (expected Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C3', reservation_code='R-C3', retrieval_code=None), got Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C3', reservation_code='R-C3', retrieval_code='P-C3'))",
           "description": "Accepts incorrect reservation code during parcel deposit.",
           "defect_category": "Credential Verification Bypass",
           "equivalence_rationale": "Non-equivalent: Accepts deposit with invalid code. Observable difference: SUT returns Result(False, 'invalid_reservation_code') while mutant transitions to OCCUPIED."
@@ -1427,8 +1427,8 @@
         "Mutant3_RetrieveWithoutAuth": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "TransitionPair_S202_T92",
-          "divergence_reason": "Failure at step 9 (Operation.RETRIEVE): Result divergence (expected Result(accepted=False, message='invalid_retrieval_code'), got Result(accepted=True, message='retrieved')); Snapshot divergence (expected Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C4', reservation_code='R-C4', retrieval_code='P-C4'), got Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None))",
+          "killing_test": "TransitionPair_S202_T3",
+          "divergence_reason": "Failure at step 4 (Operation.RETRIEVE): Result divergence (expected Result(accepted=False, message='invalid_retrieval_code'), got Result(accepted=True, message='retrieved')); Snapshot divergence (expected Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C3', reservation_code='R-C3', retrieval_code='P-C3'), got Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None))",
           "description": "Allows parcel retrieval without valid authentication PIN.",
           "defect_category": "Authentication Bypass",
           "equivalence_rationale": "Non-equivalent: Accepts retrieval with invalid PIN. Observable difference: SUT returns Result(False, 'invalid_retrieval_code') while mutant transitions to AVAILABLE."
@@ -1437,7 +1437,7 @@
           "detected": true,
           "equivalent": false,
           "killing_test": "TransitionPair_S202_T1",
-          "divergence_reason": "Failure at step 6 (Operation.RETRIEVE): Snapshot divergence (expected Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C1', reservation_code='R-C1', retrieval_code='P-C1')); Cleanup invariant violation (credentials retained after successful Operation.RETRIEVE: Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C1', reservation_code='R-C1', retrieval_code='P-C1'))",
+          "divergence_reason": "Failure at step 9 (Operation.RETRIEVE): Snapshot divergence (expected Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C1', reservation_code='R-C1', retrieval_code='P-C1')); Cleanup invariant violation (credentials retained after successful Operation.RETRIEVE: Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C1', reservation_code='R-C1', retrieval_code='P-C1'))",
           "description": "Fails to clear compartment upon retrieval, allowing duplicate retrieval.",
           "defect_category": "Post-Condition & Cleanup Omission",
           "equivalence_rationale": "Non-equivalent: Fails to clear locker on retrieval. Observable difference: Snapshot state remains OCCUPIED instead of AVAILABLE, allowing duplicate retrieval."
@@ -1445,8 +1445,8 @@
         "Mutant5_ExpireWhenNotExpired": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "TransitionPair_S202_T7",
-          "divergence_reason": "Failure at step 17 (Operation.EXPIRE): Result divergence (expected Result(accepted=False, message='not_expired'), got Result(accepted=True, message='expired')); Snapshot divergence (expected Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C3', reservation_code='R-C3', retrieval_code=None), got Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None))",
+          "killing_test": "TransitionPair_S202_T4",
+          "divergence_reason": "Failure at step 4 (Operation.EXPIRE): Result divergence (expected Result(accepted=False, message='not_expired'), got Result(accepted=True, message='expired')); Snapshot divergence (expected Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C4', reservation_code='R-C4', retrieval_code=None), got Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None))",
           "description": "Prematurely expires reservation when explicit expired flag is False.",
           "defect_category": "Guard Condition Omission",
           "equivalence_rationale": "Non-equivalent: Prematurely expires when expired=False. Observable difference: SUT returns Result(False, 'not_expired') while mutant returns Result(True, 'expired')."
@@ -1472,8 +1472,8 @@
         "Mutant8_EnableWhenNotMaintenance": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "TransitionPair_S202_T13",
-          "divergence_reason": "Failure at step 0 (Operation.ENABLE): Result divergence (expected Result(accepted=False, message='not_in_maintenance'), got Result(accepted=True, message='enabled'))",
+          "killing_test": "TransitionPair_S202_T3",
+          "divergence_reason": "Failure at step 9 (Operation.ENABLE): Result divergence (expected Result(accepted=False, message='not_in_maintenance'), got Result(accepted=True, message='enabled'))",
           "description": "Allows enabling locker when it is not in maintenance.",
           "defect_category": "Precondition Bypass",
           "equivalence_rationale": "Non-equivalent: Allows ENABLE when in AVAILABLE/RESERVED. Observable difference: SUT returns Result(False, 'not_in_maintenance') while mutant returns Result(True, 'enabled')."
@@ -1481,8 +1481,8 @@
         "Mutant9_DepositDuringMaintenance": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "TransitionPair_S202_T4",
-          "divergence_reason": "Failure at step 1 (Operation.DEPOSIT): Result divergence (expected Result(accepted=False, message='not_reserved'), got Result(accepted=True, message='deposited')); Snapshot divergence (expected Snapshot(state=<State.MAINTENANCE: 'MAINTENANCE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id=None, reservation_code=None, retrieval_code='P-None')); Domain invariant violation (OCCUPIED state must have an associated customer_id)",
+          "killing_test": "TransitionPair_S202_T7",
+          "divergence_reason": "Failure at step 18 (Operation.DEPOSIT): Result divergence (expected Result(accepted=False, message='not_reserved'), got Result(accepted=True, message='deposited')); Snapshot divergence (expected Snapshot(state=<State.MAINTENANCE: 'MAINTENANCE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id=None, reservation_code=None, retrieval_code='P-None')); Domain invariant violation (OCCUPIED state must have an associated customer_id)",
           "description": "Allows deposit into a compartment under maintenance.",
           "defect_category": "Precondition Bypass",
           "equivalence_rationale": "Non-equivalent: Allows deposit while in MAINTENANCE. Observable difference: SUT returns Result(False, 'not_reserved') while mutant accepts deposit and transitions to OCCUPIED."
@@ -1490,8 +1490,8 @@
         "Mutant10_MutateOnInvalidDeposit": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "TransitionPair_S202_T5",
-          "divergence_reason": "Failure at step 6 (Operation.DEPOSIT): Snapshot divergence (expected Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C1', reservation_code='R-C1', retrieval_code=None), got Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C1', reservation_code='R-C1', retrieval_code='CORRUPTED_CODE')); Domain invariant violation (RESERVED state must not have a retrieval_code before deposit); Non-mutation invariant violation (rejected operation mutated SUT from Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C1', reservation_code='R-C1', retrieval_code=None) to Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C1', reservation_code='R-C1', retrieval_code='CORRUPTED_CODE'))",
+          "killing_test": "TransitionPair_S202_T7",
+          "divergence_reason": "Failure at step 1 (Operation.DEPOSIT): Snapshot divergence (expected Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C3', reservation_code='R-C3', retrieval_code=None), got Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C3', reservation_code='R-C3', retrieval_code='CORRUPTED_CODE')); Domain invariant violation (RESERVED state must not have a retrieval_code before deposit); Non-mutation invariant violation (rejected operation mutated SUT from Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C3', reservation_code='R-C3', retrieval_code=None) to Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C3', reservation_code='R-C3', retrieval_code='CORRUPTED_CODE'))",
           "description": "Mutates retrieval credential on rejected deposit attempt.",
           "defect_category": "Side-Effect / Non-Mutation Violation",
           "equivalence_rationale": "Non-equivalent: Corrupts retrieval_code on rejected deposit. Observable difference: Violates the non-mutation invariant on rejected operations."
@@ -1504,10 +1504,10 @@
     "seed": 303,
     "num_sequences": 500,
     "max_length": 20,
-    "generation_time_sec": 0.3736709000004339,
-    "sut_execution_time_sec": 0.5960638999968069,
-    "mutation_execution_time_sec": 0.49591050000162795,
-    "total_time_sec": 1.4656452999988687,
+    "generation_time_sec": 0.1278664999990724,
+    "sut_execution_time_sec": 0.14350950000516605,
+    "mutation_execution_time_sec": 0.13220210000145016,
+    "total_time_sec": 0.4035781000056886,
     "sut_passed_tests": 500,
     "sut_failed_tests": 0,
     "coverage": {
@@ -1534,8 +1534,8 @@
         "Mutant1_ReserveOccupied": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "TransitionPair_S303_T40",
-          "divergence_reason": "Failure at step 12 (Operation.RESERVE): Result divergence (expected Result(accepted=False, message='locker_not_available'), got Result(accepted=True, message='reserved')); Snapshot divergence (expected Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C4', reservation_code='R-C4', retrieval_code='P-C4'), got Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C9', reservation_code='R-C9', retrieval_code='P-C4')); Domain invariant violation (RESERVED state must not have a retrieval_code before deposit)",
+          "killing_test": "TransitionPair_S303_T27",
+          "divergence_reason": "Failure at step 4 (Operation.RESERVE): Result divergence (expected Result(accepted=False, message='locker_not_available'), got Result(accepted=True, message='reserved')); Snapshot divergence (expected Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C3', reservation_code='R-C3', retrieval_code='P-C3'), got Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C9', reservation_code='R-C9', retrieval_code='P-C3')); Domain invariant violation (RESERVED state must not have a retrieval_code before deposit)",
           "description": "Allows reserving compartment when it is already OCCUPIED.",
           "defect_category": "Precondition Bypass",
           "equivalence_rationale": "Non-equivalent: Permits RESERVE when state is OCCUPIED. Observable difference: SUT returns Result(False, 'locker_not_available') while mutant returns Result(True, 'reserved')."
@@ -1543,8 +1543,8 @@
         "Mutant2_AcceptWrongReservationCode": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "TransitionPair_S303_T5",
-          "divergence_reason": "Failure at step 3 (Operation.DEPOSIT): Result divergence (expected Result(accepted=False, message='invalid_reservation_code'), got Result(accepted=True, message='deposited')); Snapshot divergence (expected Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C1', reservation_code='R-C1', retrieval_code=None), got Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C1', reservation_code='R-C1', retrieval_code='P-C1'))",
+          "killing_test": "TransitionPair_S303_T6",
+          "divergence_reason": "Failure at step 9 (Operation.DEPOSIT): Result divergence (expected Result(accepted=False, message='invalid_reservation_code'), got Result(accepted=True, message='deposited')); Snapshot divergence (expected Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C2', reservation_code='R-C2', retrieval_code=None), got Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C2', reservation_code='R-C2', retrieval_code='P-C2'))",
           "description": "Accepts incorrect reservation code during parcel deposit.",
           "defect_category": "Credential Verification Bypass",
           "equivalence_rationale": "Non-equivalent: Accepts deposit with invalid code. Observable difference: SUT returns Result(False, 'invalid_reservation_code') while mutant transitions to OCCUPIED."
@@ -1552,8 +1552,8 @@
         "Mutant3_RetrieveWithoutAuth": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "TransitionPair_S303_T17",
-          "divergence_reason": "Failure at step 19 (Operation.RETRIEVE): Result divergence (expected Result(accepted=False, message='invalid_retrieval_code'), got Result(accepted=True, message='retrieved')); Snapshot divergence (expected Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C1', reservation_code='R-C1', retrieval_code='P-C1'), got Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None))",
+          "killing_test": "TransitionPair_S303_T52",
+          "divergence_reason": "Failure at step 14 (Operation.RETRIEVE): Result divergence (expected Result(accepted=False, message='invalid_retrieval_code'), got Result(accepted=True, message='retrieved')); Snapshot divergence (expected Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C4', reservation_code='R-C4', retrieval_code='P-C4'), got Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None))",
           "description": "Allows parcel retrieval without valid authentication PIN.",
           "defect_category": "Authentication Bypass",
           "equivalence_rationale": "Non-equivalent: Accepts retrieval with invalid PIN. Observable difference: SUT returns Result(False, 'invalid_retrieval_code') while mutant transitions to AVAILABLE."
@@ -1562,7 +1562,7 @@
           "detected": true,
           "equivalent": false,
           "killing_test": "TransitionPair_S303_T1",
-          "divergence_reason": "Failure at step 11 (Operation.RETRIEVE): Snapshot divergence (expected Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C1', reservation_code='R-C1', retrieval_code='P-C1')); Cleanup invariant violation (credentials retained after successful Operation.RETRIEVE: Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C1', reservation_code='R-C1', retrieval_code='P-C1'))",
+          "divergence_reason": "Failure at step 8 (Operation.RETRIEVE): Snapshot divergence (expected Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C1', reservation_code='R-C1', retrieval_code='P-C1')); Cleanup invariant violation (credentials retained after successful Operation.RETRIEVE: Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C1', reservation_code='R-C1', retrieval_code='P-C1'))",
           "description": "Fails to clear compartment upon retrieval, allowing duplicate retrieval.",
           "defect_category": "Post-Condition & Cleanup Omission",
           "equivalence_rationale": "Non-equivalent: Fails to clear locker on retrieval. Observable difference: Snapshot state remains OCCUPIED instead of AVAILABLE, allowing duplicate retrieval."
@@ -1570,8 +1570,8 @@
         "Mutant5_ExpireWhenNotExpired": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "TransitionPair_S303_T13",
-          "divergence_reason": "Failure at step 11 (Operation.EXPIRE): Result divergence (expected Result(accepted=False, message='not_expired'), got Result(accepted=True, message='expired')); Snapshot divergence (expected Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C1', reservation_code='R-C1', retrieval_code=None), got Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None))",
+          "killing_test": "TransitionPair_S303_T11",
+          "divergence_reason": "Failure at step 4 (Operation.EXPIRE): Result divergence (expected Result(accepted=False, message='not_expired'), got Result(accepted=True, message='expired')); Snapshot divergence (expected Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C3', reservation_code='R-C3', retrieval_code=None), got Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None))",
           "description": "Prematurely expires reservation when explicit expired flag is False.",
           "defect_category": "Guard Condition Omission",
           "equivalence_rationale": "Non-equivalent: Prematurely expires when expired=False. Observable difference: SUT returns Result(False, 'not_expired') while mutant returns Result(True, 'expired')."
@@ -1598,7 +1598,7 @@
           "detected": true,
           "equivalent": false,
           "killing_test": "TransitionPair_S303_T2",
-          "divergence_reason": "Failure at step 0 (Operation.ENABLE): Result divergence (expected Result(accepted=False, message='not_in_maintenance'), got Result(accepted=True, message='enabled'))",
+          "divergence_reason": "Failure at step 7 (Operation.ENABLE): Result divergence (expected Result(accepted=False, message='not_in_maintenance'), got Result(accepted=True, message='enabled'))",
           "description": "Allows enabling locker when it is not in maintenance.",
           "defect_category": "Precondition Bypass",
           "equivalence_rationale": "Non-equivalent: Allows ENABLE when in AVAILABLE/RESERVED. Observable difference: SUT returns Result(False, 'not_in_maintenance') while mutant returns Result(True, 'enabled')."
@@ -1606,8 +1606,8 @@
         "Mutant9_DepositDuringMaintenance": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "TransitionPair_S303_T12",
-          "divergence_reason": "Failure at step 1 (Operation.DEPOSIT): Result divergence (expected Result(accepted=False, message='not_reserved'), got Result(accepted=True, message='deposited')); Snapshot divergence (expected Snapshot(state=<State.MAINTENANCE: 'MAINTENANCE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id=None, reservation_code=None, retrieval_code='P-None')); Domain invariant violation (OCCUPIED state must have an associated customer_id)",
+          "killing_test": "TransitionPair_S303_T2",
+          "divergence_reason": "Failure at step 12 (Operation.DEPOSIT): Result divergence (expected Result(accepted=False, message='not_reserved'), got Result(accepted=True, message='deposited')); Snapshot divergence (expected Snapshot(state=<State.MAINTENANCE: 'MAINTENANCE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id=None, reservation_code=None, retrieval_code='P-None')); Domain invariant violation (OCCUPIED state must have an associated customer_id)",
           "description": "Allows deposit into a compartment under maintenance.",
           "defect_category": "Precondition Bypass",
           "equivalence_rationale": "Non-equivalent: Allows deposit while in MAINTENANCE. Observable difference: SUT returns Result(False, 'not_reserved') while mutant accepts deposit and transitions to OCCUPIED."
@@ -1615,8 +1615,8 @@
         "Mutant10_MutateOnInvalidDeposit": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "TransitionPair_S303_T5",
-          "divergence_reason": "Failure at step 3 (Operation.DEPOSIT): Snapshot divergence (expected Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C1', reservation_code='R-C1', retrieval_code=None), got Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C1', reservation_code='R-C1', retrieval_code='CORRUPTED_CODE')); Domain invariant violation (RESERVED state must not have a retrieval_code before deposit); Non-mutation invariant violation (rejected operation mutated SUT from Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C1', reservation_code='R-C1', retrieval_code=None) to Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C1', reservation_code='R-C1', retrieval_code='CORRUPTED_CODE'))",
+          "killing_test": "TransitionPair_S303_T6",
+          "divergence_reason": "Failure at step 9 (Operation.DEPOSIT): Snapshot divergence (expected Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C2', reservation_code='R-C2', retrieval_code=None), got Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C2', reservation_code='R-C2', retrieval_code='CORRUPTED_CODE')); Domain invariant violation (RESERVED state must not have a retrieval_code before deposit); Non-mutation invariant violation (rejected operation mutated SUT from Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C2', reservation_code='R-C2', retrieval_code=None) to Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C2', reservation_code='R-C2', retrieval_code='CORRUPTED_CODE'))",
           "description": "Mutates retrieval credential on rejected deposit attempt.",
           "defect_category": "Side-Effect / Non-Mutation Violation",
           "equivalence_rationale": "Non-equivalent: Corrupts retrieval_code on rejected deposit. Observable difference: Violates the non-mutation invariant on rejected operations."
@@ -1629,10 +1629,10 @@
     "seed": 404,
     "num_sequences": 500,
     "max_length": 20,
-    "generation_time_sec": 0.39099179999902844,
-    "sut_execution_time_sec": 0.485481499999878,
-    "mutation_execution_time_sec": 0.37460420000570593,
-    "total_time_sec": 1.2510775000046124,
+    "generation_time_sec": 0.14965939999819966,
+    "sut_execution_time_sec": 0.18105859999923268,
+    "mutation_execution_time_sec": 0.11831420000089565,
+    "total_time_sec": 0.449032199998328,
     "sut_passed_tests": 500,
     "sut_failed_tests": 0,
     "coverage": {
@@ -1659,7 +1659,7 @@
         "Mutant1_ReserveOccupied": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "TransitionPair_S404_T3",
+          "killing_test": "TransitionPair_S404_T47",
           "divergence_reason": "Failure at step 2 (Operation.RESERVE): Result divergence (expected Result(accepted=False, message='locker_not_available'), got Result(accepted=True, message='reserved')); Snapshot divergence (expected Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C3', reservation_code='R-C3', retrieval_code='P-C3'), got Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C9', reservation_code='R-C9', retrieval_code='P-C3')); Domain invariant violation (RESERVED state must not have a retrieval_code before deposit)",
           "description": "Allows reserving compartment when it is already OCCUPIED.",
           "defect_category": "Precondition Bypass",
@@ -1677,8 +1677,8 @@
         "Mutant3_RetrieveWithoutAuth": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "TransitionPair_S404_T2",
-          "divergence_reason": "Failure at step 4 (Operation.RETRIEVE): Result divergence (expected Result(accepted=False, message='invalid_retrieval_code'), got Result(accepted=True, message='retrieved')); Snapshot divergence (expected Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C2', reservation_code='R-C2', retrieval_code='P-C2'), got Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None))",
+          "killing_test": "TransitionPair_S404_T27",
+          "divergence_reason": "Failure at step 6 (Operation.RETRIEVE): Result divergence (expected Result(accepted=False, message='invalid_retrieval_code'), got Result(accepted=True, message='retrieved')); Snapshot divergence (expected Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C3', reservation_code='R-C3', retrieval_code='P-C3'), got Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None))",
           "description": "Allows parcel retrieval without valid authentication PIN.",
           "defect_category": "Authentication Bypass",
           "equivalence_rationale": "Non-equivalent: Accepts retrieval with invalid PIN. Observable difference: SUT returns Result(False, 'invalid_retrieval_code') while mutant transitions to AVAILABLE."
@@ -1695,8 +1695,8 @@
         "Mutant5_ExpireWhenNotExpired": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "TransitionPair_S404_T2",
-          "divergence_reason": "Failure at step 18 (Operation.EXPIRE): Result divergence (expected Result(accepted=False, message='not_expired'), got Result(accepted=True, message='expired')); Snapshot divergence (expected Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C2', reservation_code='R-C2', retrieval_code=None), got Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None))",
+          "killing_test": "TransitionPair_S404_T12",
+          "divergence_reason": "Failure at step 1 (Operation.EXPIRE): Result divergence (expected Result(accepted=False, message='not_expired'), got Result(accepted=True, message='expired')); Snapshot divergence (expected Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C4', reservation_code='R-C4', retrieval_code=None), got Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None))",
           "description": "Prematurely expires reservation when explicit expired flag is False.",
           "defect_category": "Guard Condition Omission",
           "equivalence_rationale": "Non-equivalent: Prematurely expires when expired=False. Observable difference: SUT returns Result(False, 'not_expired') while mutant returns Result(True, 'expired')."
@@ -1731,8 +1731,8 @@
         "Mutant9_DepositDuringMaintenance": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "TransitionPair_S404_T55",
-          "divergence_reason": "Failure at step 19 (Operation.DEPOSIT): Result divergence (expected Result(accepted=False, message='not_reserved'), got Result(accepted=True, message='deposited')); Snapshot divergence (expected Snapshot(state=<State.MAINTENANCE: 'MAINTENANCE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id=None, reservation_code=None, retrieval_code='P-None')); Domain invariant violation (OCCUPIED state must have an associated customer_id)",
+          "killing_test": "TransitionPair_S404_T24",
+          "divergence_reason": "Failure at step 7 (Operation.DEPOSIT): Result divergence (expected Result(accepted=False, message='not_reserved'), got Result(accepted=True, message='deposited')); Snapshot divergence (expected Snapshot(state=<State.MAINTENANCE: 'MAINTENANCE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id=None, reservation_code=None, retrieval_code='P-None')); Domain invariant violation (OCCUPIED state must have an associated customer_id)",
           "description": "Allows deposit into a compartment under maintenance.",
           "defect_category": "Precondition Bypass",
           "equivalence_rationale": "Non-equivalent: Allows deposit while in MAINTENANCE. Observable difference: SUT returns Result(False, 'not_reserved') while mutant accepts deposit and transitions to OCCUPIED."
@@ -1754,10 +1754,10 @@
     "seed": 505,
     "num_sequences": 500,
     "max_length": 20,
-    "generation_time_sec": 0.3646982999998727,
-    "sut_execution_time_sec": 0.41753520000202116,
-    "mutation_execution_time_sec": 0.8840310000014142,
-    "total_time_sec": 1.666264500003308,
+    "generation_time_sec": 0.12056570000277134,
+    "sut_execution_time_sec": 0.13427190000220435,
+    "mutation_execution_time_sec": 0.14036239999404643,
+    "total_time_sec": 0.3951999999990221,
     "sut_passed_tests": 500,
     "sut_failed_tests": 0,
     "coverage": {
@@ -1784,8 +1784,8 @@
         "Mutant1_ReserveOccupied": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "TransitionPair_S505_T20",
-          "divergence_reason": "Failure at step 7 (Operation.RESERVE): Result divergence (expected Result(accepted=False, message='locker_not_available'), got Result(accepted=True, message='reserved')); Snapshot divergence (expected Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C4', reservation_code='R-C4', retrieval_code='P-C4'), got Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C9', reservation_code='R-C9', retrieval_code='P-C4')); Domain invariant violation (RESERVED state must not have a retrieval_code before deposit)",
+          "killing_test": "TransitionPair_S505_T2",
+          "divergence_reason": "Failure at step 14 (Operation.RESERVE): Result divergence (expected Result(accepted=False, message='locker_not_available'), got Result(accepted=True, message='reserved')); Snapshot divergence (expected Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C2', reservation_code='R-C2', retrieval_code='P-C2'), got Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C9', reservation_code='R-C9', retrieval_code='P-C2')); Domain invariant violation (RESERVED state must not have a retrieval_code before deposit)",
           "description": "Allows reserving compartment when it is already OCCUPIED.",
           "defect_category": "Precondition Bypass",
           "equivalence_rationale": "Non-equivalent: Permits RESERVE when state is OCCUPIED. Observable difference: SUT returns Result(False, 'locker_not_available') while mutant returns Result(True, 'reserved')."
@@ -1793,8 +1793,8 @@
         "Mutant2_AcceptWrongReservationCode": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "TransitionPair_S505_T3",
-          "divergence_reason": "Failure at step 13 (Operation.DEPOSIT): Result divergence (expected Result(accepted=False, message='invalid_reservation_code'), got Result(accepted=True, message='deposited')); Snapshot divergence (expected Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C3', reservation_code='R-C3', retrieval_code=None), got Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C3', reservation_code='R-C3', retrieval_code='P-C3'))",
+          "killing_test": "TransitionPair_S505_T22",
+          "divergence_reason": "Failure at step 9 (Operation.DEPOSIT): Result divergence (expected Result(accepted=False, message='invalid_reservation_code'), got Result(accepted=True, message='deposited')); Snapshot divergence (expected Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C2', reservation_code='R-C2', retrieval_code=None), got Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C2', reservation_code='R-C2', retrieval_code='P-C2'))",
           "description": "Accepts incorrect reservation code during parcel deposit.",
           "defect_category": "Credential Verification Bypass",
           "equivalence_rationale": "Non-equivalent: Accepts deposit with invalid code. Observable difference: SUT returns Result(False, 'invalid_reservation_code') while mutant transitions to OCCUPIED."
@@ -1802,8 +1802,8 @@
         "Mutant3_RetrieveWithoutAuth": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "TransitionPair_S505_T2",
-          "divergence_reason": "Failure at step 16 (Operation.RETRIEVE): Result divergence (expected Result(accepted=False, message='invalid_retrieval_code'), got Result(accepted=True, message='retrieved')); Snapshot divergence (expected Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C2', reservation_code='R-C2', retrieval_code='P-C2'), got Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None))",
+          "killing_test": "TransitionPair_S505_T64",
+          "divergence_reason": "Failure at step 14 (Operation.RETRIEVE): Result divergence (expected Result(accepted=False, message='invalid_retrieval_code'), got Result(accepted=True, message='retrieved')); Snapshot divergence (expected Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C4', reservation_code='R-C4', retrieval_code='P-C4'), got Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None))",
           "description": "Allows parcel retrieval without valid authentication PIN.",
           "defect_category": "Authentication Bypass",
           "equivalence_rationale": "Non-equivalent: Accepts retrieval with invalid PIN. Observable difference: SUT returns Result(False, 'invalid_retrieval_code') while mutant transitions to AVAILABLE."
@@ -1812,7 +1812,7 @@
           "detected": true,
           "equivalent": false,
           "killing_test": "TransitionPair_S505_T1",
-          "divergence_reason": "Failure at step 11 (Operation.RETRIEVE): Snapshot divergence (expected Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C1', reservation_code='R-C1', retrieval_code='P-C1')); Cleanup invariant violation (credentials retained after successful Operation.RETRIEVE: Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C1', reservation_code='R-C1', retrieval_code='P-C1'))",
+          "divergence_reason": "Failure at step 9 (Operation.RETRIEVE): Snapshot divergence (expected Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C1', reservation_code='R-C1', retrieval_code='P-C1')); Cleanup invariant violation (credentials retained after successful Operation.RETRIEVE: Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id='C1', reservation_code='R-C1', retrieval_code='P-C1'))",
           "description": "Fails to clear compartment upon retrieval, allowing duplicate retrieval.",
           "defect_category": "Post-Condition & Cleanup Omission",
           "equivalence_rationale": "Non-equivalent: Fails to clear locker on retrieval. Observable difference: Snapshot state remains OCCUPIED instead of AVAILABLE, allowing duplicate retrieval."
@@ -1820,8 +1820,8 @@
         "Mutant5_ExpireWhenNotExpired": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "TransitionPair_S505_T13",
-          "divergence_reason": "Failure at step 3 (Operation.EXPIRE): Result divergence (expected Result(accepted=False, message='not_expired'), got Result(accepted=True, message='expired')); Snapshot divergence (expected Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C1', reservation_code='R-C1', retrieval_code=None), got Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None))",
+          "killing_test": "TransitionPair_S505_T15",
+          "divergence_reason": "Failure at step 5 (Operation.EXPIRE): Result divergence (expected Result(accepted=False, message='not_expired'), got Result(accepted=True, message='expired')); Snapshot divergence (expected Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C3', reservation_code='R-C3', retrieval_code=None), got Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id=None, reservation_code=None, retrieval_code=None))",
           "description": "Prematurely expires reservation when explicit expired flag is False.",
           "defect_category": "Guard Condition Omission",
           "equivalence_rationale": "Non-equivalent: Prematurely expires when expired=False. Observable difference: SUT returns Result(False, 'not_expired') while mutant returns Result(True, 'expired')."
@@ -1847,8 +1847,8 @@
         "Mutant8_EnableWhenNotMaintenance": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "TransitionPair_S505_T3",
-          "divergence_reason": "Failure at step 6 (Operation.ENABLE): Result divergence (expected Result(accepted=False, message='not_in_maintenance'), got Result(accepted=True, message='enabled')); Snapshot divergence (expected Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C3', reservation_code='R-C3', retrieval_code=None), got Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id='C3', reservation_code='R-C3', retrieval_code=None)); Domain invariant violation (AVAILABLE state must not retain customer or credential information)",
+          "killing_test": "TransitionPair_S505_T2",
+          "divergence_reason": "Failure at step 1 (Operation.ENABLE): Result divergence (expected Result(accepted=False, message='not_in_maintenance'), got Result(accepted=True, message='enabled')); Snapshot divergence (expected Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C2', reservation_code='R-C2', retrieval_code=None), got Snapshot(state=<State.AVAILABLE: 'AVAILABLE'>, customer_id='C2', reservation_code='R-C2', retrieval_code=None)); Domain invariant violation (AVAILABLE state must not retain customer or credential information)",
           "description": "Allows enabling locker when it is not in maintenance.",
           "defect_category": "Precondition Bypass",
           "equivalence_rationale": "Non-equivalent: Allows ENABLE when in AVAILABLE/RESERVED. Observable difference: SUT returns Result(False, 'not_in_maintenance') while mutant returns Result(True, 'enabled')."
@@ -1856,8 +1856,8 @@
         "Mutant9_DepositDuringMaintenance": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "TransitionPair_S505_T10",
-          "divergence_reason": "Failure at step 14 (Operation.DEPOSIT): Result divergence (expected Result(accepted=False, message='not_reserved'), got Result(accepted=True, message='deposited')); Snapshot divergence (expected Snapshot(state=<State.MAINTENANCE: 'MAINTENANCE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id=None, reservation_code=None, retrieval_code='P-None')); Domain invariant violation (OCCUPIED state must have an associated customer_id)",
+          "killing_test": "TransitionPair_S505_T11",
+          "divergence_reason": "Failure at step 13 (Operation.DEPOSIT): Result divergence (expected Result(accepted=False, message='not_reserved'), got Result(accepted=True, message='deposited')); Snapshot divergence (expected Snapshot(state=<State.MAINTENANCE: 'MAINTENANCE'>, customer_id=None, reservation_code=None, retrieval_code=None), got Snapshot(state=<State.OCCUPIED: 'OCCUPIED'>, customer_id=None, reservation_code=None, retrieval_code='P-None')); Domain invariant violation (OCCUPIED state must have an associated customer_id)",
           "description": "Allows deposit into a compartment under maintenance.",
           "defect_category": "Precondition Bypass",
           "equivalence_rationale": "Non-equivalent: Allows deposit while in MAINTENANCE. Observable difference: SUT returns Result(False, 'not_reserved') while mutant accepts deposit and transitions to OCCUPIED."
@@ -1865,8 +1865,8 @@
         "Mutant10_MutateOnInvalidDeposit": {
           "detected": true,
           "equivalent": false,
-          "killing_test": "TransitionPair_S505_T3",
-          "divergence_reason": "Failure at step 13 (Operation.DEPOSIT): Snapshot divergence (expected Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C3', reservation_code='R-C3', retrieval_code=None), got Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C3', reservation_code='R-C3', retrieval_code='CORRUPTED_CODE')); Domain invariant violation (RESERVED state must not have a retrieval_code before deposit); Non-mutation invariant violation (rejected operation mutated SUT from Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C3', reservation_code='R-C3', retrieval_code=None) to Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C3', reservation_code='R-C3', retrieval_code='CORRUPTED_CODE'))",
+          "killing_test": "TransitionPair_S505_T22",
+          "divergence_reason": "Failure at step 9 (Operation.DEPOSIT): Snapshot divergence (expected Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C2', reservation_code='R-C2', retrieval_code=None), got Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C2', reservation_code='R-C2', retrieval_code='CORRUPTED_CODE')); Domain invariant violation (RESERVED state must not have a retrieval_code before deposit); Non-mutation invariant violation (rejected operation mutated SUT from Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C2', reservation_code='R-C2', retrieval_code=None) to Snapshot(state=<State.RESERVED: 'RESERVED'>, customer_id='C2', reservation_code='R-C2', retrieval_code='CORRUPTED_CODE'))",
           "description": "Mutates retrieval credential on rejected deposit attempt.",
           "defect_category": "Side-Effect / Non-Mutation Violation",
           "equivalence_rationale": "Non-equivalent: Corrupts retrieval_code on rejected deposit. Observable difference: Violates the non-mutation invariant on rejected operations."
