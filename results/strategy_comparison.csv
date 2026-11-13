@@ -1,0 +1,4 @@
+Strategy,Mean State Coverage (%),Mean Valid Trans Coverage (%),Mean State-Op Coverage (%),Mean Transition-Pair Coverage (%),Mean Mutation Score (%),Std Mutation Score,Mean Detected Mutants (out of 10),Mean Gen Time (s),Mean SUT Exec Time (s),Mean Mut Exec Time (s)
+RandomWalk,100.0,100.0,100.0,100.0,100.0,0.0,10,0.1096,0.1923,0.0342
+CoverageGuided,100.0,100.0,100.0,64.62,100.0,0.0,10,2.2669,0.2735,0.0065
+TransitionPair,100.0,100.0,96.88,100.0,100.0,0.0,10,0.2817,0.2899,0.0349

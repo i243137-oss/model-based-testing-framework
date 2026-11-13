@@ -1,0 +1,38 @@
+{
+  "RandomWalk": {
+    "mean_state_cov": 100.0,
+    "mean_valid_trans_cov": 100.0,
+    "mean_state_op_cov": 100.0,
+    "mean_pair_cov": 100.0,
+    "mean_mutation_score": 100.0,
+    "std_mutation_score": 0.0,
+    "mean_detected_mutants": 10,
+    "mean_generation_time": 0.1096,
+    "mean_sut_exec_time": 0.1923,
+    "mean_mut_exec_time": 0.0342
+  },
+  "CoverageGuided": {
+    "mean_state_cov": 100.0,
+    "mean_valid_trans_cov": 100.0,
+    "mean_state_op_cov": 100.0,
+    "mean_pair_cov": 64.62,
+    "mean_mutation_score": 100.0,
+    "std_mutation_score": 0.0,
+    "mean_detected_mutants": 10,
+    "mean_generation_time": 2.2669,
+    "mean_sut_exec_time": 0.2735,
+    "mean_mut_exec_time": 0.0065
+  },
+  "TransitionPair": {
+    "mean_state_cov": 100.0,
+    "mean_valid_trans_cov": 100.0,
+    "mean_state_op_cov": 96.88,
+    "mean_pair_cov": 100.0,
+    "mean_mutation_score": 100.0,
+    "std_mutation_score": 0.0,
+    "mean_detected_mutants": 10,
+    "mean_generation_time": 0.2817,
+    "mean_sut_exec_time": 0.2899,
+    "mean_mut_exec_time": 0.0349
+  }
+}
