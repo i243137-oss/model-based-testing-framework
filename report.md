@@ -2,8 +2,8 @@
 
 **Course**: Software Testing & Quality Assurance / Model-Based Testing  
 **Project**: Automated Model-Based Testing Framework  
-**Student Name**: `[STUDENT_NAME_PLACEHOLDER]`  
-**Student ID**: `[STUDENT_ID_PLACEHOLDER]`  
+**Student Name**: Umair Hassan  
+**Roll No**: 24i-3137  
 **Date**: November 2026  
 
 ---
