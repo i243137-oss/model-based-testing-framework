@@ -170,8 +170,8 @@ python experiments/run_experiments.py --sequences 20 --max-length 15 --seeds 42 
 
 ---
 
-## 7. Viva and Unseen Requirement Preparation
+## 7. Extensibility & Future Enhancements
 
-The framework is structured so that you can easily adapt to unseen requirements during your viva:
+The framework is structured for easy extension to new requirements or components:
 - **To add a new state or transition**: Update `State` and `Operation` in `locker/types.py`, add transition rules and guard checks in `locker/model.py`, and update invariants in `LockerModel.verify_invariants`.
 - **To add an unseen mutant**: Create a new subclass of `ParcelLocker` in `locker/mutants.py` overriding `execute()` and register it in `ALL_MUTANTS`.

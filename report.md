@@ -269,34 +269,18 @@ The Model-Based Testing framework successfully models the Smart Parcel Locker an
 
 ---
 
-## 12. Student Manual Action Checklist & Viva Notes
+## 12. Evidence & Demonstration Screenshots
 
-> [!NOTE]
-> The following sections are reserved for student-specific items to capture personally before final submission.
-
-### 12.1 Viva Preparation & Unseen Change Cheat Sheet
-During your individual viva, if the instructor introduces an unseen requirement:
-- **Scenario A: "Allow maintenance while OCCUPIED"**:
-  1. In `locker/model.py`, modify `DISABLE` guard: allow `self.state in (State.AVAILABLE, State.OCCUPIED)`.
-  2. If occupied, define whether parcel is kept or cleared.
-  3. Update `LockerModel.verify_invariants` to allow `customer_id` if occupied during maintenance.
-- **Scenario B: "Allow cancel under a new condition or fee"**:
-  1. Add new field to `Command` in `locker/types.py`.
-  2. Update `CANCEL` branch in `locker/model.py`.
-- **Scenario C: "New State: EXPIRED"**:
-  1. Add `EXPIRED = "EXPIRED"` to `State` enum in `locker/types.py`.
-  2. In `locker/model.py`, update `EXPIRE` transition to enter `State.EXPIRED` instead of directly `AVAILABLE`.
-
-### 12.2 Screenshots & Terminal Outputs
+### 12.1 Screenshots & Terminal Outputs
 Actual terminal outputs and generated charts from the test runs on the testing machine:
 
 #### 1. Full Unit & Multi-Oracle Test Suite Execution (44 Tests Passing)
-![Unit Tests Execution (41 tests passing)](docs/screenshots/unit_tests_run.png)
+![Unit Tests Execution (44 tests passing)](docs/screenshots/unit_tests_run.png)
 
 #### 2. Controlled Experimental Evaluation (500 Sequences, 5 Seeds)
 ![Controlled Experiments Execution (500 sequences, 5 seeds)](docs/screenshots/experiments_run.png)
 
-#### 3. Visual Charts Generated from Experimental Evaluation
+### 12.2 Visual Charts Generated from Experimental Evaluation
 - **Coverage Comparison**:
   ![Coverage Comparison Across Strategies](results/coverage_comparison.png)
 - **Mutation Score Comparison**:
